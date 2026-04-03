@@ -17,7 +17,7 @@ def inverse(A):
     # ── Tạo ma trận ghép [A | I_n] ─────────────────────────────────────
     # Mỗi hàng: n phần tử từ A + n phần tử từ I (hàng i của I có 1 ở cột i)
     I = [[Fraction(1) if i == j else Fraction(0) for j in range(n)]
-         for i in range(n)]
+        for i in range(n)]
     M = [
         [Fraction(A[i][j]) for j in range(n)] + I[i]
         for i in range(n)
