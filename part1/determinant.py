@@ -3,7 +3,6 @@ from gaussian import gaussian_elimination
 import numpy as np
 
 def determinant(A):
-    
     n = len(A)
     # Kiểm tra A phải là ma trận vuông
     assert all(len(row) == n for row in A), "Chỉ áp dụng cho ma trận vuông!"
