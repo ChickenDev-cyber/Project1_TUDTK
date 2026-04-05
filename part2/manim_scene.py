@@ -1,5 +1,7 @@
 from manim import *
+import numpy as np
 
+# BẢNG MÀU TỔNG HỢP (Gộp từ cả 2 file)
 VN_FONT = "Arial"
 C_MAIN = BLUE_C      
 C_LAMBDA = YELLOW_C  
@@ -9,6 +11,14 @@ C_U = TEAL_C
 C_SIGMA = GOLD_C
 C_V = PURPLE_C
 
+# Thêm màu cho SVD Premium Geometry
+C_TITLE = WHITE
+C_MATH = WHITE
+C_VEC_1 = TEAL_C
+C_VEC_2 = RED_C
+C_GRID = BLUE_E
+
+# KÍCH THƯỚC CHỮ
 TITLE_SIZE = 32           
 SUBTITLE_SIZE = 26        
 FORMULA_MAIN_SIZE = 56    
@@ -19,7 +29,8 @@ BODY_MATH_SIZE = 36
 NOTE_TEXT_SIZE = 20      
 NOTE_MATH_SIZE = 28      
 
-class IntroProblem(Scene):
+
+class Section1_IntroProblem(Scene):
     def construct(self):
         title = Text("PHÂN RÃ SVD VÀ CHÉO HÓA", font=VN_FONT, font_size=42, weight=BOLD)
         title.to_edge(UP, buff=1.5)
@@ -39,12 +50,17 @@ class IntroProblem(Scene):
 
         self.play(FadeOut(VGroup(title, subtitle, matrix_A)))
 
-class Theory_And_GeometricSVD(Scene):
+
+class Section23_Theory_And_GeometricSVD(Scene):
     def construct(self):
+        # Đổi màu nền Premium (sẽ áp dụng cho cả scene lý thuyết và hình học)
+        self.camera.background_color = "#0d1117"
+        
         self.show_theory()
         self.show_geometry()
 
     def show_theory(self):
+        # KHÔNG THAY ĐỔI: Phần lý thuyết đã được tối ưu typography từ trước
         title = Text("2. Cơ sở lý thuyết phân rã SVD", font=VN_FONT, font_size=TITLE_SIZE, color=C_SVD).to_corner(UL)
         self.play(FadeIn(title))
 
@@ -99,98 +115,168 @@ class Theory_And_GeometricSVD(Scene):
         self.play(FadeOut(VGroup(title, intro_text, formula, all_blocks)))
 
     def show_geometry(self):
+        # =========================================================
+        # [LAYOUT ENGINE] - ĐỊNH NGHĨA CÁC TỌA ĐỘ NEO (ANCHORS)
+        # =========================================================
+        # 1. Tọa độ Y (Các tầng dọc)
+        Y_HEADER = 3.2      # Tầng 1: Tiêu đề 
+        Y_LABEL  = 1.8      # Tầng 2a: Tên ma trận
+        Y_MATRIX = 0.4      # Tầng 2b: Ma trận số 
+        Y_GRID   = -2.2     # Tầng 3: Lưới tọa độ & Trực quan hóa
+
+        # 2. Tọa độ X (Các cột ngang / Panels)
+        X_LEFT   = -4.6     # Panel 1 (Đầu vào V)
+        X_MID    = 0.0      # Panel 2 (Biến đổi Sigma)
+        X_RIGHT  = 4.6      # Panel 3 (Đầu ra U)
+
+        # =========================================================
+        # TẦNG 1: HEADER (TIÊU ĐỀ & CÔNG THỨC SVD)
+        # =========================================================
         title = Text("3. Ý nghĩa hình học của SVD", font=VN_FONT, font_size=TITLE_SIZE, color=C_SVD).to_corner(UL)
-        self.play(FadeIn(title))
+        #self.play(FadeIn(title))
 
-        svd_eq = MathTex("A", "=", "U", "\\Sigma", "V^T", font_size=48).to_corner(UR)
-        svd_eq[0].set_color(C_MAIN)
-        svd_eq[2].set_color(C_U)
-        svd_eq[3].set_color(C_SIGMA)
-        svd_eq[4].set_color(C_V)
-        self.play(Write(svd_eq))
-
-        geo_center = LEFT * 3.5 + DOWN * 0.5
         
-        plane = NumberPlane(
-            x_range=[-5, 5], y_range=[-5, 5], 
-            x_length=6.5, y_length=6.5, 
-            background_line_style={"stroke_opacity": 0.3}
-        ).move_to(geo_center)
-
-        origin_pt = plane.get_origin()
-
-        circle = Circle(radius=1.5, color=YELLOW).set_fill(YELLOW, opacity=0.3).move_to(origin_pt)
+        svd_eq = MathTex("A", "=", "U", "\\Sigma", "V^T", font_size=56)
+        svd_eq.set_color_by_tex("U", C_U)
+        svd_eq.set_color_by_tex("\\Sigma", C_SIGMA)
+        svd_eq.set_color_by_tex("V^T", C_V)
         
-        vec_i = Arrow(start=origin_pt, end=plane.c2p(1.5, 0), buff=0, color=GREEN_C, stroke_width=6, max_tip_length_to_length_ratio=0.15)
-        vec_j = Arrow(start=origin_pt, end=plane.c2p(0, 1.5), buff=0, color=RED_C, stroke_width=6, max_tip_length_to_length_ratio=0.15)
+        # [MINIMAL FIX]: Chỉ dịch công thức xuống Y = 2.6 (nằm an toàn giữa tiêu đề và các ma trận)
+        svd_eq.move_to([X_MID, 2.6, 0]) 
         
-        center_dot = Dot(origin_pt, radius=0.06, color=WHITE)
-        geometry_group = VGroup(circle, vec_i, vec_j)
+        self.play(FadeIn(title, shift=DOWN*0.3), Write(svd_eq))
 
-        self.play(FadeIn(plane))
-        self.play(Create(circle), GrowArrow(vec_i), GrowArrow(vec_j), FadeIn(center_dot))
+        # =========================================================
+        # TRACKERS (THAM SỐ CHUYỂN ĐỘNG HÌNH HỌC)
+        # =========================================================
+        vt_theta_v = ValueTracker(0)       
+        vt_sigma_x = ValueTracker(1.0)     
+        vt_sigma_y = ValueTracker(1.0)
+        vt_theta_u = ValueTracker(0)       
 
-        text_center = RIGHT * 3.5 + DOWN * 0.5
+        def get_V():
+            t = vt_theta_v.get_value()
+            return np.array([[np.cos(t), -np.sin(t)], [np.sin(t), np.cos(t)]])
 
-        status_label = VGroup(
-            Text("Không gian đầu vào", font=VN_FONT, font_size=BODY_TEXT_SIZE),
-            Text("(Đường tròn đơn vị)", font=VN_FONT, font_size=NOTE_TEXT_SIZE, color=LIGHT_GREY)
-        ).arrange(DOWN, buff=0.2).move_to(text_center)
+        def get_Sigma():
+            return np.array([[vt_sigma_x.get_value(), 0], [0, vt_sigma_y.get_value()]])
 
-        self.play(Write(status_label))
-        self.wait(1.5)
+        def get_U():
+            t = vt_theta_u.get_value()
+            return np.array([[np.cos(t), -np.sin(t)], [np.sin(t), np.cos(t)]])
 
-        lbl_vt = VGroup(
-            Text("Tác động của:", font=VN_FONT, font_size=NOTE_TEXT_SIZE, color=LIGHT_GREY),
-            MathTex("V^T", font_size=72, color=C_V), 
-            Text("Xoay không gian", font=VN_FONT, font_size=BODY_TEXT_SIZE, color=WHITE),
-            Text("(Phép Quay)", font=VN_FONT, font_size=NOTE_TEXT_SIZE, color=LIGHT_GREY)
-        ).arrange(DOWN, buff=0.3).move_to(text_center)
+        # =========================================================
+        # TẦNG 3: VISUALIZATION ROW (LƯỚI TỌA ĐỘ VÀ MŨI TÊN CHỈ DÒNG)
+        # =========================================================
+        plane_kwargs = {
+            "x_range": [-4, 4], "y_range": [-4, 4],
+            "x_length": 3.2, "y_length": 3.2, 
+            "background_line_style": {"stroke_color": C_GRID, "stroke_width": 1, "stroke_opacity": 0.5},
+            "axis_config": {"stroke_color": GREY, "stroke_width": 2}
+        }
         
-        angle_vt = -PI / 4 
-        matrix_vt = [[np.cos(angle_vt), -np.sin(angle_vt)], [np.sin(angle_vt), np.cos(angle_vt)]]
-        
+        plane_in  = NumberPlane(**plane_kwargs).move_to([X_LEFT, Y_GRID, 0])
+        plane_mid = NumberPlane(**plane_kwargs).move_to([X_MID, Y_GRID, 0])
+        plane_out = NumberPlane(**plane_kwargs).move_to([X_RIGHT, Y_GRID, 0])
+
         self.play(
-            ReplacementTransform(status_label, lbl_vt),
-            Indicate(svd_eq[4], color=C_V, scale_factor=1.5)
+            LaggedStart(Create(plane_in), Create(plane_mid), Create(plane_out), lag_ratio=0.3), 
+            run_time=2
         )
-        self.play(geometry_group.animate.apply_matrix(matrix_vt, about_point=origin_pt), run_time=2)
+
+        arrow_1 = MathTex("\\Rightarrow", font_size=40).move_to([(X_LEFT + X_MID)/2, Y_GRID, 0])
+        arrow_2 = MathTex("\\Rightarrow", font_size=40).move_to([(X_MID + X_RIGHT)/2, Y_GRID, 0])
+        self.play(FadeIn(arrow_1), FadeIn(arrow_2))
+
+        # =========================================================
+        # TẦNG 2: MATRIX ROW (NHÃN & MA TRẬN)
+        # =========================================================
+        lbl_v   = MathTex("V^T", font_size=40, color=C_V).move_to([X_LEFT, Y_LABEL, 0])
+        lbl_sig = MathTex("\\Sigma", font_size=40, color=C_SIGMA).move_to([X_MID, Y_LABEL, 0])
+        lbl_u   = MathTex("U", font_size=40, color=C_U).move_to([X_RIGHT, Y_LABEL, 0])
+
+        matrix_kwargs = {
+            "element_to_mobject_config": {"num_decimal_places": 2, "font_size": 26},
+            "h_buff": 1.1, "v_buff": 0.6
+        }
+
+        mat_v_dec = always_redraw(lambda: DecimalMatrix(get_V(), **matrix_kwargs).set_color(C_V).move_to([X_LEFT, Y_MATRIX, 0]))
+        mat_sig_dec = always_redraw(lambda: DecimalMatrix(get_Sigma(), **matrix_kwargs).set_color(C_SIGMA).move_to([X_MID, Y_MATRIX, 0]))
+        mat_u_dec = always_redraw(lambda: DecimalMatrix(get_U(), **matrix_kwargs).set_color(C_U).move_to([X_RIGHT, Y_MATRIX, 0]))
+
+        self.play(
+            Write(lbl_v), Write(lbl_sig), Write(lbl_u),
+            Write(mat_v_dec), Write(mat_sig_dec), Write(mat_u_dec)
+        )
+
+        # =========================================================
+        # TẠO HÌNH HỌC (SHAPES VÀ VECTORS) TRONG TẦNG 3
+        # =========================================================
+        def get_dynamic_shape(mat_func, plane, color_fill):
+            def creator():
+                mat = mat_func()
+                v1_end = mat @ np.array([1, 0])
+                v2_end = mat @ np.array([0, 1])
+
+                shape = Circle(radius=1.0).set_stroke(color_fill, 2).set_fill(color_fill, 0.25)
+                mat_3x3 = np.eye(3); mat_3x3[:2, :2] = mat
+                shape.apply_matrix(mat_3x3)
+                shape.move_to(plane.get_origin()) 
+
+                v1 = Arrow(plane.get_origin(), plane.c2p(v1_end[0], v1_end[1]), buff=0, color=C_VEC_1, stroke_width=4, max_tip_length_to_length_ratio=0.15)
+                v2 = Arrow(plane.get_origin(), plane.c2p(v2_end[0], v2_end[1]), buff=0, color=C_VEC_2, stroke_width=4, max_tip_length_to_length_ratio=0.15)
+                
+                return VGroup(shape, v1, v2)
+            return always_redraw(creator)
+
+        shape_in  = get_dynamic_shape(get_V, plane_in, C_V)
+        shape_mid = get_dynamic_shape(lambda: get_Sigma(), plane_mid, C_SIGMA)
+        shape_out = get_dynamic_shape(lambda: get_U() @ get_Sigma(), plane_out, C_U)
+
+        self.play(FadeIn(shape_in), FadeIn(shape_mid), FadeIn(shape_out))
         self.wait(1)
 
-        lbl_sigma = VGroup(
-            Text("Tác động của:", font=VN_FONT, font_size=NOTE_TEXT_SIZE, color=LIGHT_GREY),
-            MathTex("\\Sigma", font_size=72, color=C_SIGMA),
-            Text("Kéo giãn trục chính", font=VN_FONT, font_size=BODY_TEXT_SIZE, color=WHITE),
-            Text("(Đường tròn \u2192 Ellipse)", font=VN_FONT, font_size=NOTE_TEXT_SIZE, color=LIGHT_GREY)
-        ).arrange(DOWN, buff=0.3).move_to(text_center)
+        # =========================================================
+        # PIPELINE ANIMATION (BIẾN ĐỔI SVD)
+        # =========================================================
+        def highlight_matrix(matrix_mob, color):
+            return SurroundingRectangle(matrix_mob, color=color, corner_radius=0.1, buff=0.1)
 
-        matrix_sigma = [[2.2, 0], [0, 1.2]] 
-        
+        # --- Nhịp 1: Quay V^T ---
+        box_v = highlight_matrix(mat_v_dec, C_V)
+        self.play(Create(box_v))
+        self.play(vt_theta_v.animate.set_value(PI / 4), run_time=2.5, rate_func=smooth)
+        self.play(FadeOut(box_v))
+        self.wait(0.5)
+
+        # --- Nhịp 2: Co giãn Sigma ---
+        box_sig = highlight_matrix(mat_sig_dec, C_SIGMA)
+        self.play(Create(box_sig))
         self.play(
-            ReplacementTransform(lbl_vt, lbl_sigma),
-            Indicate(svd_eq[3], color=C_SIGMA, scale_factor=1.5)
+            vt_sigma_x.animate.set_value(1.8),
+            vt_sigma_y.animate.set_value(0.6),
+            run_time=3, rate_func=smooth
         )
-        self.play(geometry_group.animate.apply_matrix(matrix_sigma, about_point=origin_pt), run_time=2.5)
+        self.play(FadeOut(box_sig))
+        self.wait(0.5)
+
+        # --- Nhịp 3: Quay U ---
+        box_u = highlight_matrix(mat_u_dec, C_U)
+        self.play(Create(box_u))
+        self.play(vt_theta_u.animate.set_value(PI / 6), run_time=2.5, rate_func=smooth)
+        self.play(FadeOut(box_u))
         self.wait(1)
 
-        lbl_u = VGroup(
-            Text("Tác động của:", font=VN_FONT, font_size=NOTE_TEXT_SIZE, color=LIGHT_GREY),
-            MathTex("U", font_size=72, color=C_U),
-            Text("Xoay đến vị trí đích", font=VN_FONT, font_size=BODY_TEXT_SIZE, color=WHITE),
-            Text("(Phép Quay)", font=VN_FONT, font_size=NOTE_TEXT_SIZE, color=LIGHT_GREY)
-        ).arrange(DOWN, buff=0.3).move_to(text_center)
-
-        angle_u = PI / 6 
-        matrix_u = [[np.cos(angle_u), -np.sin(angle_u)], [np.sin(angle_u), np.cos(angle_u)]]
-        
+        # --- Nhịp 4: Biến đổi tổng hợp ---
         self.play(
-            ReplacementTransform(lbl_sigma, lbl_u),
-            Indicate(svd_eq[2], color=C_U, scale_factor=1.5)
+            vt_theta_v.animate.set_value(-PI / 3),
+            vt_sigma_x.animate.set_value(1.2),
+            vt_sigma_y.animate.set_value(1.8),
+            vt_theta_u.animate.set_value(-PI / 4),
+            run_time=4, rate_func=there_and_back 
         )
-        self.play(geometry_group.animate.apply_matrix(matrix_u, about_point=origin_pt), run_time=2)
         self.wait(2)
 
-        self.play(FadeOut(VGroup(title, svd_eq, plane, geometry_group, center_dot, lbl_u)))
 
 class MatrixDiagonalization(Scene):
     def construct(self):
@@ -202,11 +288,11 @@ class MatrixDiagonalization(Scene):
             step_name="Tìm vector riêng cho",
             lam_val="2",
             mat_before="\\begin{pmatrix} 1-2 & 2 \\\\ -1 & 4-2 \\end{pmatrix}",
-            transform_op="d_2 - d_1", # THÊM PHÉP BIẾN ĐỔI
+            transform_op="d_2 - d_1", 
             mat_after="\\begin{pmatrix} -1 & 2 \\\\ 0 & 0 \\end{pmatrix}",
             eq_str="-x_1 + 2x_2 = 0",
             vec_res="2 \\\\ 1",
-            u_subscript="1", # THÊM CHỈ SỐ VECTOR
+            u_subscript="1", 
             ref_pos_shift=ORIGIN,
             anchor=res_lambdas
         )
@@ -214,11 +300,11 @@ class MatrixDiagonalization(Scene):
             step_name="Tìm vector riêng cho",
             lam_val="3",
             mat_before="\\begin{pmatrix} 1-3 & 2 \\\\ -1 & 4-3 \\end{pmatrix}",
-            transform_op="2d_2 - d_1", # THÊM PHÉP BIẾN ĐỔI
+            transform_op="2d_2 - d_1", 
             mat_after="\\begin{pmatrix} -2 & 2 \\\\ 0 & 0 \\end{pmatrix}",
             eq_str="-2x_1 + 2x_2 = 0 \\Rightarrow -x_1 + x_2 = 0",
             vec_res="1 \\\\ 1",
-            u_subscript="2", # THÊM CHỈ SỐ VECTOR
+            u_subscript="2", 
             ref_pos_shift=DOWN*1.2,
             anchor=res_lambdas
         )
@@ -282,6 +368,7 @@ class MatrixDiagonalization(Scene):
         lam_text = MathTex("\\lambda = " + lam_val, font_size=BODY_MATH_SIZE).set_color(C_LAMBDA).next_to(step_title, RIGHT)
         self.play(FadeIn(step_title), Write(lam_text))
 
+        # 1. DÒNG "ẨN TỰ DO"
         t_p1 = Text("Đặt", font=VN_FONT, font_size=BODY_TEXT_SIZE)
         t_p2 = MathTex("x_2 = t", font_size=BODY_MATH_SIZE)
         t_p3 = Text("là ẩn tự do", font=VN_FONT, font_size=BODY_TEXT_SIZE)
@@ -289,6 +376,7 @@ class MatrixDiagonalization(Scene):
         
         t_step = VGroup(t_p1, t_p2, t_p3, t_p4).arrange(RIGHT, buff=0.15)
 
+        # 2. DÒNG "VECTOR RIÊNG TƯƠNG ỨNG LÀ"
         u_arrow = MathTex("\\Rightarrow", font_size=BODY_MATH_SIZE)
         u_text = Text("Vector riêng tương ứng là:", font=VN_FONT, font_size=BODY_TEXT_SIZE)
         u_math = MathTex("u_" + u_subscript + " = \\begin{pmatrix} " + vec_res + " \\end{pmatrix}", font_size=BODY_MATH_SIZE).set_color(C_VECTOR)
@@ -323,11 +411,9 @@ class MatrixDiagonalization(Scene):
         return u_ref
 
     def step3_build_matrices(self, u1_ref, u2_ref):
-        # 1. ĐẨY TIÊU ĐỀ LÊN CAO HƠN ĐỂ TIẾT KIỆM KHÔNG GIAN
         step_title = Text("Lập ma trận P và thực hiện chéo hóa", font=VN_FONT, font_size=BODY_TEXT_SIZE, color=BLUE_B).to_corner(UL).shift(DOWN*0.5)
         self.play(FadeIn(step_title))
 
-        # 2. KHỞI TẠO MA TRẬN P
         mat_P_label = Text("Lập ma trận P từ các vector riêng:", font=VN_FONT, font_size=NOTE_TEXT_SIZE)
         mat_P = MathTex("P", "=", "\\begin{pmatrix} 2 & 1 \\\\ 1 & 1 \\end{pmatrix}", font_size=BODY_MATH_SIZE)
         mat_P[0].set_color(C_VECTOR)
@@ -345,7 +431,6 @@ class MatrixDiagonalization(Scene):
         self.play(FadeOut(box_u2))
         self.wait(0.5)
 
-        # 3. QUÁ TRÌNH BIẾN ĐỔI CHÉO HÓA (P^-1 A P)
         calc_label = Text("Thực hiện phép tính:", font=VN_FONT, font_size=NOTE_TEXT_SIZE)
         calc_label.next_to(group_P, DOWN, buff=0.3).align_to(step_title, LEFT)
         self.play(Write(calc_label))
@@ -377,7 +462,6 @@ class MatrixDiagonalization(Scene):
         self.play(FadeIn(eq3[0]), TransformFromCopy(eq2[1], eq3[1]), run_time=1.5)
         self.wait(1)
 
-        # 4. KẾT LUẬN LÀ MA TRẬN D
         eq4 = MathTex("=", "D", font_size=CALC_FONT_SIZE)
         eq4[1].set_color(C_LAMBDA)
         eq4.next_to(eq3[1], RIGHT, buff=0.3)
