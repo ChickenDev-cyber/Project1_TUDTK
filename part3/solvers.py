@@ -1,8 +1,6 @@
 import numpy as np
 
-# ==========================================
 # THÀNH VIÊN 1: PHƯƠNG PHÁP KHỬ GAUSS
-# ==========================================
 def solve_gauss(A, b):
     """
     Giải hệ Ax = b bằng phương pháp khử Gauss (có partial pivoting).
@@ -11,11 +9,9 @@ def solve_gauss(A, b):
     """
     # ... Code thuật toán của Thành viên 1 ở đây ...
     # Nhớ phải có bước đổi chỗ hàng (pivoting) để tránh chia cho 0
-    return x
+    # return x
 
-# ==========================================
-# THÀNH VIÊN 2: PHƯƠNG PHÁP PHÂN RÃ LU
-# ==========================================
+#PHƯƠNG PHÁP PHÂN RÃ LU
 def solve_lu(A, b):
     """
     Giải hệ Ax = b bằng phân rã LU.
@@ -28,28 +24,60 @@ def solve_lu(A, b):
     
     # Bước 3: Giải Ux = y (Thế lùi)
     # ...
-    return x
+    # return x
 
-# ==========================================
-# THÀNH VIÊN 3: PHƯƠNG PHÁP LẶP GAUSS-SEIDEL
-# ==========================================
+# Kiểm tra ma trận chéo trội
+def IsStrictlyDiagonallyDominant(A):
+    n = len(A)
+    for i in range(n):
+        diag_val = abs(A[i][i])
+        off_diag_sum = 0.0
+        for j in range(n):
+            if i != j:
+                off_diag_sum += abs(A[i][j])
+        
+        # Nếu có bất kỳ hàng nào mà phần tử chéo không đủ lớn -> Không chéo trội
+        if diag_val <= off_diag_sum:
+            return False
+    return True
+
+# PHƯƠNG PHÁP LẶP GAUSS-SEIDEL
 def solve_gauss_seidel(A, b, tol=1e-6, max_iter=1000):
-    """
-    Giải hệ Ax = b bằng phương pháp lặp Gauss-Seidel.
-    tol: Sai số dừng vòng lặp (tolerance)
-    max_iter: Số vòng lặp tối đa để tránh lặp vô hạn
-    """
-    # Bước 1 (Quan trọng để lấy điểm): Kiểm tra điều kiện hội tụ
-    # Ví dụ: Kiểm tra A có phải chéo trội hàng (strictly diagonally dominant) không?
-    # Nếu không thỏa mãn, có thể in ra cảnh báo (print)
+
+    "vài lưu ý sống còn cho Project của bạn:Chia cho 0: Nếu a[i][i] = 0$, code sẽ bị lỗi ngay. "
+    "Trong thực tế, người ta thường dùng Partial Pivoting (đổi hàng) để đưa phần tử lớn nhất lên đường chéo trước khi lặp."
     
-    # Bước 2: Khởi tạo nghiệm ban đầu x0 (thường là vector toàn số 0)
-    x = np.zeros_like(b, dtype=np.double)
+    # Bước 1 : Kiểm tra điều kiện hội tụ
+    if not IsStrictlyDiagonallyDominant(A):
+        print("Cảnh báo: Ma trận không chéo trội hàng. Thuật toán có thể không hội tụ!")
+        return []
+
+    n = len(A)
+    x = [0.0] * n
     
-    # Bước 3: Vòng lặp tính x_new từ x_old
-    # ... Code lặp của Thành viên 3 ở đây ...
-    # Nhớ kiểm tra sai số ||x_new - x|| < tol thì break (dừng lặp)
-    
+    for k in range(max_iter):
+        # Lưu lại nghiệm cũ 
+        x_old = list(x)
+        
+        for i in range(n):
+            sigma = 0.0
+            for j in range(n):
+                if j != i: #Nếu j != i có nghĩa là khác nghiệm đang cần thay thì cộng dồn
+                    sigma += A[i][j] * x[j]
+            
+            # Cập nhật x[i] trực tiếp vào mảng, tìm nghiệm xi (lấy const - phương trình, chuyển vế)
+            x[i] = (b[i] - sigma) / A[i][i]
+            
+        # Bước 2: Kiểm tra điều kiện dừng (Sai số Euclid hoặc Max tuyệt đối)
+        # Tính chuẩn L2 của (x_new - x_old)
+        error = np.linalg.norm(np.array(x) - np.array(x_old))
+        
+        # Kiểm tra hội tụ mỗi vòng lặp, xem độ lệch gần bằng 0 hay chưa.
+        if error < tol: 
+            print(f"Hội tụ sau {k+1} vòng lặp.")
+            return x
+            
+    print("Không hội tụ sau số lần lặp tối đa.")
     return x
 
 if __name__ == "__main__":
@@ -60,7 +88,6 @@ if __name__ == "__main__":
     ])
     b_test = np.array([3.0, 2.0, 3.0])
     
-    print("=== TEST NHANH CÁC THUẬT TOÁN ===")
     print("Nghiệm kỳ vọng (Lý thuyết): [1. 1. 1.]\n")
 
     # KHỬ GAUSS

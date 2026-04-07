@@ -157,7 +157,7 @@ def decomposite_SVD(A):
 
     return U, Sigma, V_T
 
-# Hàm main
+#Kiểm thử
 if __name__ == "__main__":
     print("Nhập vào không gian R^(n): ", end="")
     n = int(input())
