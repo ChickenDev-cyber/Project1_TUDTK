@@ -2269,8 +2269,8 @@ if __name__ == "__main__":
         "Section1_IntroProblem",
         "MatrixDiagonalization",
         "Section23_Theory_And_GeometricSVD",
-        "SVDDecompositionVisual",
         "SVDAndDiagonalization", 
+        "SVDDecompositionVisual",
         "LowRankTheory",
         "SVDImageCompression"
     ]
