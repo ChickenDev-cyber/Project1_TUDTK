@@ -1,16 +1,86 @@
 import numpy as np
 import math as mth
+from fractions import Fraction
+
+def back_substitution(U, c, r):
+    n_rows = len(U)
+    n_cols = len(U[0])
+    
+    # Kiểm tra Vô nghiệm trước
+    for i in range(r, n_rows):
+        if c[i] != 0:
+            print("Lỗi: Hệ phương trình Vô nghiệm.")
+            return None
+            
+    # Sau khi chắc chắn có nghiệm, mới kiểm tra Vô số nghiệm
+    if r < n_cols:
+        print("Lỗi: Hệ phương trình có Vô số nghiệm.")
+        return None
+    
+    x_val = [Fraction(0)] * n_cols
+    
+    for i in range(r - 1, -1, -1):
+        pivot_col = -1
+        for j in range(n_cols):
+            if U[i][j] != 0:
+                pivot_col = j
+                break
+        
+        if pivot_col != -1:
+            sum_ax = sum(U[i][j] * x_val[j] for j in range(pivot_col + 1, n_cols))
+            x_val[pivot_col] = (c[i] - sum_ax) / U[i][pivot_col]
+    
+    return x_val
 
 # THÀNH VIÊN 1: PHƯƠNG PHÁP KHỬ GAUSS
 def solve_gauss(A, b):
-    """
-    Giải hệ Ax = b bằng phương pháp khử Gauss (có partial pivoting).
-    Đầu vào: Ma trận A (numpy array 2D), vector b (numpy array 1D)
-    Đầu ra: vector nghiệm x (numpy array 1D)
-    """
-    # ... Code thuật toán của Thành viên 1 ở đây ...
-    # Nhớ phải có bước đổi chỗ hàng (pivoting) để tránh chia cho 0
-    # return x
+
+    # 2. Thuật toán Khử Gauss chính
+    n = len(A)
+    m = len(A[0]) if n > 0 else 0
+
+    # Chuyển đổi dữ liệu đầu vào (kể cả numpy array) thành list chứa Fraction
+    M = [[Fraction(val) for val in row] + [Fraction(b[i])] for i, row in enumerate(A)]
+    s = 0
+    r = 0 
+
+    for c_idx in range(m):
+        if r >= n:
+            break
+
+        p = r
+        for i in range(r + 1, n):
+            # So sánh trị tuyệt đối của Fraction
+            if abs(M[i][c_idx]) > abs(M[p][c_idx]):
+                p = i
+
+        if M[p][c_idx] == 0:
+            continue
+
+        if p != r:
+            M[r], M[p] = M[p], M[r]
+            s += 1
+
+        for i in range(r + 1, n):
+            f = M[i][c_idx] / M[r][c_idx]
+            M[i][c_idx] = Fraction(0) 
+            for j in range(c_idx + 1, m + 1):
+                M[i][j] -= M[r][j] * f
+        
+        r += 1 
+
+    U = [row[:m] for row in M]
+    c_result = [row[m] for row in M]
+
+    # Gọi hàm thế ngược
+    x_fraction = back_substitution(U, c_result, r)
+    
+    # 3. Trả về kết quả
+    if x_fraction is None:
+        return [] # Trả về mảng rỗng nếu vô nghiệm/vô số nghiệm
+        
+    # Ép Fraction về lại float để in ra cho đẹp và đồng bộ với các phương pháp khác
+    return [float(val) for val in x_fraction]
 
 #PHƯƠNG PHÁP PHÂN RÃ LU
 def solve_lu(A, b):
@@ -75,7 +145,8 @@ def solve_gauss_seidel(A, b, tol=1e-6, max_iter=1000):
             
         # Bước 2: Kiểm tra điều kiện dừng (Sai số Euclid hoặc Max tuyệt đối)
         # Tính chuẩn L2 của (x_new - x_old)
-        error = manual_norm(np.array(x) - np.array(x_old))
+        diff = [(x[i] - x_old[i]) for i in range(n)]
+        error = manual_norm(diff)
         
         # Kiểm tra hội tụ mỗi vòng lặp, xem độ lệch gần bằng 0 hay chưa.
         if error < tol: 
