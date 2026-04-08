@@ -2247,20 +2247,6 @@ class SVDImageCompression(Scene):
         all_mobs = [m for m in self.mobjects]
         self.play(*[FadeOut(m) for m in all_mobs])
         self.wait(1)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 if __name__ == "__main__":
     import os
 
