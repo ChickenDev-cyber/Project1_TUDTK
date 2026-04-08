@@ -32,7 +32,7 @@ def back_substitution(U, c, r): # Thêm tham số r (rank)
     
     return x
 
-def gaussian_elimination(A, b, tol=1e-7):
+def gaussian_elimination(A, b, tol=1e-4):
     n = len(A)
     m = len(A[0])
 
@@ -46,15 +46,14 @@ def gaussian_elimination(A, b, tol=1e-7):
 
         p = r
         for i in range(r + 1, n):
-            # Cần ép về float để dùng hàm abs() cho an toàn
+            # Ép kiểu float để kiểm tra
             if abs(float(M[i][c_idx])) > abs(float(M[p][c_idx])):
                 p = i
 
-        # --- SỬA TẠI ĐÂY: Thêm bộ lọc sai số ---
-        # Nếu Pivot tìm được nhỏ hơn sai số, coi như cột này toàn số 0
+        # BỘ LỌC: Bất kỳ số nào bé hơn 1e-4 sẽ bị "bốc hơi" thành 0
         if abs(float(M[p][c_idx])) < tol:
             for i in range(r, n):
-                M[i][c_idx] = Fraction(0) # Ép về 0 tuyệt đối để tránh dội sai số
+                M[i][c_idx] = Fraction(0)
             continue
 
         if p != r:
@@ -72,7 +71,6 @@ def gaussian_elimination(A, b, tol=1e-7):
     U = [row[:m] for row in M]
     c_result = [row[m] for row in M]
 
-    # --- SỬA: Đưa tham số r vào hàm thế ngược để in thông báo ---
     x = back_substitution(U, c_result, r)
     
     return M, x, s
@@ -320,43 +318,74 @@ def SolveEigenFullFast(A):
         
         eigenvalues = eigen_list
     else: 
-        # Dùng hàm kiểm tra theo điều kiện của hàm
         eigenvalues = np.linalg.eigvals(A)
 
-        # Thay đoạn kiểm tra số phức:
+        # Kiểm tra số phức
         for i in range(n):
-            # Dùng thuộc tính .imag của Python thay cho np.iscomplex
             if abs(eigenvalues[i].imag) > 1e-9: 
                 print("Thất bại: Tồn tại giá trị riêng phức...")
                 return [], []
-            A_final[i][i] = float(eigenvalues[i].real)
-            
-            # Lấy phần thực và điền vào đường chéo
-            A_final[i][i] = float(eigenvalues[i].real)
 
-        # ĐIỀU KIỆN: Kiểm tra (nghiệm kép, defective)
+        # Kiểm tra ma trận khuyết
         if CheckDefective_Eigvals(A, eigenvalues):
             print("Thất bại: Ma trận nghiệm kép, không đủ không gian vector riêng.")
             return [], []
         
-    # Tìm P
-    unique_vals = sorted(list(set(round(val.real, 8) for val in eigenvalues)))
+    # TÌM P VÀ D ĐỒNG BỘ CÙNG MỘT LÚC
+    A_final = InitMatrix(n, n)
+    P_cols = []
+    col_idx = 0 # Biến theo dõi vị trí cột hiện tại
+    
+    # Sắp xếp trị riêng giảm dần để ma trận D trông đẹp mắt hơn
+    unique_vals = sorted(list(set(round(val.real, 6) for val in eigenvalues)), reverse=True)
+    
     for lam in unique_vals:
-        # Thay thế phép trừ NumPy bằng hàm tự viết
         A_minus_lamI = subtract_lambda_I(A, lam)
         res = rank_and_basis(A_minus_lamI)
+        
         for vec in res['null_basis']:
+            # 1. Thêm vector riêng vào làm cột của P
             P_cols.append([float(Fraction(v)) for v in vec])
+            
+            # 2. Ghi trị riêng lam vào đường chéo của D tại đúng cột đó
+            A_final[col_idx][col_idx] = float(lam)
+            col_idx += 1
 
     if len(P_cols) < n:
         print("Thất bại: Không đủ vector riêng.")
         return [], []
 
-    # Thay .T.tolist() bằng hàm transpose_manual
     P_matrix = transpose_list(P_cols)
 
     print("Ma trận có thể chéo hóa.")
     return A_final, P_matrix
+
+def verify_solution(A, D, P):
+    try:
+        A_np = np.array(A, dtype=float)
+        D_np = np.array(D, dtype=float)
+        P_np = np.array(P, dtype=float)
+        
+        # Tính ma trận nghịch đảo của P
+        P_inv = np.linalg.inv(P_np)
+        
+        # Tái tạo lại ma trận: A_reconstructed = P * D * P^(-1)
+        A_reconstructed = np.dot(np.dot(P_np, D_np), P_inv)
+        
+        # Kiểm tra sai số
+        if np.allclose(A_np, A_reconstructed, atol=1e-5):
+            print("KẾT QUẢ: THÀNH CÔNG")
+            print("Nhận xét: Kết quả thuật toán tự cài đặt chính xác. Ma trận tái tạo khớp với ma trận gốc.")
+        else:
+            print("KẾT QUẢ: CẢNH BÁO SAI SỐ")
+            sai_so = np.max(np.abs(A_np - A_reconstructed))
+            print(f"Nhận xét: Kết quả tái tạo bị lệch so với ma trận gốc. Độ lệch tối đa: {sai_so}")
+            
+    except np.linalg.LinAlgError:
+        print("KẾT QUẢ: LỖI TOÁN HỌC")
+        print("Chi tiết: Ma trận P không khả nghịch, không thể thực hiện kiểm chứng.")
+    except Exception as e:
+        print(f"KẾT QUẢ: LỖI HỆ THỐNG ({e})")
 
 if __name__ == "__main__":
     A = [
@@ -383,14 +412,14 @@ if __name__ == "__main__":
     #     [0,  0, 0,  0, 4,  5]
     # ]
 
-    # A = [
-    #     [4, 1, 0, 0, 0, 0],
-    #     [1, 4, 1, 0, 0, 0],
-    #     [0, 1, 4, 1, 0, 0],
-    #     [0, 0, 1, 4, 1, 0],
-    #     [0, 0, 0, 1, 4, 1],
-    #     [0, 0, 0, 0, 1, 4]
-    # ]
+    A = [
+        [4, 1, 0, 0, 0, 0],
+        [1, 4, 1, 0, 0, 0],
+        [0, 1, 4, 1, 0, 0],
+        [0, 0, 1, 4, 1, 0],
+        [0, 0, 0, 1, 4, 1],
+        [0, 0, 0, 0, 1, 4]
+    ]
 
     # A = [
     #     [2, 1, 0, 0, 0, 0],
@@ -407,6 +436,9 @@ if __name__ == "__main__":
     # Gọi hàm để lấy cả D và P
     D, P = SolveEigenFullFast(A)
     
+    # Gọi hàm để lấy cả D và P
+    D, P = SolveEigenFullFast(A)
+    
     if D and P:
         print("\nMa Trận chéo hóa (D):")
         for row in D:
@@ -414,5 +446,9 @@ if __name__ == "__main__":
             
         print("\nMa Trận vector riêng (P):")
         for row in P:
-            # Chỉ cần dòng này để in từng hàng của P
             print([round(v, 4) for v in row])
+            
+        # ĐƯA HÀM VERIFY VÀO ĐÂY (Bên trong khối if)
+        verify_solution(A, D, P)
+    else:
+        print("\n=> Không thể kiểm chứng vì quá trình chéo hóa thất bại.")
