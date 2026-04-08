@@ -157,20 +157,66 @@ def decomposite_SVD(A):
 
     return U, Sigma, V_T
 
-# Hàm main
+def verify_solution(A, U, Sigma, V_T):
+    print("KIỂM CHỨNG KẾT QUẢ PHÂN RÃ SVD BẰNG NUMPY")
+
+    try:
+        A_np = np.array(A, dtype=float)
+        U_np = np.array(U, dtype=float)
+        Sigma_np = np.array(Sigma, dtype=float)
+        VT_np = np.array(V_T, dtype=float)
+        
+        # Tái tạo lại ma trận: A_reconstructed = U * Sigma * V^T
+        A_reconstructed = np.dot(np.dot(U_np, Sigma_np), VT_np)
+        
+        # Kiểm tra sai số
+        if np.allclose(A_np, A_reconstructed, atol=1e-5):
+            print("KẾT QUẢ: THÀNH CÔNG")
+            print("Nhận xét: Thuật toán SVD tự cài đặt hoạt động chính xác. Ma trận tái tạo khớp với ma trận gốc.")
+        else:
+            print("KẾT QUẢ: CẢNH BÁO SAI SỐ")
+            sai_so = np.max(np.abs(A_np - A_reconstructed))
+            print(f"Nhận xét: Kết quả tái tạo SVD bị lệch. Độ lệch tối đa: {sai_so}")
+            
+    except Exception as e:
+        print(f"KẾT QUẢ: LỖI QUÁ TRÌNH KIỂM CHỨNG ({e})")
+
+#Kiểm thử
 if __name__ == "__main__":
-    print("Nhập vào không gian R^(n): ", end="")
-    n = int(input())
-    print("Nhập vào số vector: ", end="")
-    n_vector = int(input())
 
-    A = InitMatrix(n, n_vector)
-    for i in range(n):
-        print("Nhập vào vector thứ " + str(i + 1))
-        for j in range(n_vector):
-            print("Phần tử thứ " + str(j + 1) + ": ", end="")
-            A[i][j] = float(input()) 
+    # ============NHẬP VÀO TỪ BÀN PHÍM =========
+    # print("Nhập vào không gian R^(n): ", end="")
+    # n = int(input())
+    # print("Nhập vào số vector: ", end="")
+    # n_vector = int(input())
 
+    # A = InitMatrix(n, n_vector)
+    # for i in range(n):
+    #     print("Nhập vào vector thứ " + str(i + 1))
+    #     for j in range(n_vector):
+    #         print("Phần tử thứ " + str(j + 1) + ": ", end="")
+    #         A[i][j] = float(input()) 
+
+    # ===========NHẬP VÀO BẰNG CÁCH TỰ KHỞI TẠO==========
+    # A = [
+    #     [1, 1],
+    #     [0, 1],
+    #     [-1, 1]
+    # ]
+
+
+    A = [
+        [3, 2, 2],
+        [2, 3, -2]
+    ]
+
+    # A = [
+    #     [1, 2, 3],
+    #     [2, 4, 6],
+    #     [-1, -2, -3]
+    # ]
+    
+    # ========== XỬ LÝ ========
     print("\nMa trận A:")
     for i in A:
         print([round(val, 4) for val in i])
@@ -191,3 +237,6 @@ if __name__ == "__main__":
     print("\nMa trận V^(T):")
     for row in V_T:
         print([round(val, 4) for val in row])
+
+    # KIỂM CHỨNG
+    verify_solution(A, U, Sigma, V_T)

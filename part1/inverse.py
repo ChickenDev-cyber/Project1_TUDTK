@@ -1,9 +1,8 @@
 from fractions import Fraction
 from determinant import determinant
-
+import numpy as np
 
 def inverse(A):
-    
     n = len(A)
     assert all(len(row) == n for row in A), "inverse() chỉ áp dụng cho ma trận vuông!"
 
@@ -66,3 +65,54 @@ def inverse(A):
     A_inv = [[str(M[i][n + j]) for j in range(n)] for i in range(n)]
     return A_inv
 
+def verify_solution(A, A_inv):
+    """
+    Kiểm chứng kết quả bằng NumPy.
+    Kiểm tra tính chất A * A_inv = I.
+    """
+    if A_inv is None:
+        print("Khong co ma tran nghich dao de kiem chung.")
+        return
+    
+    try:
+        A_np = np.array(A, dtype=float)
+        # Chuyển đổi list string phân số sang numpy float
+        A_inv_np = np.array([[float(Fraction(val)) for val in row] for row in A_inv])
+        
+        # Kiểm tra tích A * A_inv có xấp xỉ ma trận đơn vị không [cite: 112]
+        result = np.dot(A_np, A_inv_np)
+        identity = np.eye(len(A))
+        
+        if np.allclose(result, identity, atol=1e-9):
+            print("Ket qua kiem chung: CHINH XAC (A * A^-1 = I)")
+        else:
+            print("Ket qua kiem chung: KHONG CHINH XAC")
+    except Exception as e:
+        print(f"Da xay ra loi khi kiem chung: {e}")
+
+#Kiểm thử
+if __name__ == "__main__":
+    def run_test(name, A):
+        print(f"\n=== {name} ===")
+        print(f"Ma tran A: {A}")
+        inv = inverse(A)
+        if inv:
+            print("Ma tran nghich dao A^-1:")
+            for row in inv:
+                print(row)
+        verify_solution(A, inv)
+
+    # Case 1: Ma trận 2x2 cơ bản
+    run_test("CASE 1: MA TRAN 2x2", [[4, 7], [2, 6]])
+
+    # Case 2: Ma trận 3x3
+    run_test("CASE 2: MA TRAN 3x3", [[1, 2, 3], [0, 1, 4], [5, 6, 0]])
+
+    # Case 3: Ma trận đơn vị (nghịch đảo là chính nó)
+    run_test("CASE 3: MA TRAN DON VI", [[1, 0], [0, 1]])
+
+    # Case 4: Ma trận suy biến (det = 0)
+    run_test("CASE 4: MA TRAN SUY BIEN", [[1, 2], [2, 4]])
+
+    # Case 5: Ma trận 1x1
+    run_test("CASE 5: MA TRAN 1x1", [[5]])
