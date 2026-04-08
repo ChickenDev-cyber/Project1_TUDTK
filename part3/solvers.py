@@ -1,4 +1,5 @@
 import numpy as np
+import math as mth
 
 # THÀNH VIÊN 1: PHƯƠNG PHÁP KHỬ GAUSS
 def solve_gauss(A, b):
@@ -41,6 +42,10 @@ def IsStrictlyDiagonallyDominant(A):
             return False
     return True
 
+# Tính độ lệch
+def manual_norm(vector):
+    return mth.sqrt(sum(v**2 for v in vector))
+
 # PHƯƠNG PHÁP LẶP GAUSS-SEIDEL
 def solve_gauss_seidel(A, b, tol=1e-6, max_iter=1000):
 
@@ -70,7 +75,7 @@ def solve_gauss_seidel(A, b, tol=1e-6, max_iter=1000):
             
         # Bước 2: Kiểm tra điều kiện dừng (Sai số Euclid hoặc Max tuyệt đối)
         # Tính chuẩn L2 của (x_new - x_old)
-        error = np.linalg.norm(np.array(x) - np.array(x_old))
+        error = manual_norm(np.array(x) - np.array(x_old))
         
         # Kiểm tra hội tụ mỗi vòng lặp, xem độ lệch gần bằng 0 hay chưa.
         if error < tol: 
