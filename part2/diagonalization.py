@@ -32,7 +32,7 @@ def back_substitution(U, c, r): # Thêm tham số r (rank)
     
     return x
 
-def gaussian_elimination(A, b):
+def gaussian_elimination(A, b, tol=1e-7):
     n = len(A)
     m = len(A[0])
 
@@ -46,10 +46,15 @@ def gaussian_elimination(A, b):
 
         p = r
         for i in range(r + 1, n):
-            if abs(M[i][c_idx]) > abs(M[p][c_idx]):
+            # Cần ép về float để dùng hàm abs() cho an toàn
+            if abs(float(M[i][c_idx])) > abs(float(M[p][c_idx])):
                 p = i
 
-        if M[p][c_idx] == 0:
+        # --- SỬA TẠI ĐÂY: Thêm bộ lọc sai số ---
+        # Nếu Pivot tìm được nhỏ hơn sai số, coi như cột này toàn số 0
+        if abs(float(M[p][c_idx])) < tol:
+            for i in range(r, n):
+                M[i][c_idx] = Fraction(0) # Ép về 0 tuyệt đối để tránh dội sai số
             continue
 
         if p != r:
@@ -201,6 +206,30 @@ def decomposite(A):
 
     return Q1, R1
 
+# Tạo ma trận đơn vị I
+def get_identity(n):
+    return [[1.0 if i == j else 0.0 for j in range(n)] for i in range(n)]
+
+# Ma trận A - lamda*I
+def subtract_lambda_I(A, lam):
+    n = len(A)
+    # Làm tròn trị riêng lam đến 10 chữ số để triệt tiêu sai số float
+    lam_clean = round(float(lam), 10) 
+    
+    Res = []
+    for i in range(n):
+        row = []
+        for j in range(n):
+            # Làm tròn kết quả phép trừ trước khi đưa vào hệ thống Fraction
+            val = float(A[i][j]) - (lam_clean if i == j else 0.0)
+            row.append(round(val, 10)) 
+        Res.append(row)
+    return Res
+
+# Chuyển vị ma trận P_cols (thay cho .T)
+def transpose_list(M):
+    return [[M[j][i] for j in range(len(M))] for i in range(len(M[0]))]
+
 # --- BỔ SUNG CHÉO HÓA ---
 def MultiplyMatrix(A, B): #Nhân 2 Ma Trận
     n = len(A)
@@ -221,18 +250,35 @@ def CheckConvergence(A, sai_so=1e-4):
                 return False
     return True
 
-def CheckDefective1(A, sai_so=1e-6):
+def CheckDefective_QR(A, sai_so=1e-6):
     n = len(A)
-    # Lấy các giá trị trên đường chéo
     gia_tri_rieng = [A[i][i] for i in range(n)]
     
     for i in range(n):
         for j in range(i + 1, n):
-            # Nếu 2 giá trị riêng bằng nhau (nghiệm kép)
-            if abs(gia_tri_rieng[i] - gia_tri_rieng[j]) < sai_so: #
-                # Kiểm tra phần tử nằm phía trên có khác 0 không
-                if abs(A[i][j]) > sai_so: #Tồn tại lamda xuất hiện n lần (n>2) và sai số khác 0 thì không chéo hóa được.
+            if abs(gia_tri_rieng[i] - gia_tri_rieng[j]) < sai_so: 
+                if abs(A[i][j]) > sai_so: 
                     return True
+    return False
+
+def CheckDefective_Eigvals(A, eigenvalues, sai_so=1e-6):
+    n = len(A)
+    # Làm tròn trị riêng để gom nhóm chính xác
+    rounded_eigs = [round(float(val.real), 8) for val in eigenvalues]
+    unique_vals = sorted(list(set(rounded_eigs)))
+    
+    for lamda in unique_vals:
+        AM = rounded_eigs.count(lamda) # Số bội đại số
+        
+        if AM > 1:
+            # subtract_lambda_I đã được xử lý làm tròn ở vòng trước
+            A_minus_lamdaI = subtract_lambda_I(A, lamda)
+            res_temp = rank_and_basis(A_minus_lamdaI)
+            rank = res_temp['rank']
+            GM = n - rank 
+            
+            if GM < AM:
+                return True
     return False
 
 def QR_Loop(A, iterations=100):
@@ -248,36 +294,12 @@ def QR_Loop(A, iterations=100):
         print("Thất bại: Ma trận có giá trị riêng là số phức")
         return [] 
         
-    if CheckDefective1(A_k):
+    if CheckDefective_QR(A_k):
         print("Thất bại: Tồn tại nghiệm kép, có thể nói là ko đủ không gian")
         return []
         
     print("Ma trận chéo hóa hợp lệ trên tập số thực.")
     return A_k
-
-#---Kiểm tra xem đủ vecto riêng không---
-def CheckDefective(A, eigenvalues, sai_so=1e-6):
-    n = len(A)
-    A_np = np.array(A)
-    
-    # Lấy danh sách các trị riêng duy nhất kiểm tra
-    unique_eigenvalues = np.unique(np.round(eigenvalues, 8)) 
-    
-    for lamda in unique_eigenvalues:
-        #  Đếm xem lamda xuất hiện mấy lần trong eigenvalues (số bội)
-        AM = np.sum(np.isclose(eigenvalues, lamda, atol=sai_so))
-        
-        if AM > 1: # Chỉ cần kiểm tra nếu là nghiệm kép/bội
-            # Tính ma trận (A - lamda*I)
-            A_minus_lamdaI = A_np - lamda * np.eye(n)
-            
-            # So vecto rieng (hay so nghiem tu do la) = n - hạng của ma trận (A - lamda*I)
-            rank = np.linalg.matrix_rank(A_minus_lamdaI, tol=sai_so)
-            GM = n - rank
-            
-            if GM < AM:
-                return True # không đủ vecto riêng tương ứng trị riêng
-    return False
 
 
 def SolveEigenFullFast(A):
@@ -301,52 +323,83 @@ def SolveEigenFullFast(A):
         # Dùng hàm kiểm tra theo điều kiện của hàm
         eigenvalues = np.linalg.eigvals(A)
 
+        # Thay đoạn kiểm tra số phức:
         for i in range(n):
-            # ĐIỀU KIỆN: Kiểm tra nếu là số phức
-            if np.iscomplex(eigenvalues[i]):
-                print("Thất bại: Tồn tại giá trị riêng phức => Là không có thể tạo chéo hóa")
+            # Dùng thuộc tính .imag của Python thay cho np.iscomplex
+            if abs(eigenvalues[i].imag) > 1e-9: 
+                print("Thất bại: Tồn tại giá trị riêng phức...")
                 return [], []
+            A_final[i][i] = float(eigenvalues[i].real)
             
             # Lấy phần thực và điền vào đường chéo
             A_final[i][i] = float(eigenvalues[i].real)
 
         # ĐIỀU KIỆN: Kiểm tra (nghiệm kép, defective)
-        if CheckDefective(A, eigenvalues):
+        if CheckDefective_Eigvals(A, eigenvalues):
             print("Thất bại: Ma trận nghiệm kép, không đủ không gian vector riêng.")
             return [], []
         
     # Tìm P
-    unique_vals = np.unique(np.round(eigenvalues, 8))
+    unique_vals = sorted(list(set(round(val.real, 8) for val in eigenvalues)))
     for lam in unique_vals:
-        A_minus_lamI = (np.array(A) - lam * np.eye(n)).tolist()
+        # Thay thế phép trừ NumPy bằng hàm tự viết
+        A_minus_lamI = subtract_lambda_I(A, lam)
         res = rank_and_basis(A_minus_lamI)
         for vec in res['null_basis']:
             P_cols.append([float(Fraction(v)) for v in vec])
 
     if len(P_cols) < n:
-        print("Thất bại: Không đủ vector riêng độc lập tuyến tính.")
+        print("Thất bại: Không đủ vector riêng.")
         return [], []
 
-    P_matrix = np.array(P_cols).T.tolist()
+    # Thay .T.tolist() bằng hàm transpose_manual
+    P_matrix = transpose_list(P_cols)
 
     print("Ma trận có thể chéo hóa.")
     return A_final, P_matrix
 
 if __name__ == "__main__":
-    # A = [
-    #     [1, 3, 3],
-    #     [-3, -5, -3],
-    #     [3, 3, 1]
-    # ]
+    A = [
+        [1, 3, 3],
+        [-3, -5, -3],
+        [3, 3, 1]
+    ]
 
     # A = [[3, 1, 0], 
     #      [0, 3, 0], 
     #      [0, 0, 5]]
 
-    A = [
-        [3, -2],
-        [4, -1]
-    ]
+    # A = [
+    #     [3, -2],
+    #     [4, -1]
+    # ]
+
+    # A = [
+    #     [0, -2, 0, 0, 0, 0],
+    #     [2,  0, 0, 0, 0, 0],
+    #     [0,  0, 1, -3, 0, 0],
+    #     [0,  0, 3,  1, 0, 0],
+    #     [0,  0, 0,  0, 5, -4],
+    #     [0,  0, 0,  0, 4,  5]
+    # ]
+
+    # A = [
+    #     [4, 1, 0, 0, 0, 0],
+    #     [1, 4, 1, 0, 0, 0],
+    #     [0, 1, 4, 1, 0, 0],
+    #     [0, 0, 1, 4, 1, 0],
+    #     [0, 0, 0, 1, 4, 1],
+    #     [0, 0, 0, 0, 1, 4]
+    # ]
+
+    # A = [
+    #     [2, 1, 0, 0, 0, 0],
+    #     [1, 2, 1, 0, 0, 0],
+    #     [0, 1, 2, 1, 0, 0],
+    #     [0, 0, 1, 2, 1, 0],
+    #     [0, 0, 0, 1, 2, 1],
+    #     [0, 0, 0, 0, 1, 2]
+    # ]
 
     print("Ma trận ban đầu:")
     for row in A: print([round(val, 4) for val in row])
