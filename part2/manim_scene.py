@@ -2011,7 +2011,39 @@ class SVDImageCompression(Scene):
         self.play(*[FadeOut(m) for m in all_mobs])
         self.wait(1)
 
+# Đoạn video số 8
+class VideoOutro(Scene):
+    def construct(self):
+        # Background: Công thức SVD mờ, liên tục phóng to chầm chậm
+        svd_eq = MathTex("A = U \\Sigma V^T", font_size=160, color=BLUE).set_opacity(0.1)
+        self.add(svd_eq)
+        
+        thanks_text = Text("XIN CẢM ƠN!", font_size=90, weight=BOLD, font="sans-serif").set_color_by_gradient(ORANGE, YELLOW)
+        
+        self.play(
+            svd_eq.animate.scale(1.2), 
+            FadeIn(thanks_text, shift=DOWN), 
+            run_time=1.0
+        )
+        
+        sub_text = Text("đã quan tâm theo dõi và lắng nghe", font_size=32, color=LIGHT_GREY, font="sans-serif")
+        sub_text.next_to(thanks_text, DOWN, buff=0.5)
+        
+        flash = Flash(thanks_text, color=YELLOW, line_length=1.5, num_lines=15, flash_radius=3.5)
+        
+        self.play(
+            FadeIn(sub_text, shift=UP * 0.5), 
+            flash,
+            run_time=1.0
+        )
+        
+        self.wait(1.5)
 
+        self.play(
+            FadeOut(VGroup(thanks_text, sub_text), scale=0.1),
+            FadeOut(svd_eq, scale=0.1),
+            run_time=0.5
+        )
 
 
 
@@ -2032,7 +2064,8 @@ if __name__ == "__main__":
         "SVDAndDiagonalization", 
         "SVDDecompositionVisual",
         "LowRankTheory",
-        "SVDImageCompression"
+        "SVDImageCompression",
+        "VideoOutro"
     ]
 
     print("BẮT ĐẦU QUÁ TRÌNH TỰ ĐỘNG HÓA MANIM...")
