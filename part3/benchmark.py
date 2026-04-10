@@ -69,9 +69,8 @@ def run_experiment(solver_func, A, b, num_runs=5):
     avg_time = total_time / num_runs
     
     # Nếu hàm giải bị lỗi trả về mảng rỗng (ví dụ Gauss-Seidel không hội tụ)
-    if not x_hat: 
+    if x_hat is None or len(x_hat) == 0:
         x_hat = [0.0] * len(b)
-        
     # Bước 1: Tính vector Ax = A * x_hat
     Ax = mat_vec_mult(A, x_hat)
     
@@ -169,7 +168,7 @@ if __name__ == "__main__":
 
     my_solvers = {
         'Gauss': sv.solve_gauss,
-        # 'LU': sv.lu_solver,
+        'LU': sv.solve_lu,
         'Gauss-Seidel': sv.solve_gauss_seidel
     }
 
