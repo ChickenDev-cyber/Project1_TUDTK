@@ -95,18 +95,48 @@ def solve_gauss(A, b):
 
 #PHƯƠNG PHÁP PHÂN RÃ LU
 def solve_lu(A, b):
-    """
-    Giải hệ Ax = b bằng phân rã LU.
-    """
-    # Bước 1: Phân rã A thành L và U
-    # ... Code tìm L, U ...
+    A = [[float(val) for val in row] for row in A]
+    b = [float(val) for val in b]
     
-    # Bước 2: Giải Ly = b (Thế tiến)
-    # ...
-    
-    # Bước 3: Giải Ux = y (Thế lùi)
-    # ...
-    # return x
+    n = len(A)
+    L = [[0.0] * n for _ in range(n)]
+    U = [[0.0] * n for _ in range(n)]
+    # 2. Phân rã LU
+    for i in range(n):
+        # Tính U[i][k]
+        for k in range(i, n):
+            # Tính sum(L[i][j] * U[j][k]) bằng vòng lặp thuần
+            sum_lu = 0.0
+            for j in range(i):
+                sum_lu += L[i][j] * U[j][k]
+            U[i][k] = A[i][k] - sum_lu
+
+        # Tính L[k][i]
+        for k in range(i + 1, n):
+            sum_lu = 0.0
+            for j in range(i):
+                sum_lu += L[k][j] * U[j][i]
+            
+            if abs(U[i][i]) < 1e-12: return [] # Tránh chia cho 0
+            L[k][i] = (A[k][i] - sum_lu) / U[i][i]
+
+    # 3. Thế tiến: Ly = b
+    y = [0.0] * n
+    for i in range(n):
+        sum_ly = 0.0
+        for j in range(i):
+            sum_ly += L[i][j] * y[j]
+        y[i] = b[i] - sum_ly
+
+    # 4. Thế lùi: Ux = y
+    x = [0.0] * n
+    for i in range(n - 1, -1, -1):
+        sum_ux = 0.0
+        for j in range(i + 1, n):
+            sum_ux += U[i][j] * x[j]
+        x[i] = (y[i] - sum_ux) / U[i][i]
+
+    return x
 
 # Kiểm tra ma trận chéo trội
 def IsStrictlyDiagonallyDominant(A):
@@ -162,12 +192,12 @@ def solve_gauss_seidel(A, b, tol=1e-6, max_iter=1000):
     return x
 
 if __name__ == "__main__":
-    A_test = np.array([
+    A_test = [
         [4.0, -1.0,  0.0],
         [-1.0, 4.0, -1.0],
         [ 0.0, -1.0, 4.0]
-    ])
-    b_test = np.array([3.0, 2.0, 3.0])
+    ]
+    b_test = [3.0, 2.0, 3.0]
     
     print("Nghiệm kỳ vọng (Lý thuyết): [1. 1. 1.]\n")
 
