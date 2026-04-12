@@ -20,7 +20,7 @@ def rank_and_basis(A):
         
     col_basis = []
     for _, j in pivot_indices:
-        col_basis.append([str(M[i][j]) for i in range(n_rows)])
+        col_basis.append([str(A[i][j]) for i in range(n_rows)])
     
     null_basis = []
     if rank < n_cols:
