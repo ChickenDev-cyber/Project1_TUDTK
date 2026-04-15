@@ -2,18 +2,15 @@ import math as mth
 import numpy as np
 from fractions import Fraction
 
-#--- Sử dụng từ Part1 để tìm ma trận P ---
 def back_substitution(U, c, r): # Thêm tham số r (rank) 
     n_rows = len(U)
     n_cols = len(U[0])
     
-    # --- SỬA: Kiểm tra Vô nghiệm trước ---
     for i in range(r, n_rows):
         if c[i] != 0:
             print("He phuong trinh Vo nghiem.")
             return None
             
-    # --- SỬA: Sau khi chac chan co nghiem, moi kiem tra Vo so nghiem ---
     if r < n_cols:
         return None
     
@@ -50,7 +47,7 @@ def gaussian_elimination(A, b, tol=1e-4):
             if abs(float(M[i][c_idx])) > abs(float(M[p][c_idx])):
                 p = i
 
-        # BỘ LỌC: Bất kỳ số nào bé hơn 1e-4 sẽ bị "bốc hơi" thành 0
+        # Bất kỳ số nào bé hơn 1e-4 sẽ bị "bốc hơi" thành 0
         if abs(float(M[p][c_idx])) < tol:
             for i in range(r, n):
                 M[i][c_idx] = Fraction(0)
@@ -211,24 +208,20 @@ def get_identity(n):
 # Ma trận A - lamda*I
 def subtract_lambda_I(A, lam):
     n = len(A)
-    # Làm tròn trị riêng lam đến 10 chữ số để triệt tiêu sai số float
     lam_clean = round(float(lam), 10) 
     
     Res = []
     for i in range(n):
         row = []
         for j in range(n):
-            # Làm tròn kết quả phép trừ trước khi đưa vào hệ thống Fraction
             val = float(A[i][j]) - (lam_clean if i == j else 0.0)
             row.append(round(val, 10)) 
         Res.append(row)
     return Res
 
-# Chuyển vị ma trận P_cols (thay cho .T)
 def transpose_list(M):
     return [[M[j][i] for j in range(len(M))] for i in range(len(M[0]))]
 
-# --- BỔ SUNG CHÉO HÓA ---
 def MultiplyMatrix(A, B): #Nhân 2 Ma Trận
     n = len(A)
     m = len(B[0])
@@ -331,12 +324,10 @@ def SolveEigenFullFast(A):
             print("Thất bại: Ma trận nghiệm kép, không đủ không gian vector riêng.")
             return [], []
         
-    # TÌM P VÀ D ĐỒNG BỘ CÙNG MỘT LÚC
     A_final = InitMatrix(n, n)
     P_cols = []
-    col_idx = 0 # Biến theo dõi vị trí cột hiện tại
+    col_idx = 0 
     
-    # Sắp xếp trị riêng giảm dần để ma trận D trông đẹp mắt hơn
     unique_vals = sorted(list(set(round(val.real, 6) for val in eigenvalues)), reverse=True)
     
     for lam in unique_vals:
