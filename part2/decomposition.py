@@ -22,7 +22,7 @@ def InitMatrix(n, m):
         Res.append(row_zeros)
     return Res
 
-# HÀM A^(T) MA TRẬN PHỤ TRỢ
+# HÀM A^(T)
 def TransposeMatrix(A):
     n = len(A)
     m = len(A[0])
@@ -103,7 +103,7 @@ def JacobiEigen(M, num0=1e-9, max_iter=100):
         
     return eigenvalues, V
 
-# PHÂN RÃ SVD (Sử dụng Reduced SVD)
+# PHÂN RÃ SVD 
 def decomposite_SVD(A):
     n = len(A)      # số hàng
     m = len(A[0])   # số cột
@@ -119,7 +119,6 @@ def decomposite_SVD(A):
     for i in range(len(eigenvalues)):
         for j in range(i + 1, len(eigenvalues)):
             if eigenvalues[i] < eigenvalues[j]:
-                # Swap Trị riêng (Dùng cú pháp Pythonic mà ta đã bàn)
                 eigenvalues[i], eigenvalues[j] = eigenvalues[j], eigenvalues[i]
                 # Swap Cột của V
                 for row in range(len(V)):
@@ -130,11 +129,9 @@ def decomposite_SVD(A):
     U = InitMatrix(n, m)
 
     for j in range(m):
-        # Trị riêng có thể bị âm rất nhỏ do sai số số học (VD: -0.00000001), ép về 0
         if eigenvalues[j] < 0:
             eigenvalues[j] = 0.0
             
-        # Giá trị kỳ dị (Singular Value) = căn bậc 2 của Trị riêng
         sigma_val = mth.sqrt(eigenvalues[j])
         Sigma[j][j] = sigma_val
 
@@ -166,7 +163,6 @@ def verify_solution(A, U, Sigma, V_T):
         Sigma_np = np.array(Sigma, dtype=float)
         VT_np = np.array(V_T, dtype=float)
         
-        # Tái tạo lại ma trận: A_reconstructed = U * Sigma * V^T
         A_reconstructed = np.dot(np.dot(U_np, Sigma_np), VT_np)
         
         # Kiểm tra sai số
@@ -181,7 +177,6 @@ def verify_solution(A, U, Sigma, V_T):
     except Exception as e:
         print(f"KẾT QUẢ: LỖI QUÁ TRÌNH KIỂM CHỨNG ({e})")
 
-#Kiểm thử
 if __name__ == "__main__":
 
     # ============NHẬP VÀO TỪ BÀN PHÍM =========
