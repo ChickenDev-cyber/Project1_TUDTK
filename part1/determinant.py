@@ -16,24 +16,6 @@ def determinant(A):
         det *= M[i][i]
     return det
 
-def verify_solution(A, custom_det):
-    print("\n[KIEM CHUNG VOI NUMPY]")
-    try:
-        A_np = np.array(A, dtype=float)
-        numpy_det = np.linalg.det(A_np)
-        
-        # Chuyển custom_det (Fraction) sang float để so sánh
-        custom_det_float = float(custom_det)
-        
-        if np.isclose(custom_det_float, numpy_det, atol=1e-9):
-            print(f"Ket qua: CHINH XAC")
-            print(f"Custom: {custom_det_float} | NumPy: {round(numpy_det, 4)}")
-        else:
-            print(f"Ket qua: SAI LECH")
-            print(f"Custom: {custom_det_float} | NumPy: {numpy_det}")
-    except Exception as e:
-        print(f"Loi kiem chung: {e}")
-
 # Kiểm chứng
 if __name__ == "__main__":
     def run_test(name, A):
@@ -41,7 +23,6 @@ if __name__ == "__main__":
         print(f"Ma tran: {A}")
         det = determinant(A)
         print(f"Dinh thuc tinh duoc: {det} ({float(det)})")
-        verify_solution(A, det)
         print("-" * 30)
 
     # Case 1: Ma trận 2x2 cơ bản

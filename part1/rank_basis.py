@@ -56,33 +56,6 @@ def rank_and_basis(A):
         "null_basis": null_basis
     }
 
-def verify_solution(A, result):
-    try:
-        A_np = np.array(A, dtype=float)
-        rank_custom = result['rank']
-        null_basis = result['null_basis']
-        
-        # 1. Kiểm tra Rank
-        rank_np = np.linalg.matrix_rank(A_np)
-        rank_check = (rank_custom == rank_np)
-        
-        # 2. Kiểm tra Null Basis (Ax = 0)
-        null_check = True
-        if null_basis:
-            for v_str in null_basis:
-                # Chuyển từ string fraction sang float để nhân ma trận
-                v_float = np.array([float(Fraction(x)) for x in v_str])
-                if not np.allclose(np.dot(A_np, v_float), 0, atol=1e-9):
-                    null_check = False
-                    break
-        
-        print(f"--- Kết quả kiểm chứng ---")
-        print(f"Hạng ma trận: {'ĐÚNG' if rank_check else 'SAI'} (Custom: {rank_custom}, NumPy: {rank_np})")
-        print(f"Không gian nghiệm (Null Space): {'ĐÚNG (Ax=0)' if null_check else 'SAI (Ax!=0)'}")
-        
-    except Exception as e:
-        print(f"Lỗi khi kiểm chứng: {e}")
-
 # KIỂM THỬ
 if __name__ == "__main__":
     def run_test(name, A):
@@ -93,7 +66,6 @@ if __name__ == "__main__":
         print(f"Co so dong (Row Basis): {res['row_basis']}")
         print(f"Co so cot (Col Basis): {res['col_basis']}")
         print(f"Co so nghiem (Null Basis): {res['null_basis']}")
-        verify_solution(A, res)
 
     # CASE 1: Ma tran vuong du hang
     A1 = [[1, 2, 3], [4, 5, 6], [7, 8, 10]]

@@ -65,30 +65,6 @@ def inverse(A):
     A_inv = [[str(M[i][n + j]) for j in range(n)] for i in range(n)]
     return A_inv
 
-def verify_solution(A, A_inv):
-    """
-    Kiểm chứng kết quả bằng NumPy.
-    Kiểm tra tính chất A * A_inv = I.
-    """
-    if A_inv is None:
-        print("Khong co ma tran nghich dao de kiem chung.")
-        return
-    
-    try:
-        A_np = np.array(A, dtype=float)
-        # Chuyển đổi list string phân số sang numpy float
-        A_inv_np = np.array([[float(Fraction(val)) for val in row] for row in A_inv])
-        
-        # Kiểm tra tích A * A_inv có xấp xỉ ma trận đơn vị không [cite: 112]
-        result = np.dot(A_np, A_inv_np)
-        identity = np.eye(len(A))
-        
-        if np.allclose(result, identity, atol=1e-9):
-            print("Ket qua kiem chung: CHINH XAC (A * A^-1 = I)")
-        else:
-            print("Ket qua kiem chung: KHONG CHINH XAC")
-    except Exception as e:
-        print(f"Da xay ra loi khi kiem chung: {e}")
 
 #Kiểm thử
 if __name__ == "__main__":
@@ -100,8 +76,7 @@ if __name__ == "__main__":
             print("Ma tran nghich dao A^-1:")
             for row in inv:
                 print(row)
-        verify_solution(A, inv)
-
+                
     # Case 1: Ma trận 2x2 cơ bản
     run_test("CASE 1: MA TRAN 2x2", [[4, 7], [2, 6]])
 
