@@ -88,3 +88,4 @@ def verify_solution(A, x, b):
             
     except Exception as e:
         print(f"Da xay ra loi khi kiem chung nghiem: {e}")
+        
