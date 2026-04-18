@@ -154,84 +154,71 @@ def decomposite_SVD(A):
 
     return U, Sigma, V_T
 
-def verify_solution(A, U, Sigma, V_T):
-    print("KIỂM CHỨNG KẾT QUẢ PHÂN RÃ SVD BẰNG NUMPY")
+def run_test(name, A):
+    import numpy as np
+    
+    print(f"\n=== {name} ===")
+    print("Ma tran A:")
+    for row in A: 
+        print(row)
+        
+    # Thuc hien phan ra SVD
+    U, Sigma, V_T = decomposite_SVD(A)
+    
+    print("Ma tran U:")
+    for row in U: 
+        print([round(val, 4) for val in row])
+        
+    print("Ma tran Sigma:")
+    for row in Sigma: 
+        print([round(val, 4) for val in row])
+        
+    print("Ma tran V^T:")
+    for row in V_T: 
+        print([round(val, 4) for val in row])
 
+    # Kiem chung voi Numpy
+    print("--- Kiem chung Numpy ---")
     try:
         A_np = np.array(A, dtype=float)
         U_np = np.array(U, dtype=float)
         Sigma_np = np.array(Sigma, dtype=float)
         VT_np = np.array(V_T, dtype=float)
-        
+
+        # Tinh U * Sigma * V^T
         A_reconstructed = np.dot(np.dot(U_np, Sigma_np), VT_np)
-        
-        # Kiểm tra sai số
+
         if np.allclose(A_np, A_reconstructed, atol=1e-5):
-            print("KẾT QUẢ: THÀNH CÔNG")
-            print("Nhận xét: Thuật toán SVD tự cài đặt hoạt động chính xác. Ma trận tái tạo khớp với ma trận gốc.")
+            print("SVD: Thanh cong (A = U * Sigma * V^T)")
         else:
-            print("KẾT QUẢ: CẢNH BÁO SAI SỐ")
-            sai_so = np.max(np.abs(A_np - A_reconstructed))
-            print(f"Nhận xét: Kết quả tái tạo SVD bị lệch. Độ lệch tối đa: {sai_so}")
-            
+            print("SVD: That bai (Ket qua tai tao bi lech)")
+            print(f"Do lech toi da: {np.max(np.abs(A_np - A_reconstructed))}")
     except Exception as e:
-        print(f"KẾT QUẢ: LỖI QUÁ TRÌNH KIỂM CHỨNG ({e})")
+        print(f"SVD: That bai (Loi kiem chung: {e})")
 
 if __name__ == "__main__":
+    # Case 1: Ma tran 2x2 co ban
+    run_test("CASE 1: MA TRAN 2x2", [[4, 7], [2, 6]])
 
-    # ============NHẬP VÀO TỪ BÀN PHÍM =========
-    # print("Nhập vào không gian R^(n): ", end="")
-    # n = int(input())
-    # print("Nhập vào số vector: ", end="")
-    # n_vector = int(input())
+    # Case 2: Ma tran 3x2 (So hang > So cot)
+    run_test("CASE 2: MA TRAN 3x2", [
+        [1, 1], 
+        [0, 1], 
+        [-1, 1]
+    ])
 
-    # A = InitMatrix(n, n_vector)
-    # for i in range(n):
-    #     print("Nhập vào vector thứ " + str(i + 1))
-    #     for j in range(n_vector):
-    #         print("Phần tử thứ " + str(j + 1) + ": ", end="")
-    #         A[i][j] = float(input()) 
-
-    # ===========NHẬP VÀO BẰNG CÁCH TỰ KHỞI TẠO==========
-    # A = [
-    #     [1, 1],
-    #     [0, 1],
-    #     [-1, 1]
-    # ]
-
-
-    A = [
-        [3, 2, 2],
+    # Case 3: Ma tran 2x3 (So hang < So cot)
+    run_test("CASE 3: MA TRAN 2x3", [
+        [3, 2, 2], 
         [2, 3, -2]
-    ]
+    ])
 
-    # A = [
-    #     [1, 2, 3],
-    #     [2, 4, 6],
-    #     [-1, -2, -3]
-    # ]
-    
-    # ========== XỬ LÝ ========
-    print("\nMa trận A:")
-    for i in A:
-        print([round(val, 4) for val in i])
+    # Case 4: Ma tran suy bien (Cac hang ti le voi nhau)
+    run_test("CASE 4: MA TRAN SUY BIEN", [
+        [1, 2, 3], 
+        [2, 4, 6], 
+        [-1, -2, -3]
+    ])
 
-    # PHÂN RÃ
-    U, Sigma, V_T = decomposite_SVD(A)
-
-    print("\n--- PHÂN RÃ SVD (A = U * Sigma * V^T) ---")
-
-    print("\nMa trận U:")
-    for row in U:
-        print([round(val, 4) for val in row])
-
-    print("\nMa trận Sigma:")
-    for row in Sigma:
-        print([round(val, 4) for val in row])
-
-    print("\nMa trận V^(T):")
-    for row in V_T:
-        print([round(val, 4) for val in row])
-
-    # KIỂM CHỨNG
-    verify_solution(A, U, Sigma, V_T)
+    # Case 5: Ma tran 1x1
+    run_test("CASE 5: MA TRAN 1x1", [[5]])

@@ -191,33 +191,139 @@ def solve_gauss_seidel(A, b, tol=1e-6, max_iter=1000):
     print("Gauss-Seidel: Không hội tụ sau số lần lặp tối đa.")
     return x
 
+def verify_solution(A, b, x, method_name):
+    """
+    Kiểm chứng nghiệm x bằng cách tính Ax và so sánh với b.
+    """
+    if not x:
+        print(f"   [{method_name}] KIỂM CHỨNG: BỎ QUA (Không có nghiệm hợp lệ)")
+        return
+
+    try:
+        A_np = np.array(A, dtype=float)
+        b_np = np.array(b, dtype=float)
+        x_np = np.array(x, dtype=float)
+        
+        # Tái tạo b: Ax = b_reconstructed
+        b_reconstructed = np.dot(A_np, x_np)
+        
+        # Kiểm tra sai số
+        if np.allclose(b_np, b_reconstructed, atol=1e-4):
+            print(f"   [{method_name}] KIỂM CHỨNG: THÀNH CÔNG (Ax ≈ b)")
+        else:
+            sai_so = np.max(np.abs(b_np - b_reconstructed))
+            print(f"   [{method_name}] KIỂM CHỨNG: CẢNH BÁO SAI SỐ (Độ lệch tối đa: {sai_so:.2e})")
+            
+    except Exception as e:
+        print(f"   [{method_name}] KIỂM CHỨNG: LỖI TOÁN HỌC ({e})")
+
+
+def run_tests(test_cases):
+    """
+    Hàm chạy kiểm thử hàng loạt các hệ phương trình
+    """
+    for idx, test in enumerate(test_cases, 1):
+        A = test['A']
+        b = test['b']
+        
+        print("=" * 65)
+        print(f"TEST CASE {idx}: {test.get('name', 'Không tên')}")
+        print("Ma trận hệ số (A):")
+        for row in A:
+            print(f"  {[round(val, 4) for val in row]}")
+        print(f"Vector hằng số (b): {b}")
+        print("-" * 65)
+
+        # --- 1. PHƯƠNG PHÁP KHỬ GAUSS ---
+        print("1. Phương pháp Khử Gauss:")
+        try:
+            # Truyền bản sao của A và b để tránh làm thay đổi ma trận gốc
+            x_gauss = solve_gauss([row[:] for row in A], b[:])
+            if x_gauss:
+                print("   Nghiệm:", [round(val, 5) for val in x_gauss])
+            verify_solution(A, b, x_gauss, "Gauss")
+        except Exception as e:
+            print(f"   [Gauss] LỖI: {e}")
+
+        print()
+
+        # --- 2. PHƯƠNG PHÁP LU ---
+        print("2. Phương pháp Phân rã LU:")
+        try:
+            x_lu = solve_lu([row[:] for row in A], b[:])
+            if x_lu:
+                print("   Nghiệm:", [round(val, 5) for val in x_lu])
+            verify_solution(A, b, x_lu, "LU")
+        except Exception as e:
+            print(f"   [LU] LỖI: {e}")
+
+        print()
+
+        # --- 3. PHƯƠNG PHÁP GAUSS-SEIDEL ---
+        print("3. Phương pháp Gauss-Seidel:")
+        try:
+            if not IsStrictlyDiagonallyDominant(A):
+                print("   [!] Cảnh báo: Ma trận không chéo trội ngặt, có thể hội tụ chậm hoặc phân kỳ.")
+            
+            x_gs = solve_gauss_seidel([row[:] for row in A], b[:])
+            if x_gs:
+                print("   Nghiệm:", [round(val, 5) for val in x_gs])
+            verify_solution(A, b, x_gs, "Gauss-Seidel")
+        except Exception as e:
+            print(f"   [Gauss-Seidel] LỖI: {e}")
+
+        print("=" * 65 + "\n")
+
+
 if __name__ == "__main__":
-    A_test = [
-        [4.0, -1.0,  0.0],
-        [-1.0, 4.0, -1.0],
-        [ 0.0, -1.0, 4.0]
+    test_cases = [
+        {
+            "name": "TEST 1: Hệ 3x3 Chéo trội ngặt",
+            "A": [
+                [4.0,  1.0, -1.0],
+                [1.0,  5.0,  2.0],
+                [-1.0, 1.0,  6.0]
+            ],
+            "b": [1.0, 0.0, 10.0]
+        },
+        {
+            "name": "TEST 2: Hệ 4x4 Chéo trội ngặt ",
+            "A": [
+                [10.0, -1.0,  2.0,  0.0],
+                [-1.0, 11.0, -1.0,  3.0],
+                [ 2.0, -1.0, 10.0, -1.0],
+                [ 0.0,  3.0, -1.0,  8.0]
+            ],
+            "b": [14.0, 30.0, 26.0, 35.0]
+        },
+        {
+            "name": "TEST 3: Hệ 3x3 KHÔNG chéo trội (Gauss-Seidel phân kỳ/thất bại, Gauss & LU giải tốt)",
+            "A": [
+                [1.0, 4.0, 1.0],
+                [2.0, 1.0, 3.0],
+                [3.0, 2.0, 1.0]
+            ],
+            "b": [5.0, 2.0, 7.0]
+        },
+        {
+            "name": "TEST 4: Hệ 3x3 Số thập phân lẻ (Kiểm tra sai số dấu phẩy động)",
+            "A": [
+                [2.5, 0.5, 1.0],
+                [0.2, 3.5, 0.8],
+                [0.1, 0.3, 4.2]
+            ],
+            "b": [2.5, -0.45, 6.2]
+        },
+        {
+            "name": "TEST 5: Phần tử đầu tiên trên đường chéo bằng 0 (LU sẽ lỗi, Gauss có pivoting sẽ sống)",
+            "A": [
+                [0.0, 2.0, 3.0],
+                [4.0, 5.0, 6.0],
+                [7.0, 8.0, 0.0]
+            ],
+            "b": [13.0, 32.0, 23.0]
+        }
     ]
-    b_test = [3.0, 2.0, 3.0]
-    
-    print("Nghiệm kỳ vọng (Lý thuyết): [1. 1. 1.]\n")
 
-    # KHỬ GAUSS
-    try:
-        x_gauss = solve_gauss(A_test.copy(), b_test.copy())
-        print("1. Nghiệm Khử Gauss:   ", x_gauss)
-    except Exception as e:
-        print("1. Khử Gauss LỖI:      ", e)
-
-    # PHÂN RÃ LU
-    try:
-        x_lu = solve_lu(A_test.copy(), b_test.copy())
-        print("2. Nghiệm Phân rã LU:  ", x_lu)
-    except Exception as e:
-        print("2. Phân rã LU LỖI:     ", e)
-
-    # GAUSS-SEIDEL
-    try:
-        x_gs = solve_gauss_seidel(A_test.copy(), b_test.copy())
-        print("3. Nghiệm Gauss-Seidel:", np.round(x_gs, 5)) # Round 5 chữ số
-    except Exception as e:
-        print("3. Gauss-Seidel LỖI:   ", e)
+    # Khởi chạy toàn bộ 5 tests
+    run_tests(test_cases)

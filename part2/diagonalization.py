@@ -378,68 +378,73 @@ def verify_solution(A, D, P):
     except Exception as e:
         print(f"KẾT QUẢ: LỖI HỆ THỐNG ({e})")
 
-if __name__ == "__main__":
-    A = [
-        [1, 3, 3],
-        [-3, -5, -3],
-        [3, 3, 1]
-    ]
-
-    # A = [[3, 1, 0], 
-    #      [0, 3, 0], 
-    #      [0, 0, 5]]
-
-    # A = [
-    #     [3, -2],
-    #     [4, -1]
-    # ]
-
-    # A = [
-    #     [0, -2, 0, 0, 0, 0],
-    #     [2,  0, 0, 0, 0, 0],
-    #     [0,  0, 1, -3, 0, 0],
-    #     [0,  0, 3,  1, 0, 0],
-    #     [0,  0, 0,  0, 5, -4],
-    #     [0,  0, 0,  0, 4,  5]
-    # ]
-
-    A = [
-        [4, 1, 0, 0, 0, 0],
-        [1, 4, 1, 0, 0, 0],
-        [0, 1, 4, 1, 0, 0],
-        [0, 0, 1, 4, 1, 0],
-        [0, 0, 0, 1, 4, 1],
-        [0, 0, 0, 0, 1, 4]
-    ]
-
-    # A = [
-    #     [2, 1, 0, 0, 0, 0],
-    #     [1, 2, 1, 0, 0, 0],
-    #     [0, 1, 2, 1, 0, 0],
-    #     [0, 0, 1, 2, 1, 0],
-    #     [0, 0, 0, 1, 2, 1],
-    #     [0, 0, 0, 0, 1, 2]
-    # ]
-
-    print("Ma trận ban đầu:")
-    for row in A: print([round(val, 4) for val in row])
-    
-    # Gọi hàm để lấy cả D và P
-    D, P = SolveEigenFullFast(A)
-    
-    # Gọi hàm để lấy cả D và P
-    D, P = SolveEigenFullFast(A)
-    
-    if D and P:
-        print("\nMa Trận chéo hóa (D):")
-        for row in D:
+def run_tests(test_cases):
+    for idx, A in enumerate(test_cases, 1):
+        print("=" * 60)
+        print(f"TEST CASE {idx}:")
+        print("Ma trận ban đầu (A):")
+        for row in A: 
             print([round(val, 4) for val in row])
+        
+        print("\n")
+        # Gọi hàm chéo hóa
+        D, P = SolveEigenFullFast(A)
+        
+        # Nếu trả về kết quả hợp lệ (không rỗng)
+        if D and P:
+            print("\nMa Trận chéo hóa (D):")
+            for row in D:
+                print([round(val, 4) for val in row])
+                
+            print("\nMa Trận vector riêng (P):")
+            for row in P:
+                print([round(v, 4) for v in row])
+                
+            print("\n[Đang kiểm chứng...]")
+            verify_solution(A, D, P)
+        else:
+            print("\n=> Không thể kiểm chứng vì quá trình chéo hóa thất bại (Không đủ điều kiện).")
             
-        print("\nMa Trận vector riêng (P):")
-        for row in P:
-            print([round(v, 4) for v in row])
-            
-        # ĐƯA HÀM VERIFY VÀO ĐÂY (Bên trong khối if)
-        verify_solution(A, D, P)
-    else:
-        print("\n=> Không thể kiểm chứng vì quá trình chéo hóa thất bại.")
+        print("=" * 60 + "\n")
+
+if __name__ == "__main__":
+    test_cases = [
+        # Test case 1: Ma trận 3x3 bình thường (chéo hóa thành công)
+        [
+            [1, 3, 3],
+            [-3, -5, -3],
+            [3, 3, 1]
+        ],
+        # Test case 2: Ma trận khuyết 3x3 (Nghiệm kép, không đủ không gian vector riêng)
+        [
+            [3, 1, 0], 
+            [0, 3, 0], 
+            [0, 0, 5]
+        ],
+        # Test case 3: Ma trận 2x2 có giá trị riêng là số phức (thất bại)
+        [
+            [3, -2],
+            [4, -1]
+        ],
+        # Test case 4: Ma trận 6x6 (Tridiagonal) - Chéo hóa thành công
+        [
+            [4, 1, 0, 0, 0, 0],
+            [1, 4, 1, 0, 0, 0],
+            [0, 1, 4, 1, 0, 0],
+            [0, 0, 1, 4, 1, 0],
+            [0, 0, 0, 1, 4, 1],
+            [0, 0, 0, 0, 1, 4]
+        ],
+        # Test case 5: Ma trận 6x6 (Tridiagonal) khác - Chéo hóa thành công
+        [
+            [2, 1, 0, 0, 0, 0],
+            [1, 2, 1, 0, 0, 0],
+            [0, 1, 2, 1, 0, 0],
+            [0, 0, 1, 2, 1, 0],
+            [0, 0, 0, 1, 2, 1],
+            [0, 0, 0, 0, 1, 2]
+        ]
+    ]
+
+    # Khởi chạy 5 test cases
+    run_tests(test_cases)

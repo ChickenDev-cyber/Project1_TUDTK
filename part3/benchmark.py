@@ -186,4 +186,4 @@ if __name__ == "__main__":
     
     stability_results = benchmark_stability(my_solvers, n=10)
     
-    print("\nKiểm thử hoàn tất! Bạn có thể chuyển số liệu này sang Jupyter để vẽ đồ thị.")
+    print("\nKiểm thử hoàn tất!")

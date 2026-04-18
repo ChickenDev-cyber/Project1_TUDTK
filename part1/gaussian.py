@@ -177,44 +177,99 @@ def verify_solution(A, x, b):
     except Exception as e:
         print(f"Da xay ra loi khi kiem chung nghiem: {e}")
         
-#Kiem thu
+def run_tests(test_cases):
+    """
+    Hàm chạy kiểm thử hàng loạt các hệ phương trình cho thuật toán Khử Gauss
+    """
+    for idx, test in enumerate(test_cases, 1):
+        A = test['A']
+        b = test['b']
+        
+        print("=" * 65)
+        print(f"TEST CASE {idx}: {test['name']}")
+        print("Ma trận hệ số (A):")
+        for row in A:
+            print(f"  {row}")
+        print(f"Vector hằng số (b): {b}")
+        print("-" * 65)
+
+        try:
+            # Truyền bản sao của A và b để tránh làm thay đổi ma trận gốc
+            result = gaussian_elimination([row[:] for row in A], b[:])
+            
+            # Xử lý trường hợp Vô nghiệm / Vô số nghiệm (hàm trả về None)
+            if result is None:
+                # Hàm của bạn đã tự in ra "Hệ phương trình Vô nghiệm/Vô số nghiệm" ở bên trong rồi
+                verify_solution(A, b, None)
+            else:
+                M, x, s = result
+
+                if x:
+                    # In nghiệm dưới dạng chuỗi để giữ nguyên giao diện Fraction
+                    formatted_x = ", ".join([str(v) for v in x])
+                    print(f"   Số lần hoán vị hàng (s): {s}")
+                    print(f"   Nghiệm x: [{formatted_x}]")
+                    
+                    # Gọi hàm verify
+                    verify_solution(A, b, x)
+                else:
+                    print("   => Không có nghiệm hợp lệ được trả về.")
+                
+        except Exception as e:
+            print(f"   [Gauss] LỖI CHƯƠNG TRÌNH: {e}")
+
+        print("=" * 65 + "\n")
+
+
 if __name__ == "__main__":
-    
-    print("NGHIEM DUY NHAT")
-    A1 = [[2, 1, -1], 
-          [-3, -1, 2], 
-          [-2, 1, 2]]
-    b1 = [8, -11, -3]
-    M1, x1, s1 = gaussian_elimination(A1, b1)
-    if x1:
-        formatted_x = ", ".join([str(v) for v in x1])
-        print(f"Nghiem x: {formatted_x}")
-    verify_solution(A1, x1, b1)
-
-    print("\nVO NGHIEM")
-    A2 = [[1, 1], 
-          [1, 1]]
-    b2 = [2, 3]
-    gaussian_elimination(A2, b2)
-
-    print("\nVO SO NGHIEM")
-    A3 = [[1, 2], 
-          [2, 4]]
-    b3 = [3, 6]
-    gaussian_elimination(A3, b3)
-
-    print("\n NGHIEM PHAN SO ")
-    # Ma trận A và vector b của hệ trên
-    A4 = [
-        [2, 4, 2],
-        [4, 2, 2],
-        [2, 2, 4]
+    # Bộ 5 test cases tổng hợp (4 test của bạn + 1 test hoán vị hàng)
+    test_cases = [
+        {
+            "name": "HỆ CÓ NGHIỆM DUY NHẤT",
+            "A": [
+                [ 2,  1, -1], 
+                [-3, -1,  2], 
+                [-2,  1,  2]
+            ],
+            "b": [8, -11, -3]
+        },
+        {
+            "name": "HỆ VÔ NGHIỆM",
+            "A": [
+                [1, 1], 
+                [1, 1]
+            ],
+            "b": [2, 3]
+        },
+        {
+            "name": "HỆ CÓ VÔ SỐ NGHIỆM",
+            "A": [
+                [1, 2], 
+                [2, 4]
+            ],
+            "b": [3, 6]
+        },
+        {
+            "name": "HỆ CÓ NGHIỆM PHÂN SỐ",
+            "A": [
+                [2, 4, 2],
+                [4, 2, 2],
+                [2, 2, 4]
+            ],
+            "b": [2, 4, 6]
+        },
+        {
+            "name": "HỆ CẦN HOÁN VỊ HÀNG (Test phần tử chéo bằng 0)",
+            "A": [
+                [0, 2, 3],
+                [4, 5, 6],
+                [7, 8, 0]
+            ],
+            "b": [13, 32, 23]
+            # Ma trận này có A[0][0] = 0, ép thuật toán của bạn phải thực hiện tìm 
+            # phần tử lớn nhất ở cột đó (pivoting) và đẩy hàng số 2 hoặc 3 lên thay thế.
+        }
     ]
-    b4 = [2, 4, 6]
-    M4, x4, s4 = gaussian_elimination(A4, b4)
 
-    if x4:
-        formatted_x = ", ".join([str(v) for v in x4])
-        print(f"Nghiem x: {formatted_x}")
-
-        verify_solution(A4, x4, b4)
+    # Khởi chạy toàn bộ tests
+    run_tests(test_cases)
