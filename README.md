@@ -1,4 +1,4 @@
-# Đồ án 1: Ma Trận và Cơ Sở của Tính Toán Khoa Học 🧮
+# Đồ án 1: Ma Trận và Cơ Sở của Tính Toán Khoa Học
 
 **Môn học:** Toán Ứng Dụng và Thống Kê (MTH00051)  
 **Trường:** Đại học Khoa học Tự nhiên, ĐHQG-HCM (FIT-HCMUS)  
