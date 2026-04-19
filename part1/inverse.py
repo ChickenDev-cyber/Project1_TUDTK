@@ -57,29 +57,3 @@ def inverse(A):
     # cắt lấy n cột cuối của mỗi hàng
     A_inv = [[str(M[i][n + j]) for j in range(n)] for i in range(n)]
     return A_inv
-
-
-if __name__ == "__main__":
-    def run_test(name, A):
-        print(f"\n=== {name} ===")
-        print(f"Ma tran A: {A}")
-        inv = inverse(A)
-        if inv:
-            print("Ma tran nghich dao A^-1:")
-            for row in inv:
-                print(row)
-                
-    # Case 1: Ma trận 2x2 cơ bản
-    run_test("CASE 1: MA TRAN 2x2", [[4, 7], [2, 6]])
-
-    # Case 2: Ma trận 3x3
-    run_test("CASE 2: MA TRAN 3x3", [[1, 2, 3], [0, 1, 4], [5, 6, 0]])
-
-    # Case 3: Ma trận đơn vị (nghịch đảo là chính nó)
-    run_test("CASE 3: MA TRAN DON VI", [[1, 0], [0, 1]])
-
-    # Case 4: Ma trận suy biến (det = 0)
-    run_test("CASE 4: MA TRAN SUY BIEN", [[1, 2], [2, 4]])
-
-    # Case 5: Ma trận 1x1
-    run_test("CASE 5: MA TRAN 1x1", [[5]])

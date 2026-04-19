@@ -140,27 +140,3 @@ def benchmark_stability(solvers_dict, n=10):
         }
         
     return stability_results 
-
-if __name__ == "__main__":
-
-    my_solvers = {
-        'Gauss': lambda A, b: sv.gaussian_eliminate(A, b)[1], 
-        'LU': sv.solve_lu,
-        'Gauss-Seidel': sv.solve_gauss_seidel
-    }
-
-    # 2. Chạy thực nghiệm đo thời gian và sai số
-    print("="*50)
-    print("BẮT ĐẦU CHẠY BENCHMARK TRÊN TERMINAL")
-    print("="*50)
-    
-    perf_results = benchmark_performance(my_solvers)
-    
-    # 3. Chạy phân tích tính ổn định số (Ma trận Hilbert vs SPD)
-    print("\n" + "="*50)
-    print("PHÂN TÍCH TÍNH ỔN ĐỊNH SỐ")
-    print("="*50)
-    
-    stability_results = benchmark_stability(my_solvers, n=10)
-    
-    print("\nKiểm thử hoàn tất!")
