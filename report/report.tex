@@ -3,7 +3,6 @@
 \usepackage{listings}
 \usepackage{float}
 \usepackage{placeins}
-% --- KHAI BÁO ---
 \usepackage{tcolorbox}
 \usepackage{vntex}
 \usepackage{pdflscape}
@@ -15,14 +14,13 @@
 \usepackage{amsmath}
 \usepackage{float}
 \usepackage{lastpage} 
-% \usepackage[lined,boxed,commentsnumbered]{algorithm2e}
 \usepackage{enumerate}
 \usepackage{color}
-\usepackage{graphicx}					% Standard graphics package
+\usepackage{graphicx}				
 \usepackage{array}
 \usepackage{tabularx, caption}
 \usepackage{multirow}
-\usepackage[framemethod=tikz]{mdframed}% For highlighting paragraph backgrounds
+\usepackage[framemethod=tikz]{mdframed}
 \usepackage{multicol}
 \usepackage{rotating}
 \usepackage{graphics}
@@ -40,18 +38,17 @@
 \usepackage{listings}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
-% \usepackage[english]{babel}
 \renewcommand{\baselinestretch}{1.5}
 \usepackage{xcolor}
 \renewcommand{\figurename}{Hình}
 
 \newtcolorbox{softbox}{
-    colback=black!3,        % Màu nền: Xám rất nhạt (3% đen)
-    colframe=black!3,       % Màu viền: Trùng màu nền (để không thấy viền)
-    arc=8pt,                % Độ bo tròn góc
-    boxrule=0pt,            % Độ dày viền = 0
-    left=10pt, right=10pt, top=8pt, bottom=8pt, % Khoảng cách lề bên trong
-    fontupper=\itshape\color{black!80} % Font chữ: Nghiêng và màu xám đậm (80% đen)
+    colback=black!3,        
+    colframe=black!3,       
+    arc=8pt,                
+    boxrule=0pt,           
+    left=10pt, right=10pt, top=8pt, bottom=8pt, 
+    fontupper=\itshape\color{black!80} 
 }
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
@@ -59,11 +56,11 @@
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
 \definecolor{backcolour}{rgb}{0.95,0.95,0.92}
 
-\definecolor{termBG}{HTML}{0C1C23}    % Màu nền xanh đen đậm
-\definecolor{termRed}{HTML}{FF5555}   % Màu đỏ
-\definecolor{termYellow}{HTML}{F1FA8C}% Màu vàng
-\definecolor{termWhite}{HTML}{F8F8F2} % Màu chữ trắng sáng
-\definecolor{termGray}{HTML}{A9B7C6}  % Màu xám nhạt (nếu cần)
+\definecolor{termBG}{HTML}{0C1C23} 
+\definecolor{termRed}{HTML}{FF5555}   
+\definecolor{termYellow}{HTML}{F1FA8C}
+\definecolor{termWhite}{HTML}{F8F8F2} 
+\definecolor{termGray}{HTML}{A9B7C6} 
 
 \lstdefinestyle{terminalstyle}{
     basicstyle=\ttfamily\scriptsize\color{termWhite},
@@ -78,49 +75,28 @@
     numbers=none
 }
 
-% Lệnh tắt để tô màu cho nhanh
-\newcommand{\cred}[1]{\textcolor{termRed}{#1}}
-\newcommand{\cyellow}[1]{\textcolor{termYellow}{#1}}
-
-% Cấu hình style cho C++
-\lstdefinestyle{mystyle}{
+\lstdefinestyle{pythonstyle}{
     backgroundcolor=\color{backcolour},   
     commentstyle=\color{codegreen},
-    keywordstyle=\color{magenta},
+    keywordstyle=\color{blue},
     numberstyle=\tiny\color{codegray},
     stringstyle=\color{codepurple},
-    basicstyle=\ttfamily\footnotesize, % Font chữ kiểu máy đánh chữ, kích thước nhỏ
+    basicstyle=\ttfamily\footnotesize\color{black},
     breakatwhitespace=false,         
-    breaklines=true,                 % Tự động xuống dòng nếu quá dài
+    breaklines=true,                 
     captionpos=b,                    
     keepspaces=true,                 
-    numbers=left,                    % Hiển thị số dòng bên trái
-    numbersep=5pt,                  
     showspaces=false,                
     showstringspaces=false,
     showtabs=false,                  
-    tabsize=2,                       % Độ rộng tab = 2 spaces
-    language=C++                     % Ngôn ngữ C++
-}
-
-\lstset{style=mystyle}
-
-\lstset{
-    language=C++,
-    basicstyle=\ttfamily\footnotesize,
-    numbers=left,
-    numberstyle=\tiny,
-    stepnumber=1,
-    numbersep=5pt,
-    backgroundcolor=\color{gray!10},
-    keywordstyle=\color{blue}\bfseries,
-    commentstyle=\color{green!50!black},
-    stringstyle=\color{red},
+    tabsize=4,
     frame=single,
-    breaklines=true,
+    rulecolor=\color{black!30}
 }
 
-%%%%%%%%
+\newcommand{\cred}[1]{\textcolor{termRed}{#1}}
+\newcommand{\cyellow}[1]{\textcolor{termYellow}{#1}}
+
 \usepackage{longtable}
 \usepackage[shortlabels]{enumitem}
 \hypersetup{urlcolor=blue,linkcolor=black,citecolor=black,colorlinks=true} 
@@ -144,14 +120,12 @@
 		\tiny \bf \\
 		\tiny \bf 
 	\end{tabular}  }
-\fancyfoot{} % clear all footer fields
-\fancyfoot[L]{\scriptsize \ttfamily Hệ thống máy tính}
+\fancyfoot{} 
+\fancyfoot[L]{\scriptsize \ttfamily Toán ứng dụng và thống kê}
 \fancyfoot[R]{\scriptsize \ttfamily Trang {\thepage}/\pageref{page:lastpage}}
 \renewcommand{\headrulewidth}{0.3pt}
 \renewcommand{\footrulewidth}{0.3pt}
 
-
-%%%
 \setcounter{secnumdepth}{4}
 \setcounter{tocdepth}{3}
 \makeatletter
@@ -193,15 +167,14 @@
 
 \begin{document}
 
-% Tạo lệnh mới tên là \code
 \newtcbox{\code}{on line, 
-  arc=3pt,            % Độ bo tròn góc (3pt là vừa đẹp)
-  colback=gray!20,    % Màu nền (xám nhạt 10%)
-  colframe=gray!20,   % Màu viền (để cùng màu nền cho đẹp)
-  boxrule=0pt,        % Độ dày viền
-  boxsep=0pt,         % Khoảng cách từ khung đến chữ
-  left=2pt, right=2pt, top=2pt, bottom=2pt, % Căn lề trong
-  fontupper=\ttfamily % Tự động đổi font thành kiểu code
+  arc=3pt,            
+  colback=gray!20,    
+  colframe=gray!20,   
+  boxrule=0pt,        
+  boxsep=0pt,         
+  left=2pt, right=2pt, top=2pt, bottom=2pt, 
+  fontupper=\ttfamily 
 }
 
 
@@ -229,8 +202,7 @@ KHOA CÔNG NGHỆ THÔNG TIN
 ~~\\
 \hline
 \\
-\multicolumn{1}{l}{\textbf{{\Large ĐỒ ÁN 1}}}\\
-\\
+\multicolumn{1}{c}{\textbf{{\Large ĐỒ ÁN 1}}}\\
 \textbf{{\Large}Ma Trận và Cơ Sở của Tính Toán Khoa Học}\\
 \\
 \hline
@@ -239,37 +211,488 @@ KHOA CÔNG NGHỆ THÔNG TIN
 
 \vspace{0.5cm}
 
-% \begin{table}[h]
-% \begin{tabular}{rrl}
-% \hspace{4.5cm} & Nhóm sinh viên thực hiện: & Phạm Minh Trọng - 24120151\\
-% \hspace{4.5cm} & & Đào Tiến Đạt - 24120033 \\
-% \hspace{4.5cm} & & Bùi Nhật Bảo - 24120167 \\
-% \hspace{4.5cm} & & Trịnh Kim Mai - 24120199 \\
-% \hspace{4.5cm} & & Trần Công Quang - 24120221
-
-
-% \end{tabular}
-% \end{table}
-
 \noindent \hspace{3.1cm} % Giữ khoảng cách lề trái như cũ
 \begin{tabular}{l l l}
-    \textbf{Nhóm sinh viên thực hiện:} & Phạm Minh Trọng &  24120151 \\
+    \textbf{Giảng viên hướng dẫn:} & ThS. Võ Nam Thục Đoan & \\
+    & ThS. Lê Nhựt Nam \\
+    \\
+    \textbf{Nhóm 02:} & Phạm Minh Trọng &  24120151 \\
                                       & Đào Tiến Đạt    &  24120033 \\
                                       & Bùi Nhật Bảo    &  24120167 \\
                                       & Trịnh Kim Mai   &  24120199 \\
                                       & Trần Công Quang &  24120221 \\
 \end{tabular}
-
-\vspace{2.5cm}
-
+\vspace{2.0cm}
 \begin{center} {\footnotesize Thành phố Hồ Chí Minh, 4/2026}
 \end{center}
 \end{titlepage}
 \thispagestyle{empty}
 \newpage
 
+% ==================== MỤC LỤC ====================
+\tableofcontents
+\newpage
+
+% ==================== LỜI NÓI ĐẦU ====================
+\section*{Lời Nói Đầu}
+\addcontentsline{toc}{section}{Lời Nói Đầu}
+Trong bối cảnh bùng nổ của trí tuệ bhân tạo và khoa học dữ liệu, nền tảng đại số tuyến tính và tính toán Khoa học đóng vai trò đặc biệt quan trọng, là điều kiện trong thể thiếu trong mọi hệ thống học máy, nén dữ liệu và tối ưu hóa hiện đại. Đồ án \textbf{"Ma Trận và Cơ Sở của Tính Toán Khoa Học"} không chỉ đơn thuần là một bài tập lớn, mà còn là cơ hội để chúng em tiếp cận được những kiến thức mới hơn, biết được ứng dụng của đại số tuyến tính vào trong cuộc sống, xây dựng được nền tảng để bước vào chuyên ngành
+
+Dù đã nỗ lực hết sức và nghiêm túc trong công việc hoàn thiện đồ án , song do những giới hạn về mặt thời gian cũng như kinh nghiệm thực tiễn, báo cáo này chắc chắn vẫn còn những thiếu sót nhất định. Chúng em rất mong nhận được sự đánh giá, góp ý quý báu từ quý Thầy Cô để nhóm có thể đúc kết thêm kinh nghiệm và hoàn thiện bản thân hơn trong những chặng đường học tập tiếp theo.
+
+\textbf{Chúng em xin chân thành cảm ơn!}
+\newpage
+
+% ==================== LỜI CAM ĐOAN ====================
+\section*{Lời Cam Đoan}
+\addcontentsline{toc}{section}{Lời Cam Đoan}
+Chúng em, Nhóm 02, xin cam đoan đây là đồ án tự nghiên cứu và cài đặt của cả nhóm. Các dòng mã nguồn, phân tích thuật toán, cấu trúc dữ liệu và logic xử lý đều được nhóm tự cài đặt từ đầu bằng Python theo đúng yêu cầu của đồ án, hoàn toàn không sử dụng các hàm có sẵn của các thư viện như NumPy/SciPy để gian lận
+
+Mọi kết quả kiểm thử, số liệu thực nghiệm, video trực quan hóa bằng Manim được trình bày trong báo cáo này là hoàn toàn trung thực, phản ánh đúng kết quả thực thi từ mã nguồn của nhóm. Nếu có bất kỳ sự vi phạm đạo đức học thuật nào, chúng em xin hoàn toàn chịu trách nhiệm trước giảng viên hướng dẫn và Khoa Công nghệ Thông tin, Trường Đại học Khoa học Tự nhiên, ĐHQG-HCM.
+
+\vspace{1cm}
+\begin{flushright}
+\textbf{Đại diện nhóm} \\
+\vspace{1.5cm}
+\textit{Phạm Minh Trọng}
+\end{flushright}
+\newpage
+
+% ==================== BẢNG PHÂN CÔNG CÔNG VIỆC ====================
+\section*{Bảng Phân Công Công Việc}
+\addcontentsline{toc}{section}{Bảng Phân Công Công Việc}
+\begin{table}[H]
+    \centering
+    \renewcommand{\arraystretch}{1.4} % Tăng khoảng cách dòng
+    \begin{tabular}{|c|p{4cm}|p{6.5cm}|c|}
+        \hline
+        \textbf{STT} & \textbf{Họ và Tên} & \textbf{Nhiệm vụ phân công} & \textbf{Hoàn thành} \\ \hline
+        1 & Phạm Minh Trọng \newline \textbf{(24120151 - Leader)} & Quản lý tiến độ, dựng kịch bản, trực quan hóa bằng Manim (part2), viết báo cáo & 100\% \\ \hline
+        2 & Đào Tiến Đạt \newline \textbf{(24120033)} & Cài đặt Phân rã Ma trận (Decomposition - Thuật toán Jacobi), Viết báo cáo nội dung. & 100\% \\ \hline
+        3 & Bùi Nhật Bảo \newline \textbf{(24120167)} & Lập trình hoạt ảnh Manim (Trực quan hóa Chéo hóa ma trận), Xử lý Video/Slide. & 100\% \\ \hline
+        4 & Trịnh Kim Mai \newline \textbf{(24120199)} & Cài đặt hệ giải phương trình Solvers (Gauss, LU, Gauss-Seidel), Phân tích hiệu năng thời gian. & 100\% \\ \hline
+        5 & Trần Công Quang \newline \textbf{(24120221)} & Cài đặt Chéo hóa (Diagonalization), Phân tích độ ổn định số (Hilbert vs SPD matrix). & 100\% \\ \hline
+    \end{tabular}
+    \caption{Chi tiết phân công nhiệm vụ của các thành viên trong nhóm}
+\end{table}
+\newpage
+
+% ==================== PHẦN 1 ====================
+\section{Phần 1: Phép khử Gauss và Các Ứng Dụng}
+
+\subsection{Cơ sở lý thuyết}
+\subsubsection{Hệ phương trình tuyến tính và Ma trận tăng cường}
+Xét hệ phương trình tuyến tính có dạng tổng quát:
+\begin{equation}
+    Ax = b
+\end{equation}
+Trong đó:
+\begin{itemize}
+    \item $A \in \mathbb{R}^{m \times n}$: Ma trận hệ số.
+    \item $x \in \mathbb{R}^n$: Vector ẩn số.
+    \item $b \in \mathbb{R}^m$: Vector vế phải.
+\end{itemize}
+Để giải hệ phương trình, ta thiết lập Ma trận tăng cường $[A|b]$ bằng cách ghép vector $b$ vào bên phải ma trận $A$.
+
+\subsubsection{Các phép biến đổi dòng sơ cấp}
+Thuật toán dựa trên ba phép biến đổi cơ bản không làm thay đổi tập nghiệm của hệ phương trình:
+\begin{enumerate}
+    \item Hoán đổi dòng: $R_i \leftrightarrow R_j$
+    \item Nhân dòng với một hằng số khác 0: $R_i \leftarrow c \cdot R_i \quad (c \neq 0)$
+    \item Cộng vào một dòng bội số của dòng khác: $R_i \leftarrow R_i + c \cdot R_j$
+\end{enumerate}
+
+\subsubsection{Dạng bậc thang (REF) và Bậc thang rút gọn (RREF)}
+\begin{itemize}
+    \item \textbf{Dạng bậc thang (Row Echelon Form - REF):} Các dòng bằng 0 nằm dưới cùng; phần tử khác 0 đầu tiên của một dòng (phần tử chốt - pivot) luôn nằm bên phải phần tử chốt của dòng phía trên nó.
+    \item \textbf{Dạng bậc thang rút gọn (Reduced Row Echelon Form - RREF):} Là dạng REF nhưng mọi phần tử chốt đều bằng $1$ và là phần tử khác 0 duy nhất trong cột chứa nó.
+\end{itemize}
+
+\subsubsection{Khử Gauss có chọn phần tử chốt (Partial Pivoting)}
+Để tăng độ ổn định số học và tránh lỗi chia cho $0$, ta chọn phần tử chốt có giá trị tuyệt đối lớn nhất trong cột hiện tại trước khi thực hiện phép khử:
+\begin{equation}
+    |a_{pk}| = \max_{i \geq k} |a_{ik}|
+\end{equation}
+
+\subsubsection{Tính định thức qua khử Gauss}
+Sau khi đưa ma trận $A$ về dạng tam giác trên $U$ bằng phép khử Gauss với $s$ lần hoán đổi dòng, định thức được tính theo công thức:
+\begin{equation}
+    \det(A) = (-1)^s \cdot \prod_{i=1}^{n} u_{ii}
+\end{equation}
+
+\subsubsection{Ma trận nghịch đảo bằng Gauss-Jordan}
+\textbf{Định lý:} Ma trận $A \in \mathbb{R}^{n \times n}$ khả nghịch khi và chỉ khi $\det(A) \neq 0$.
+
+Ma trận nghịch đảo $A^{-1}$ được tìm bằng cách thực hiện các phép biến đổi dòng sơ cấp đồng thời trên ma trận ghép $[A | I_n]$ cho đến khi ma trận bên trái đạt dạng đơn vị:
+\begin{equation}
+    [A | I_n] \xrightarrow{\text{biến đổi dòng}} [I_n | A^{-1}]
+\end{equation}
+
+\subsubsection{Hạng ma trận và cơ sở}
+\textbf{Định nghĩa:} Hạng của ma trận $A$, ký hiệu là $\text{rank}(A)$, bằng số dòng khác 0 trong dạng REF của $A$, hoặc tương đương, bằng số cột pivot. Từ dạng RREF, ta xác định được ba không gian quan trọng:
+\begin{itemize}
+    \item \textbf{Không gian cột $\mathcal{C}(A)$:} Sinh bởi các cột pivot của $A$ gốc.
+    \item \textbf{Không gian dòng $\mathcal{R}(A)$:} Sinh bởi các dòng khác 0 trong RREF.
+    \item \textbf{Không gian nghiệm $\mathcal{N}(A)$:} Tập nghiệm của hệ thuần nhất $Ax = 0$.
+\end{itemize}
+
+\subsection{Thuật toán khử Gauss (Partial Pivoting)}
+Quy trình thực hiện được nhóm cài đặt gồm hai giai đoạn chính:
+\begin{itemize}
+    \item \textbf{Giai đoạn 1: Khử xuôi (Forward Elimination)}
+    \begin{enumerate}
+        \item Khởi tạo ma trận tăng cường $M = [A|b]$.
+        \item Với mỗi cột $k$: 
+        \item Tìm dòng $p$ chứa phần tử có trị tuyệt đối lớn nhất kể từ dòng $k$ trở xuống.
+        \item Hoán đổi dòng $k$ và dòng $p$.
+        \item Với mỗi dòng $i > k$: Thực hiện phép biến đổi dòng để triệt tiêu các phần tử bên dưới phần tử chốt $M_{kk}$.
+    \end{enumerate}
+    
+    \item \textbf{Giai đoạn 2: Thế ngược (Back Substitution)}\\
+    Tìm nghiệm $x_i$ theo công thức truy hồi từ dòng cuối cùng lên:
+    \begin{equation}
+        x_i = \frac{M_{i, n+1} - \sum_{j=i+1}^{n} M_{ij} \cdot x_j}{M_{ii}}
+    \end{equation}
+\end{itemize}
+
+\subsection{Triển khai và cài đặt chi tiết (Phân tích mã nguồn)}
+Trong phần này, nhóm tiến hành xây dựng các thuật toán từ đầu sử dụng Python cơ bản. Để đảm bảo triệt tiêu sai số làm tròn (round-off error), mọi phép tính phân số được bảo toàn nhờ đối tượng \code{fractions.Fraction}. Gồm các hàm cụ thể như sau:
+
+\subsubsection{Hàm \code{gaussian\_elimination(A, b)}}
+Hàm đóng vai trò nền tảng, tiến hành biến đổi ma trận $A$ và $b$ về dạng tương đương bậc thang (REF).
+\begin{itemize}
+    \item \textbf{Cơ chế hoạt động:} Ở mỗi cột, thuật toán tìm phần tử có trị tuyệt đối lớn nhất từ dưới lên (Partial Pivoting) rồi đưa lên vị trí chốt thông qua hoán vị dòng, bảo vệ hệ thống khỏi lỗi chia số $0$.
+    \item \textbf{Cơ chế tích hợp giải nghiệm sâu:} Thuật toán tối ưu hóa mặt luồng chéo dòng bằng việc tự động trích xuất $U$, $c\_result$ để đẩy qua hàm \code{back\_substitution} nội bộ, giúp xuất khẩu ra ngoài một bộ `M, x, s` khép kín một cách hoàn hảo.
+\end{itemize}
+\begin{lstlisting}[language=Python, style=pythonstyle]
+# Ky thuat Partial Pivoting: Tim phan tu chot lon nhat tren cot hien tai
+p = r
+for i in range(r + 1, n):
+    if abs(M[i][c_idx]) > abs(M[p][c_idx]):
+        p = i
+
+if p != r:
+    M[r], M[p] = M[p], M[r]  # Hoan vi hang de giu su on dinh
+    s += 1                   # Ghi nhan so lan hoan vi cho dinh thuc
+\end{lstlisting}
+
+\subsubsection{Hàm \code{back\_substitution(U, c)}}
+Tiến hành truy hồi nghiệm từ chốt cuối cùng lên trên sau khi khử về dạng bậc thang.
+\begin{itemize}
+    \item \textbf{Tự động quét hạng động (rank):} Thuật toán tự động quét tìm dòng chứa giá trị $\neq 0$ để định lượng chính xác rank, cho phép ứng phó với bất kỳ định dạng bậc thang nào bị khuyết phần tử.
+    \item \textbf{Cấu trúc tham số linh hoạt:} Với tình huống vô số nghiệm, nhóm sử dụng \code{Dictionary} để biểu diễn các hệ số tham số tổng quát dưới dạng ánh xạ.
+\end{itemize}
+\begin{lstlisting}[language=Python, style=pythonstyle]
+# Bieu dien cac he so tham so tong quat duoi dang anh xa Dictionary
+# VD: x[j] = {'const': gia_tri, index_bien_tu_do: he_so, ...}
+x_expr = [{} for _ in range(n_cols)]
+
+for j in free_cols:
+    x_expr[j] = {'const': Fraction(0), j: Fraction(1)} # Kich hoat bien tu do
+\end{lstlisting}
+
+\subsubsection{Hàm \code{inverse(A)}}
+Tìm nghịch đảo ma trận bằng cách biến đổi đồng thời trên vùng không gian mở rộng.
+\begin{itemize}
+    \item \textbf{Cơ chế hoạt động:} Bắt đầu từ trục tọa độ $[A | I_n]$, thuật toán chuẩn hóa đồng độ cho pivot về $1$, sau đó tiến hành quét sạch (trừ khử) toàn bộ các phần tử ở DƯỚI lẫn TRÊN trục pivot, cưỡng ép phần $A$ về ma trận $I$, đẩy $A^{-1}$ sang phải.
+    \item \textbf{Bắt lỗi suy biến:} Ngay tại vòng lặp, nếu bắt gặp toàn cột bằng $0$ hoặc $\det(A) = 0$, hệ thống rẽ nhánh \code{None} tức thì để ngăn chặn hiện tượng crash hệ thống.
+\end{itemize}
+\begin{lstlisting}[language=Python, style=pythonstyle]
+# Khu ca cac dong tren lan duoi de dua ma tran truc trai ve don vi I
+for i in range(n):
+    if i == k: continue   
+    factor = M[i][k]
+    for j in range(2 * n):
+        M[i][j] -= factor * M[k][j]
+    M[i][k] = Fraction(0)  # Tru gian tiep luon dat sai so ve 0 tuyet doi
+\end{lstlisting}
+
+\subsubsection{Hàm \code{determinant(A)}}
+Hàm này áp dụng kết quả của phép khử để tính toán $\det$ theo tốc độ đa thức $\mathcal{O}(n^3)$.
+\begin{itemize}
+    \item \textbf{Tối ưu không gian:} Thu được lập tức nhờ tích đường chéo chính của khối bậc thang ở trên, nhân với dấu điều hướng $(-1)^s$ từ quá trình Partial Pivoting.
+\end{itemize}
+\begin{lstlisting}[language=Python, style=pythonstyle]
+# M[i][i] la cac chot cua ma tran bac thang, tich cua chung -> det(U)
+det = Fraction((-1) ** s)  # Bat dau voi dau dieu huong
+for i in range(n):
+    det *= M[i][i]
+\end{lstlisting}
+
+\subsubsection{Hàm \code{rank\_and\_basis(A)}}
+Dò các điểm nối nền tảng của không gian vector tạo nên ma trận ban đầu.
+\begin{itemize}
+    \item \textbf{Cơ sở dòng và cột:} Trích cơ sở dòng từ biến cơ sở của $U$. Tuy vậy, thuật toán phải tra ngược thông qua index list để trích xuất dữ liệu gốc của cơ sở cột ngay trên trục của ma trận gốc.
+    \item \textbf{Cơ sở nghiệm:} Cài đặt tuần tự các điểm neo (biến tự do). Giữ một điểm bằng $1$, các điểm khác về $0$, giải nghiệm hệ tuyến tính sinh ra các vector trục trực giao chính xác cho toàn bộ không gian nghiệm.
+\end{itemize}
+\begin{lstlisting}[language=Python, style=pythonstyle]
+# Giai thuat sinh Co so Khong gian nghiem (Null Space Basis, Ax = 0)
+for free_j in free_cols:
+    special_solution = [Fraction(0)] * n_cols
+    special_solution[free_j] = Fraction(1)  # Kich hoat diem Neo thu j
+
+    for i, k in reversed(pivot_indices):
+        sum_ax = sum(U[i][j] * special_solution[j] for j in range(k + 1, n_cols))
+        special_solution[k] = -sum_ax / U[i][k]
+    
+    null_basis.append([str(val) for val in special_solution])
+\end{lstlisting}
+
+\subsubsection{Hàm \code{verify\_solution(A, x, b)}}
+Quá trình kiểm tra được chia làm hai kịch bản rõ ràng và được thẩm định bằng \code{numpy.allclose(atol=1e-9)}:
+\begin{itemize}
+    \item \textbf{Trường hợp nghiệm duy nhất:} Chỉ cần ép vòng mảng phân số sang \code{float} và nhân ngược lại $A \cdot x$. Nếu kết quả xấp xỉ bằng $b$, chứng tỏ thuật toán tính đúng.
+    \item \textbf{Trường hợp vô số nghiệm:} Vì nghiệm trả về dưới dạng \code{Dictionary} khá phức tạp, nhóm đã phân tách nghiệm tổng quát ra làm hai phần để tự đối chiếu: 
+    \begin{enumerate}
+        \item \textit{Nghiệm riêng (phần hằng số $x_p$):} Kiểm tra xem $A \cdot x_p = b$ có khớp không.
+        \item \textit{Nghiệm thuần nhất (các vector chứa neo biến tự do $v_k$):} Đối với mỗi tham số $t_k$, nhóm tiến hành bóc tách vector hệ số tương ứng và nhân ngược với $A$. Nếu $A \cdot v_k = \mathbf{0}$, nghĩa là vector đó thực sự khớp với không gian nghiệm.
+    \end{enumerate}
+\end{itemize}
+\begin{lstlisting}[language=Python, style=pythonstyle]
+# Doan code ma nhom dung de kiem tra chat che loi giai vo so nghiem:
+# 1. Kiem tra phan hang so lam nhiem vu nghiem rieng: A * x_p = b
+x_p = np.array([float(x[i].get('const', Fraction(0))) for i in range(n_cols)])
+if not np.allclose(np.dot(A_np, x_p), b_np, atol=1e-9):
+    print("-> SAI: Phan hang so khong khop!")
+    return
+
+# 2. Kiem tra phan vector tuong ung voi tung bien tu do: A * v_k = 0
+for k in free_vars:
+    v_k = np.array([float(x[i].get(k, Fraction(0))) for i in range(n_cols)])
+    if not np.allclose(np.dot(A_np, v_k), np.zeros(len(b)), atol=1e-9):
+        print(f"-> SAI: Vector he so cua bien tu do o t{k+1} khong thuoc Null Space!")
+        return
+\end{lstlisting}
+
+\subsection{Đánh giá tiêu chí hoàn thành}
+
+Dựa trên bảng tiêu chí đánh giá đồ án, nhóm đã rà soát và tự đánh giá mức độ hoàn thành các yêu cầu của Phần 1 như sau:
+
+\begin{table}[H]
+    \centering
+    \renewcommand{\arraystretch}{1.4}
+    \begin{tabular}{|p{4cm}|p{6.5cm}|c|}
+        \hline
+        \textbf{Tiêu chí} & \textbf{Mô tả yêu cầu} & \textbf{Mức độ hoàn thành} \\ \hline
+        \textbf{Cài đặt Gauss cơ bản} & Chạy đúng, có kiểm thử rõ ràng & 100\% \\ \hline
+        \textbf{Partial Pivoting} & Xử lý đúng khi pivot nhỏ hoặc bằng 0 & 100\% \\ \hline
+        \textbf{Tính định thức} & Đúng dấu và giá trị & 100\% \\ \hline
+        \textbf{Ma trận nghịch đảo} & Gauss-Jordan, kiểm thử $AA^{-1}=I$ & 100\% \\ \hline
+        \textbf{Hạng và cơ sở} & Đúng rank, trả về cơ sở các không gian & 100\% \\ \hline
+        \textbf{Kiểm chứng} & So sánh kết quả với NumPy/SciPy & 100\% \\ \hline
+    \end{tabular}
+    \caption{Đánh giá tiêu chí hoàn thành - Phần 1}
+    \label{tab:criteria_part1}
+\end{table}
 
 
+% ==================== PHẦN 2 ====================
+\newpage
+\section{Phần 2: Phân Rã Ma Trận và Trực Quan Hóa với Manim}
+
+\subsection{Chéo hóa ma trận (Matrix Diagonalization)}
+\subsubsection{Cơ sở lý thuyết}
+\textbf{Định nghĩa:} Một ma trận vuông $A$ cấp $n \times n$ được gọi là chéo hóa được (diagonalizable) nếu tồn tại một ma trận khả nghịch $P$ và một ma trận đường chéo $D$ sao cho:  
+\begin{equation}
+    A = P \cdot D \cdot P^{-1}
+\end{equation}
+Trong đó:
+\begin{itemize}
+    \item $D = \text{diag}(\lambda_1, \lambda_2, \dots, \lambda_n)$ là ma trận chứa các \textit{giá trị riêng} (eigenvalues) của $A$ trên đường chéo chính.
+    \item $P = [v_1 | v_2 | \dots | v_n]$ là ma trận mà các cột là các \textit{vector riêng} (eigenvectors) tương ứng với các giá trị riêng đó.
+\end{itemize}
+
+\textbf{Điều kiện cần và đủ:} Ma trận $A$ cấp $n$ chéo hóa được khi và chỉ khi nó có $n$ vector riêng độc lập tuyến tính. Điều này tương đương với việc tổng số chiều của các không gian riêng (Geometric Multiplicity) phải bằng $n$. Nếu ma trận có $n$ giá trị riêng phân biệt thì chắc chắn chéo hóa được.
+
+\subsubsection{Thuật toán cài đặt}
+Nhóm triển khai quy trình chéo hóa hoàn toàn thủ công (trong \code{diagonalization.py}), không dùng lệnh tính sẵn mà sử dụng \textbf{Lặp QR} để rút trị riêng và \textbf{Khử Gauss} (kế thừa từ Phần 1) để xây vector riêng.
+
+\textbf{A. Xử lý triệt để Ma trận khuyết (Defective Matrix)}\\
+Điểm sáng thuật toán của nhóm là hàm \code{CheckDefective\_Eigvals}. Trước khi dựng phương trình vector riêng, thuật toán sẽ đối chiếu Bội hình học (Geometric Multiplicity - GM) và Bội đại số (Algebraic Multiplicity - AM). Nếu $GM < AM$, ma trận lập tức bị từ chối chéo hóa nhằm tránh ma trận $P$ bị suy biến.
+\begin{lstlisting}[language=Python, style=pythonstyle]
+# Doan code chan dung loi toan hoc the hien tu duy Chat che
+AM = rounded_eigs.count(lamda) # Tinh Boi dai so
+if AM > 1:
+    A_minus_lamdaI = subtract_lambda_I(A, lamda)
+    res_temp = rank_and_basis(A_minus_lamdaI)
+    rank = res_temp['rank']
+    GM = n - rank  # Tinh Boi hinh hoc tu Hang (Rank-Nullity)
+    
+    if GM < AM:    # Phat hien ma tran khuyet, thieu he vector!
+        return True
+\end{lstlisting}
+
+\textbf{B. Phân rã RQ $\rightarrow$ QR hội tụ trị riêng}\\
+Áp dụng phép lặp trực giao Gram-Schmidt biến $A_k = Q \cdot R$, nhân ngược $A_{k+1} = R \cdot Q$. Cấu trúc này dồn phần tử ngoài đường chéo về 0, chừa lại các trị riêng ròng ở đường chéo trung tâm. Các chiều không gian sau đó được quét bằng \code{rank\_and\_basis}.
+
+\subsection{Phân rã Giá trị suy biến (SVD)}
+\subsubsection{Cơ sở lý thuyết}
+Phân rã SVD là phương pháp phân tích tổng quát áp dụng cho mọi ma trận $A \in \mathbb{R}^{m \times n}$. Ma trận $A$ được phân tích thành:
+\begin{equation}
+    A = U \cdot \Sigma \cdot V^T
+\end{equation}
+Trong đó:
+\begin{itemize}
+    \item $U \in \mathbb{R}^{m \times m}$: Ma trận trực giao chứa các vector suy biến trái (các vector riêng của $AA^T$).
+    \item $V \in \mathbb{R}^{n \times n}$: Ma trận trực giao chứa các vector suy biến phải (các vector riêng của $A^TA$).
+    \item $\Sigma \in \mathbb{R}^{m \times n}$: Ma trận đường chéo chứa các giá trị suy biến $\sigma_1 \geq \sigma_2 \dots \geq \sigma_p \geq 0$ với $p = \min(m, n)$.
+\end{itemize}
+Về mặt hình học, SVD biểu diễn biến đổi tuyến tính qua 3 bước: \textit{Xoay} ($V^T$) $\rightarrow$ \textit{Co giãn trục} ($\Sigma$) $\rightarrow$ \textit{Xoay đích} ($U$).
+
+\subsubsection{Phân rã tĩnh bằng phép Xoay Jacobi (Jacobi Eigenvalues)}
+Thay vì dùng QR, nhóm lựa chọn thuật toán \textbf{Jacobi} xử lý riêng biệt cho ma trận đối xứng liên kết $M = A^T A$ vì tính ổn định số học vững chắc, mã nguồn được nhóm xây dựng tại \code{decomposition.py}.
+
+Hàm hoạt động bằng cách đi tìm các phần tử lệch đường chéo $M[p][q]$, sau đó tính góc xoay $\theta$ để đưa nó về 0:
+\begin{lstlisting}[language=Python, style=pythonstyle]
+# Doan co so luong giac de triet tieu bat ky diem roi lech nao tren hang/cot
+if M[p][p] == M[q][q]:
+    theta = mth.pi / 4.0
+else:
+    theta = 0.5 * mth.atan(2.0 * M[p][q] / (M[p][p] - M[q][q]))
+cos_t, sin_t = mth.cos(theta), mth.sin(theta)
+
+# Don vi nang tuong lay goc cua M_pq tro ve duong cheo chinh
+M_pp = cos_t**2 * M[p][p] - 2*sin_t*cos_t*M[p][q] + sin_t**2 * M[q][q]
+M[p][q] = M[q][p] = 0.0 # Clear hoan toan khoi ban do!
+\end{lstlisting}
+Sau vòng lặp đưa $M[p][q]$ về 0, $M$ lộ ra ma trận đường chéo gồm các $\lambda_i$. Thuật toán kết thúc khi $\Sigma$ (bằng $\sqrt{\lambda_i}$) và dựng trục suy biến trái $U$ ($u_i = \frac{A v_i}{\sigma_i}$) độc lập hoàn toàn với thư viện.
+
+\subsection{Ứng dụng và Trực quan hóa với Manim}
+\subsubsection{Ứng dụng}
+
+\subsubsection{Trực quan hóa}
+Để biến các khối công thức đại số tuyến tính trừu tượng trở nên trực quan và dễ tiếp cận, nhóm đã ứng dụng thư viện đồ họa toán học \textbf{Manim} để xây dựng công cụ đồ họa dạng video. Mã nguồn kịch bản phim được cấu trúc đối tượng hóa thành các phân cảnh (\code{Scene}) như sau:
+
+\vspace{0.3cm}
+\begin{mdframed}[linecolor=gray!50, linewidth=3pt, topline=false, bottomline=false, rightline=false, backgroundcolor=black!2, innerleftmargin=10pt, innertopmargin=8pt, innerbottommargin=8pt]
+\textbf{\large \code{Section1\_IntroProblem}} \hfill \textit{Mở đầu bài toán}\\
+\vspace{-0.2cm}\rule{\linewidth}{0.5pt}\vspace{0.2cm}\\
+Đóng vai trò là phân cảnh mồi (hook/intro), dẫn dắt người xem vào không gian toán học. Khởi tạo một ma trận mẫu đứng trung tâm khung hình. Việc sử dụng các hiệu ứng làm nổi bật từng hệ số giúp định hướng sự tập trung một cách trơn tru.
+\end{mdframed}
+
+\vspace{0.2cm}
+\begin{mdframed}[linecolor=gray!50, linewidth=3pt, topline=false, bottomline=false, rightline=false, backgroundcolor=black!2, innerleftmargin=10pt, innertopmargin=8pt, innerbottommargin=8pt]
+\textbf{\large \code{MatrixDiagonalization}} \hfill \textit{Quá trình Chéo hóa}\\
+\vspace{-0.2cm}\rule{\linewidth}{0.5pt}\vspace{0.2cm}\\
+Tái hiện từng bước của thuật toán chéo hóa ma trận. Xâu chuỗi tính toán từ việc diễn giải đa thức đặc trưng để tìm \textit{giá trị riêng}, lập hệ phương trình để truy xuất \textit{vector riêng}. Quá trình gom ma trận chuyển cơ sở $P$ và ma trận đường chéo $D$ được trình bày song song qua các khối sáng màu, chứng minh đồ họa cho công thức $A = PDP^{-1}$.
+\end{mdframed}
+
+\vspace{0.2cm}
+\begin{mdframed}[linecolor=gray!50, linewidth=3pt, topline=false, bottomline=false, rightline=false, backgroundcolor=black!2, innerleftmargin=10pt, innertopmargin=8pt, innerbottommargin=8pt]
+\textbf{\large \code{Section23\_Theory\_And\_GeometricSVD}} \hfill \textit{Ý nghĩa hình học của SVD}\\
+\vspace{-0.2cm}\rule{\linewidth}{0.5pt}\vspace{0.2cm}\\
+Phân cảnh minh họa việc một đường tròn đơn vị và các vector bị biến dạng thành hình ellipse khi nhân trực tiếp với ma trận $A$. Sau đó video chia tách tiến trình thành $3$ nhịp SVD thuần túy: Góc xoay lưới Không gian ($V^T$), sự co giãn trục định hình ellipse ($\Sigma$), và điều hướng chỉnh góc lưới không gian khớp với bản sinh ($U$).
+\end{mdframed}
+
+\vspace{0.2cm}
+\begin{mdframed}[linecolor=gray!50, linewidth=3pt, topline=false, bottomline=false, rightline=false, backgroundcolor=black!2, innerleftmargin=10pt, innertopmargin=8pt, innerbottommargin=8pt]
+\textbf{\large \code{SVDAndDiagonalization}} \hfill \textit{Liên hệ SVD và chéo hóa}\\
+\vspace{-0.2cm}\rule{\linewidth}{0.5pt}\vspace{0.2cm}\\
+Cầu nối giao thoa bản chất giữa phân rã SVD và chéo hóa. Kịch bản lồng ghép các phương trình biểu diễn lên nhau. Ở trên cùng một phân cảnh, đồ họa hiển thị ma trận tích $A^TA$ vừa được khai triển qua SVD ($V\Sigma^2 V^T$) lại vừa bị chéo hóa cổ điển ($P \Lambda P^T$).
+\end{mdframed}
+
+\vspace{0.2cm}
+\begin{mdframed}[linecolor=gray!50, linewidth=3pt, topline=false, bottomline=false, rightline=false, backgroundcolor=black!2, innerleftmargin=10pt, innertopmargin=8pt, innerbottommargin=8pt]
+\textbf{\large \code{SVDDecompositionVisual} và \code{LowRankTheory}} \hfill \textit{Cơ chế xấp xỉ hạng thấp}\\
+\vspace{-0.2cm}\rule{\linewidth}{0.5pt}\vspace{0.2cm}\\
+Thực hiện lệnh bóc tách đa tầng phương trình cực trị $A = U\Sigma V^T$ thành một chuỗi tổng của các ma trận hạng 1 ($A_k$). Lớp \code{LowRankTheory} sau đó triển khai các khối đồ họa logic đóng khung bao bọc để chứng minh đẳng thức tỷ lệ lưu trữ bộ nhớ khi hệ thống chủ động cắt giảm $k$ hạng tử.
+\end{mdframed}
+
+\vspace{0.2cm}
+\begin{mdframed}[linecolor=gray!50, linewidth=3pt, topline=false, bottomline=false, rightline=false, backgroundcolor=black!2, innerleftmargin=10pt, innertopmargin=8pt, innerbottommargin=8pt]
+\textbf{\large \code{SVDImageCompression}} \hfill \textit{Ứng dụng nén ảnh SVD}\\
+\vspace{-0.2cm}\rule{\linewidth}{0.5pt}\vspace{0.2cm}\\
+Ứng dụng giải thuật vào đời sống để phân tách một bức ảnh kỹ thuật số hoàn chỉnh. Khi bậc xấp xỉ $k$ ngày càng tăng lên, các khối ảnh nhiễu được nạp tầng khôi phục dần sắc nét đường bao. Song song đó, thước đo (storage ratio) chạy thời gian thực trên màn hình.
+\end{mdframed}
+
+\subsection{Đánh giá tiêu chí hoàn thành}
+
+Dựa trên các yêu cầu cụ thể đối với phần phân rã ma trận và trực quan hóa, nhóm tự đánh giá kết quả thực hiện Phần 2 như sau:
+
+\begin{table}[H]
+    \centering
+    \renewcommand{\arraystretch}{1.4}
+    \begin{tabular}{|p{4cm}|p{6.5cm}|c|c|}
+        \hline
+        \textbf{Tiêu chí} & \textbf{Mô tả yêu cầu} & \textbf{Mức độ hoàn thành} \\ \hline
+        \textbf{Lý thuyết phân rã} & Trình bày đầy đủ, chính xác công thức  & 100\% \\ \hline
+        \textbf{Cài đặt Python} & Đúng, có kiểm chứng bằng NumPy  & 100\% \\ \hline
+        \textbf{Chéo hóa ma trận} & Cài đặt giá trị riêng và chéo hóa  & 100\% \\ \hline
+        \textbf{Video Manim} & Hoạt ảnh rõ ràng, đủ nội dung  & 100\% \\ \hline
+    \end{tabular}
+    \caption{Đánh giá tiêu chí hoàn thành - Phần 2}
+    \label{tab:criteria_part2}
+\end{table}
+
+% ==================== PHẦN 3 ====================
+\newpage
+\section{Phần 3: Giải Hệ Phương Trình và Phân Tích Hiệu Năng}
+
+\subsection{Các phương pháp cấu hình và giải hệ}
+Nhóm đã triển khai 3 phương pháp tiếp cận chính để giải hệ phương trình $Ax = b$ trong module \code{solvers.py}:
+\begin{enumerate}
+    \item \textbf{Phương pháp trực tiếp - Khử Gauss (Gauss Elimination):} Cài đặt dựa trên thuật toán cốt lõi ở Phần 1 nhưng sử dụng kiểu \code{float} để mô phỏng chính xác chi phí tính toán trong môi trường thực tế, kết hợp Partial Pivoting.
+    \item \textbf{Phương pháp trực tiếp - Phân rã LU:} Tách ma trận $A = LU$. Giải hệ thông qua hai bước thế tiến ($Ly=b$) và thế lùi ($Ux=y$).
+    \item \textbf{Phương pháp lặp - Gauss-Seidel:} 
+    Công thức lặp cho từng phần tử:
+    \begin{equation}
+        x_i^{(k+1)} = \frac{1}{a_{ii}} \left( b_i - \sum_{j=1}^{i-1} a_{ij} x_j^{(k+1)} - \sum_{j=i+1}^{n} a_{ij} x_j^{(k)} \right)
+    \end{equation}
+    Phương pháp lặp này yêu cầu điều kiện hội tụ là ma trận $A$ phải \textit{chéo trội hàng ngặt} (Strictly Diagonally Dominant): $|a_{ii}| > \sum_{j \neq i} |a_{ij}|$.
+\end{enumerate}
+
+\subsection{Đo lường thời gian thực thi (Performance Benchmark)}
+Dựa trên script \code{benchmark.py}, hệ thống tự động sinh các ma trận ngẫu nhiên chéo trội (đảm bảo phương pháp lặp hội tụ) với kích thước $n \in \{50, 100, 200, 500, 1000\}$ để đo thời gian trung bình sau 5 lần chạy độc lập.
+
+Kết quả đo lường cho thấy:
+\begin{itemize}
+    \item \textbf{Khử Gauss và Phân rã LU:} Thời gian tăng đáng kể khi kích thước ma trận đạt mốc 500 và 1000. Độ phức tạp tính toán thực tế bám sát đường lý thuyết $\mathcal{O}(n^3)$. Trong khi LU nhanh hơn một chút ở pha giải hệ nhiều lần, bước phân rã ban đầu vẫn là cổ chai.
+    \item \textbf{Gauss-Seidel:} Thể hiện tốc độ vượt trội ở các ma trận kích thước lớn (nếu thỏa điều kiện hội tụ chéo trội), do chi phí tính toán mỗi vòng lặp chỉ xấp xỉ $\mathcal{O}(n^2)$.
+\end{itemize}
+
+\subsection{Đánh giá tính ổn định số học (Condition Number)}
+Để đánh giá tác động của sai số dấu phẩy động và số điều kiện $\kappa(A)$ lên chất lượng nghiệm, nhóm thực hiện đo đạc sai số tương đối $\frac{||A\hat{x} - b||_2}{||b||_2}$:
+
+\begin{itemize}
+    \item \textbf{Ma trận xác định dương (SPD):} Đây là ma trận "Well-conditioned" (số điều kiện nhỏ). Cả 3 phương pháp Gauss, LU và Gauss-Seidel đều cho sai số tương đối rất nhỏ (cỡ $10^{-14}$ đến $10^{-16}$).
+    \item \textbf{Ma trận Hilbert ($H_{ij} = \frac{1}{i+j+1}$):} Đây là ma trận nổi tiếng về sự "Ill-conditioned" (số điều kiện tăng theo hàm mũ). Dù chỉ với kích thước nhỏ $n=10$, số điều kiện đã lên tới $\approx 10^{13}$. Thực nghiệm cho thấy:
+    \begin{itemize}
+        \item Phương pháp Gauss và LU: Bị mất mát chữ số có nghĩa (Loss of significance), sai số tăng vọt lên mức không thể chấp nhận được do nhiễu số học.
+        \item Phương pháp Gauss-Seidel: Không hội tụ do ma trận Hilbert không thỏa mãn tính chất chéo trội hàng.
+    \end{itemize}
+\end{itemize}
+Kết luận rút ra: Khi giải các bài toán thực tế, không chỉ quan tâm đến tốc độ $\mathcal{O}(n^3)$ mà việc kiểm tra số điều kiện của hệ $\kappa(A)$ là bắt buộc để đảm bảo tính khả tín của nghiệm số.
+
+
+% ==================== KẾT LUẬN ====================
+\newpage
+\section{Kết Luận}
+Thông qua Đồ án 1, nhóm đã hoàn thiện toàn diện các kỹ thuật tính toán khoa học cơ bản từ lý thuyết đến thực hành:
+\begin{itemize}
+    \item \textbf{Về thuật toán:} Triển khai thành công các giải thuật lõi (Khử Gauss, Phân rã SVD/LU/QR, Chéo hóa ma trận) hoàn toàn bằng ngôn ngữ Python cơ bản mà không phụ thuộc vào thư viện số học. Khắc phục triệt để sai số với \code{Fraction}.
+    \item \textbf{Về hình học \& Ứng dụng:} Sử dụng Manim để xây dựng mô hình trực quan hóa giải thích bản chất thực sự của không gian vector thông qua phân rã SVD, đồng thời hiện thực hóa thành công thuật toán nén ảnh bằng xấp xỉ hạng thấp.
+    \item \textbf{Về phân tích thực nghiệm:} Thấu hiểu được chi phí tính toán $\mathcal{O}(n^3)$, điều kiện hội tụ của phương pháp lặp, và đặc biệt là sức mạnh tàn phá của ma trận bị điều kiện kém (Ill-conditioned) đối với sai số làm tròn.
+\end{itemize}
+Trong quá trình thực hiện, nhóm gặp một số khó khăn ở việc tối ưu thời gian chạy của Python thuần cho các kích thước ma trận $n \ge 1000$ và đồng bộ hóa frame rate cho video Manim ở các ma trận lớn. Tuy nhiên, các vấn đề đều đã được giải quyết bằng việc tối ưu hóa vòng lặp mảng một chiều và giảm thiểu số phép nhân dư thừa.
+
+% ==================== TÀI LIỆU THAM KHẢO ====================
+\newpage
+\begin{thebibliography}{99}
+\bibitem{strang2023} 
+Gilbert Strang. \textit{Introduction to Linear Algebra}, 6th ed. Wellesley-Cambridge Press, 2023.
+
+\bibitem{trefethen1997} 
+Lloyd N. Trefethen \& David Bau III. \textit{Numerical Linear Algebra}. SIAM, 1997.
+
+\bibitem{golub2013} 
+Gene H. Golub \& Charles F. Van Loan. \textit{Matrix Computations}, 4th ed. Johns Hopkins University Press, 2013.
+
+\bibitem{manim} 
+Manim Community Developers. \textit{Manim – Mathematical Animation Framework}, v0.18. 2024. \url{https://docs.manim.community}
+
+\bibitem{3b1b} 
+3Blue1Brown. \textit{Essence of Linear Algebra}. YouTube, 2016. \url{https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab}
+\end{thebibliography}
 
 \label{page:lastpage}
 \end{document}
