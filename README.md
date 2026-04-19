@@ -37,7 +37,7 @@ Project1_TUDTK/
 │   ├── rank_basis.py       # Tìm hạng và cơ sở không gian con
 │   └── demo_p1.ipynb       # Notebook chạy thử nghiệm kết quả Phần 1
 ├── part2/                  # Phân rã ma trận & Hoạt ảnh (Animation)
-│   ├── decomposition.py    # Thuật toán LU, QR, SVD
+│   ├── decomposition.py    # Thuật toán SVD
 │   ├── diagonalization.py  # Thuật toán chéo hóa ma trận
 │   └── manim_visual.py     # Script lập trình video bằng Manim
 ├── part3/                  # Phân tích hiệu năng & Benchmark
