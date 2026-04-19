@@ -88,7 +88,7 @@ python part2/diagonalization.py
 ### 3. Xem và Render video hoạt ảnh (Phần 2)
 Video kết quả đã được lưu sẵn trong thư mục `part2/`. Nếu muốn render lại bằng code Manim:
 ```bash
-manim -pql part2/manim_visual.py MatrixScene
+python part2/manim_scene.py 
 ```
 
 ---
