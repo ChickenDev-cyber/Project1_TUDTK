@@ -1,8 +1,13 @@
-# Đồ án 1: Ma Trận và Cơ Sở của Tính Toán Khoa Học 🧮
+# Đồ án 1: Ma Trận và Cơ Sở của Tính Toán Khoa Học 
 
 **Môn học:** Toán Ứng Dụng và Thống Kê (MTH00051)  
 **Trường:** Đại học Khoa học Tự nhiên, ĐHQG-HCM (FIT-HCMUS)  
-**Sinh viên thực hiện:** Trần Công Quang  
+**Sinh viên thực hiện:** 
+24120151 Phạm Minh Trọng
+24120033 Đào Tiến Đạt
+24120167 Bùi Nhật Bảo
+24120199 Trịnh Kim Mai
+24120221 Trần Công Quang
 
 ---
 
@@ -55,11 +60,9 @@ Mở Terminal/Command Prompt tại thư mục dự án và chạy lệnh:
 ```bash
 pip install -r requirements.txt
 ```
-*Lưu ý: Các thư viện như Numpy chỉ được sử dụng để sinh dữ liệu và đối chiếu kết quả. Toàn bộ logic giải thuật đều được tự cài đặt thủ công.*
-
 ---
 
-## 🚀 Hướng dẫn Chạy Code & Chấm điểm
+## Hướng dẫn Chạy Code & Chấm điểm
 
 ### 1. Xem kết quả thực nghiệm (Phần 1 & 3)
 Cách nhanh nhất để kiểm tra là sử dụng các file **Jupyter Notebook**. Giảng viên có thể mở các file này trực tiếp trong VS Code hoặc Google Colab:
