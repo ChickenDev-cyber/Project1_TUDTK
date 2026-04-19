@@ -62,17 +62,23 @@
 \definecolor{termWhite}{HTML}{F8F8F2} 
 \definecolor{termGray}{HTML}{A9B7C6} 
 
+\definecolor{termLightBG}{HTML}{F5F7FA} 
+\definecolor{termLightBorder}{HTML}{E2E8F0}
+\definecolor{termLightText}{HTML}{334155} 
+
 \lstdefinestyle{terminalstyle}{
-    basicstyle=\ttfamily\scriptsize\color{termWhite},
-    backgroundcolor=\color{termBG},
+    basicstyle=\ttfamily\footnotesize\color{termLightText},
+    backgroundcolor=\color{termLightBG},
     breaklines=true,
     columns=fullflexible,
     keepspaces=true,
     showstringspaces=false,
     frame=single,
-    rulecolor=\color{termBG},
-    framesep=4pt,
-    numbers=none
+    rulecolor=\color{termLightBorder},
+    framesep=6pt,
+    numbers=none,
+    xleftmargin=2pt,
+    xrightmargin=2pt
 }
 
 \lstdefinestyle{pythonstyle}{
@@ -107,7 +113,7 @@
 \fancyhead[L]{
  \begin{tabular}{rl}
     \begin{picture}(25,15)(0,0)
-    \put(0,-8){\includegraphics[width=8mm, height=8mm]{khtn.png}}
+    \put(0,-8){\includegraphics[width=8mm, height=8mm]{image/khtn.png}}
     \end{picture}&
 	\begin{tabular}{l}
 		\textbf{\bf \ttfamily Trường đại học Khoa Học Tự Nhiên TP.HCM}\\
@@ -189,7 +195,7 @@ KHOA CÔNG NGHỆ THÔNG TIN
 
 \begin{figure}[h!]
 \begin{center}
-\includegraphics[width=5cm]{khtn.png}
+\includegraphics[width=5cm]{image/khtn.png}
 \end{center}
 \end{figure}
 
@@ -234,7 +240,6 @@ KHOA CÔNG NGHỆ THÔNG TIN
 \newpage
 
 % ==================== LỜI NÓI ĐẦU ====================
-\section*{Lời Nói Đầu}
 \addcontentsline{toc}{section}{Lời Nói Đầu}
 Trong bối cảnh bùng nổ của trí tuệ bhân tạo và khoa học dữ liệu, nền tảng đại số tuyến tính và tính toán Khoa học đóng vai trò đặc biệt quan trọng, là điều kiện trong thể thiếu trong mọi hệ thống học máy, nén dữ liệu và tối ưu hóa hiện đại. Đồ án \textbf{"Ma Trận và Cơ Sở của Tính Toán Khoa Học"} không chỉ đơn thuần là một bài tập lớn, mà còn là cơ hội để chúng em tiếp cận được những kiến thức mới hơn, biết được ứng dụng của đại số tuyến tính vào trong cuộc sống, xây dựng được nền tảng để bước vào chuyên ngành
 
@@ -244,7 +249,6 @@ Dù đã nỗ lực hết sức và nghiêm túc trong công việc hoàn thiệ
 \newpage
 
 % ==================== LỜI CAM ĐOAN ====================
-\section*{Lời Cam Đoan}
 \addcontentsline{toc}{section}{Lời Cam Đoan}
 Chúng em, Nhóm 02, xin cam đoan đây là đồ án tự nghiên cứu và cài đặt của cả nhóm. Các dòng mã nguồn, phân tích thuật toán, cấu trúc dữ liệu và logic xử lý đều được nhóm tự cài đặt từ đầu bằng Python theo đúng yêu cầu của đồ án, hoàn toàn không sử dụng các hàm có sẵn của các thư viện như NumPy/SciPy để gian lận
 
@@ -259,7 +263,6 @@ Mọi kết quả kiểm thử, số liệu thực nghiệm, video trực quan h
 \newpage
 
 % ==================== BẢNG PHÂN CÔNG CÔNG VIỆC ====================
-\section*{Bảng Phân Công Công Việc}
 \addcontentsline{toc}{section}{Bảng Phân Công Công Việc}
 \begin{table}[H]
     \centering
@@ -267,11 +270,11 @@ Mọi kết quả kiểm thử, số liệu thực nghiệm, video trực quan h
     \begin{tabular}{|c|p{4cm}|p{6.5cm}|c|}
         \hline
         \textbf{STT} & \textbf{Họ và Tên} & \textbf{Nhiệm vụ phân công} & \textbf{Hoàn thành} \\ \hline
-        1 & Phạm Minh Trọng \newline \textbf{(24120151 - Leader)} & Quản lý tiến độ, dựng kịch bản, trực quan hóa bằng Manim (part2), hoàn thiện báo cáo & 100\% \\ \hline
-        2 & Đào Tiến Đạt \newline \textbf{(24120033)} &  & 100\% \\ \hline
-        3 & Bùi Nhật Bảo \newline \textbf{(24120167)} & Dựng kịch bản, trực quan hóa bằng Manim (part2), hoàn thiện báo cáo & 100\% \\ \hline
-        4 & Trịnh Kim Mai \newline \textbf{(24120199)} &  & 100\% \\ \hline
-        5 & Trần Công Quang \newline \textbf{(24120221)} & Cài đặt chéo hóa và SVD bằng Python,  & 100\% \\ \hline
+        1 & Phạm Minh Trọng \newline \textbf{(24120151 - Leader)} & Quản lý tiến độ làm việc, dựng kịch bản, trực quan hóa bằng Manim (part2), lồng giọng vào video, hoàn thiện báo cáo & 100\% \\ \hline
+        2 & Đào Tiến Đạt \newline \textbf{(24120033)} & Cài đặt hàm giải hệ phương trình (\code{gaussian.py}), nghịch đảo ma trận (\code{inverse.py}) và phân rã LU (part3). Xây dựng \code{.ipynb} part1 & 100\% \\ \hline
+        3 & Bùi Nhật Bảo \newline \textbf{(24120167)} & Dựng kịch bản, trực quan hóa bằng Manim (part2), viết script cho video, hoàn thiện báo cáo & 100\% \\ \hline
+        4 & Trịnh Kim Mai \newline \textbf{(24120199)} & Xây dựng hàm tính định thức (\code{determinant.py}) và hạng, cơ sở (rank\_basis), tạo hàm xây dựng ma trận SPD và Hilbert (part 3). Chỉnh sửa và kiểm thử \code{.ipynb} part 1. & 100\% \\ \hline
+        5 & Trần Công Quang \newline \textbf{(24120221)} & Cài đặt chéo hóa và phân rã với kỹ thuật SVD, xây dựng hàm gauss seidel và phân tích thời gian chương trình thực thi. Hoàn thiện phần phân tích (\code{.ipynb}) part 3  & 100\% \\ \hline
     \end{tabular}
     \caption{Chi tiết phân công nhiệm vụ của các thành viên trong nhóm}
 \end{table}
@@ -524,7 +527,6 @@ if AM > 1:
 
 \textbf{B. Phân rã RQ $\rightarrow$ QR hội tụ trị riêng}\\
 Áp dụng phép lặp trực giao Gram-Schmidt biến $A_k = Q \cdot R$, nhân ngược $A_{k+1} = R \cdot Q$. Cấu trúc này dồn phần tử ngoài đường chéo về 0, chừa lại các trị riêng ròng ở đường chéo trung tâm. Các chiều không gian sau đó được quét bằng \code{rank\_and\_basis}.
-
 \subsection{Phân rã Giá trị suy biến (SVD)}
 \subsubsection{Cơ sở lý thuyết}
 Phân rã SVD là phương pháp phân tích tổng quát áp dụng cho mọi ma trận $A \in \mathbb{R}^{m \times n}$. Ma trận $A$ được phân tích thành:
@@ -558,9 +560,143 @@ M[p][q] = M[q][p] = 0.0 # Clear hoan toan khoi ban do!
 Sau vòng lặp đưa $M[p][q]$ về 0, $M$ lộ ra ma trận đường chéo gồm các $\lambda_i$. Thuật toán kết thúc khi $\Sigma$ (bằng $\sqrt{\lambda_i}$) và dựng trục suy biến trái $U$ ($u_i = \frac{A v_i}{\sigma_i}$) độc lập hoàn toàn với thư viện.
 
 \subsection{Ứng dụng và Trực quan hóa với Manim}
-\subsubsection{Ứng dụng}
 
-\subsubsection{Trực quan hóa}
+\subsubsection{Ứng dụng trong Hệ thống gợi ý (Recommendation Systems)}
+
+Hệ thống gợi ý là một ứng dụng tiêu biểu của phân rã SVD nhằm cá nhân hóa trải nghiệm người dùng trên các nền tảng số hiện đại. Thay vì chỉ nhìn vào các đánh giá trực tiếp, thuật toán này giúp khám phá những mối liên hệ ngầm giữa sở thích khách hàng và đặc tính sản phẩm thông qua việc trích xuất các yếu tố tiềm ẩn. Đây là công cụ mạnh mẽ để xử lý dữ liệu thưa thớt, giúp dự đoán nhu cầu và mang lại những đề xuất chính xác nhất cho người dùng.
+
+\subsubsubsection{Ma trận Người dùng - Mục tiêu (User-Item Matrix)}
+Trong các hệ thống thương mại điện tử hoặc dịch vụ xem phim trực tuyến, dữ liệu về sự tương tác của người dùng thường được biểu diễn dưới dạng một ma trận $A \in \mathbb{R}^{m \times n}$. Trong đó:
+\begin{itemize}
+    \item $m$ là số lượng người dùng (users).
+    \item $n$ là số lượng sản phẩm hoặc bộ phim (items).
+    \item Phần tử $a_{ij}$ đại diện cho mức độ yêu thích (rating) của người dùng $i$ đối với sản phẩm $j$.
+\end{itemize}
+Thách thức lớn nhất là ma trận này thường rất thưa (sparse) vì một người dùng chỉ có thể xem hoặc đánh giá một phần rất nhỏ trong hàng triệu sản phẩm hiện có. Mục tiêu của hệ thống gợi ý là dự đoán các giá trị còn thiếu trong ma trận để đưa ra gợi ý phù hợp.
+
+\begin{figure}[h]
+    \centering
+    % Ghi chú: Chèn hình minh họa ma trận User-Item với nhiều ô trống (NaN/?)
+    \includegraphics[width=0.8\textwidth]{image/rating.png}
+    \caption{Ma trận User-Item với các giá trị đánh giá còn thiếu.}
+\end{figure}
+
+\subsubsubsection{Cơ chế lọc dựa trên SVD (SVD-based Collaborative Filtering)}
+Bằng cách áp dụng phân rã $A \approx U_k \Sigma_k V_k^T$, SVD giúp chúng ta trích xuất các "yếu tố tiềm ẩn" (latent factors) quyết định hành vi người dùng:
+\begin{itemize}
+    \item Ma trận $U_k$ (kích thước $m \times k$): Đại diện cho sở thích của người dùng đối với các đặc tính ẩn.
+    \item Ma trận $V_k^T$ (kích thước $k \times n$): Đại diện cho mức độ sở hữu các đặc tính ẩn của từng sản phẩm.
+    \item Ma trận $\Sigma_k$: Trọng số của các yếu tố ẩn này.
+\end{itemize}
+Khi đó, giá trị dự đoán $\hat{a}_{ij}$ cho một ô trống bất kỳ được tính bằng tích vô hướng của vector đại diện người dùng và vector đặc trưng sản phẩm.
+
+\subsubsubsection{Quy trình thực hiện gợi ý}
+\begin{enumerate}
+    \item \textbf{Khởi tạo:} Điền các giá trị mặc định (thường là trung bình đánh giá) vào các ô trống trong ma trận $A$.
+    \item \textbf{Phân rã:} Thực hiện SVD trên ma trận đã điền để chọn ra $k$ thành phần quan trọng nhất[cite: 171].
+    \item \textbf{Dự đoán:} Tính toán ma trận xấp xỉ $A_k = U_k \Sigma_k V_k^T$. Các giá trị tại các vị trí trước đó bằng 0/trống giờ đây sẽ có một con số dự đoán.
+    \item \textbf{Gợi ý:} Sắp xếp các giá trị dự đoán này theo thứ tự giảm dần và chọn ra Top-N sản phẩm có điểm cao nhất để gửi đến người dùng.
+\end{enumerate}
+
+\subsubsubsection{Ưu điểm và hạn chế}
+\begin{itemize}
+    \item \textbf{Ưu điểm:} Giảm chiều dữ liệu mạnh mẽ, loại bỏ nhiễu và tìm ra được những mối liên hệ ngầm giữa các bộ phim mà các phương pháp so sánh trực tiếp không thấy được.
+    \item \textbf{Hạn chế:} Vấn đề "Cold Start" (Người dùng mới hoặc sản phẩm mới chưa có dữ liệu đánh giá) và chi phí tính toán khi số lượng người dùng tăng lên hàng triệu người.
+\end{itemize}
+
+\begin{figure}[h]
+    \centering
+    % Ghi chú: Chèn biểu đồ hoặc hình minh họa quá trình nén từ User-Item Matrix sang Latent Factors
+    \includegraphics[width=0.8\textwidth]{image/rating_1.png}
+    \caption{Mô hình hóa sở thích người dùng thông qua các yếu tố tiềm ẩn bằng SVD.}
+\end{figure}
+
+
+
+\subsubsection{Ứng dụng trong nén ảnh kỹ thuật số}
+
+Nén ảnh là một trong những ứng dụng trực quan và hiệu quả nhất của phân rã SVD trong lĩnh vực đại số tuyến tính số. Kỹ thuật này giúp chuyển đổi các ma trận dữ liệu hình ảnh phức tạp thành những thành phần rút gọn, từ đó loại bỏ thông tin dư thừa mà vẫn giữ được các đặc trưng cốt lõi nhất. Đây là giải pháp tối ưu để cân bằng giữa dung lượng lưu trữ và chất lượng hình ảnh trong các bài toán thực tế
+
+\subsubsubsection{Biểu diễn ảnh dưới dạng ma trận}
+Trong tính toán khoa học, một bức ảnh kỹ thuật số đa mức xám (grayscale) được xem như một ma trận $A \in \mathbb{R}^{m \times n}$, trong đó $m, n$ lần lượt là số pixel chiều dọc và chiều ngang. Mỗi phần tử $a_{ij}$ đại diện cho cường độ sáng của điểm ảnh. Đối với ảnh màu, dữ liệu được tách thành ba ma trận tương ứng với các kênh màu R (Red), G (Green) và B (Blue). Việc nén ảnh bằng SVD dựa trên việc xấp xỉ ma trận gốc bằng một ma trận có hạng (rank) thấp hơn để giảm không gian lưu trữ.
+
+\begin{figure}[h]
+    \centering
+    % Ghi chú: Chèn ảnh minh họa ma trận hóa một bức ảnh (Pixel matrix)
+    \includegraphics[width=1\textwidth]{image/image_1.PNG}
+    \caption{Minh họa cấu trúc ma trận của ảnh kỹ thuật số.}
+\end{figure}
+
+\subsubsubsection{Cơ sở toán học với Xấp xỉ hạng thấp}
+Phân rã SVD của ma trận $A$ được định nghĩa là $A = U\Sigma V^T$. Phép nhân này có thể được viết lại dưới dạng tổng của $p = \min(m, n)$ ma trận hạng 1:
+\begin{equation}
+A = \sigma_1 u_1 v_1^T + \sigma_2 u_2 v_2^T + \dots + \sigma_p u_p v_p^T = \sum_{i=1}^{p} \sigma_i u_i v_i^T
+\end{equation}
+Trong đó các giá trị suy biến được sắp xếp giảm dần: $\sigma_1 \ge \sigma_2 \ge \dots \ge \sigma_p \ge 0$. Ý tưởng cốt lõi của việc nén ảnh là chỉ giữ lại $k$ giá trị suy biến lớn nhất ($k \ll p$):
+\begin{equation}
+A_k = \sum_{i=1}^{k} \sigma_i u_i v_i^T
+\end{equation}
+Theo định lý Eckart-Young, $A_k$ là ma trận xấp xỉ tốt nhất cho $A$ trong số các ma trận có hạng $k$ (xét theo chuẩn Frobenius).
+
+\subsubsubsection{Phân tích hiệu quả lưu trữ}
+Để lưu trữ ma trận $A$, ta cần $m \times n$ đơn vị dữ liệu. Tuy nhiên, với xấp xỉ $A_k$, ta chỉ cần lưu trữ các thành phần:
+\begin{itemize}
+    \item $k$ vector trong $U$: $m \times k$ phần tử.
+    \item $k$ giá trị suy biến trong $\Sigma$: $k$ phần tử.
+    \item $k$ vector trong $V$: $n \times k$ phần tử.
+\end{itemize}
+Tổng số phần tử cần lưu trữ là $k(m + n + 1)$. Tỷ lệ nén được tính bằng:
+\begin{equation}
+\text{Compression Ratio} = \frac{m \times n}{k(m + n + 1)}
+\end{equation}
+
+Trong thực tế, máy tính thường lưu trữ mỗi điểm ảnh (pixel) dưới định dạng số nguyên không dấu 8-bit (\texttt{uint8}), tương ứng với mức dung lượng 1 byte cho mỗi phần tử của ma trận. Do đó, thay vì tiêu tốn $m \times n$ bytes cho toàn bộ ảnh gốc, việc lưu trữ dưới dạng nén chỉ đòi hỏi $k(m+n+1)$ bytes. Tỷ lệ dung lượng lưu trữ thực tế (Storage Ratio) được xác định như sau:\begin{equation}\text{Storage Ratio} = \frac{k(m+n+1) \text{ bytes}}{m \times n \text{ bytes}} = \frac{k(m+n+1)}{m \times n}\end{equation}
+\subsubsubsection{Đánh giá thực nghiệm và Kết quả trực quan}
+Việc chọn giá trị $k$ quyết định sự cân bằng giữa độ nét và dung lượng:
+\begin{itemize}
+    \item $k$ quá nhỏ: Ảnh bị mờ, chỉ giữ lại các khối sáng tối đại thể.
+    \item $k$ vừa đủ: Ảnh tái tạo giữ được các đặc trưng quan trọng, mắt người khó phân biệt với ảnh gốc nhưng dung lượng giảm đáng kể.
+\end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    
+    % Hàng 1
+    \begin{subfigure}[b]{0.35\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{image/CMP_RGB_0.jpg}
+        \caption{$k = 5$ (19.32 KB)} 
+    \end{subfigure}
+    \hspace{1cm} % Khoảng cách chiều ngang giữa 2 ảnh
+    \begin{subfigure}[b]{0.35\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{image/CMP_RGB_2.jpg}
+        \caption{$k = 20$ (38.64 KB)}
+    \end{subfigure}
+    
+    \vspace{0.5cm} % Khoảng cách chiều dọc giữa 2 hàng
+
+    % Hàng 2
+    \begin{subfigure}[b]{0.35\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{image/CMP_RGB_3.jpg}
+        \caption{$k = 50$ (77.28 KB)}
+    \end{subfigure}
+    \hspace{1cm}
+    \begin{subfigure}[b]{0.35\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{image/messi22.jpg}
+        
+        \caption{$k = 583(max)$  (1255.38 KB)}
+    \end{subfigure}
+
+    \caption{Kết quả nén ảnh với các giá trị $k$ khác nhau.}
+\end{figure}
+
+\subsubsubsection{Nhận xét}
+Phương pháp nén bằng SVD rất mạnh mẽ trong việc trích xuất đặc trưng và khử nhiễu. Tuy nhiên, trong thực tế, chi phí tính toán phân rã SVD cho ma trận lớn khá cao, do đó nó thường được ứng dụng trong phân tích dữ liệu ảnh hoặc nén các vùng ảnh đặc thù hơn là dùng làm chuẩn nén phổ thông như JPEG.
+
+\subsubsection{Trực quan hóa với Manim về ứng dụng nén ảnh của SVD}
 Để biến các khối công thức đại số tuyến tính trừu tượng trở nên trực quan và dễ tiếp cận, nhóm đã ứng dụng thư viện đồ họa toán học \textbf{Manim} để xây dựng công cụ đồ họa dạng video. Mã nguồn kịch bản phim được cấu trúc đối tượng hóa thành các phân cảnh (\code{Scene}) như sau:
 
 \vspace{0.3cm}
@@ -605,6 +741,50 @@ Thực hiện lệnh bóc tách đa tầng phương trình cực trị $A = U\Si
 Ứng dụng giải thuật vào đời sống để phân tách một bức ảnh kỹ thuật số hoàn chỉnh. Khi bậc xấp xỉ $k$ ngày càng tăng lên, các khối ảnh nhiễu được nạp tầng khôi phục dần sắc nét đường bao. Song song đó, thước đo (storage ratio) chạy thời gian thực trên màn hình.
 \end{mdframed}
 
+\subsubsection{Kết xuất và gộp video bằng FFmpeg}
+Trong quá trình sử dụng Manim để render các \code{Scene}, mỗi đoạn mã phân cảnh sẽ được xuất ra thành một tệp video \code{.mp4} rời rạc. Để tạo ra một video truyền đạt nội dung xuyên suốt, nhóm đã ứng dụng phần mềm xử lý đa phương tiện \textbf{FFmpeg} nhằm nối các tệp video này lại với nhau mà không làm thay đổi chất lượng nội dung.
+
+\textbf{1. Cài đặt FFmpeg:}\\
+Trình xử lý đa phương tiện FFmpeg là nền tảng mã nguồn mở hoạt động dựa trên dòng lệnh (Command Line). Để hệ thống có thể gọi được lệnh \code{ffmpeg} ở bất kỳ thư mục nào, nhóm đã thực hiện cài đặt qua các bước sau:
+
+\begin{itemize}
+    \setlength\itemsep{0.3em}
+    \item \textbf{Bước 1 (Tải mã nguồn):} Truy cập trang chủ \url{https://ffmpeg.org/} và tải xuống bản biên dịch sẵn (pre-built) dạng tập tin nén (.zip) dành cho Windows.
+    \item \textbf{Bước 2 (Giải nén):} Mở tập tin ZIP và giải nén vào một vị trí cố định trên máy tính (ví dụ: \code{C:\textbackslash FFmpeg}).
+    \item \textbf{Bước 3 (Thiết lập biến môi trường):} 
+    \begin{itemize}
+        \item Mở chức năng \textbf{Environment Variables} trên hệ điều hành Windows.
+        \item Tại mục \textit{System variables}, tìm và chọn nút \textbf{Edit} trên biến \textbf{Path}.
+        \item Nhấn \textbf{New} và thêm đường dẫn trỏ trực tiếp đến thư mục \code{bin/} của FFmpeg.
+    \end{itemize}
+    \item \textbf{Bước 4 (Kiểm tra hệ thống):} Mở Terminal (như Command Prompt hoặc PowerShell) và chạy lệnh \code{ffmpeg -version}. Nếu bảng thông tin phiên bản xuất hiện, quá trình liên kết đã thành công.
+\end{itemize}
+
+\textbf{2. Quá trình ghép video tuần tự (Concatenation):}\\
+Tiến trình kết xuất các luồng video phân mảnh của Manim trải qua hai bước:
+\begin{enumerate}[(a)]
+    \item \textbf{Tạo tệp cấu hình danh sách video:} Nhóm khởi tạo một tệp văn bản \code{videos.txt} chứa danh sách các video thành phần muốn gộp với cú pháp \code{file 'tên\_video.mp4'}, được đặt tại chính thư mục lưu trữ các video và liệt kê theo trình tự xuất hiện của cấu trúc kịch bản phân cảnh:
+\begin{lstlisting}[style=terminalstyle]
+file 'Section1_IntroProblem.mp4'
+file 'MatrixDiagonalization.mp4'
+file 'Section23_Theory_And_GeometricSVD.mp4'
+file 'SVDAndDiagonalization.mp4'
+file 'SVDDecompositionVisual.mp4'
+file 'SVDImageCompression.mp4'
+\end{lstlisting}
+
+    \item \textbf{Thực thi lệnh ghép nối nguyên bản không tái tạo (demuxer):}\\Thay vì mã hóa lại video (re-encode) gây mất mát chất lượng đồ họa pixel cũng như tiêu tốn rất nhiều thời gian phân giải bộ đệm, nhóm quyết định sử dụng chế độ truyền tải \code{concat demuxer} (copy trực tiếp luồng stream âm thanh và video của Manim) với các cờ sau:
+\begin{lstlisting}[style=terminalstyle]
+ffmpeg -f concat -safe 0 -i videos.txt -c copy final_video.mp4
+\end{lstlisting}
+    \begin{itemize}
+        \item \code{-f concat}: Định dạng tệp nguồn đi vào là danh sách định tuyến phân mảnh text.
+        \item \code{-safe 0}: Hủy kiểm soát cờ an toàn liên quan bảo mật đường dẫn tuyệt đối/tương đối.
+        \item \code{-c copy}: Cờ đặc tả codec tiến hành Stream Copy 100\% lưu lượng pixel gốc sang siêu bộ đệm đầu ra \code{demo\_video.mp4} mà không cần sử dụng bộ tái định dạng (re-rendering).
+    \end{itemize}
+\end{enumerate}
+Kết thúc tiến trình, nhóm đã xuất bản thành công dạng thức video cuối cùng với tốc độ khung hình và dải màu giống khuôn mẫu Manim một cách liền mạch.
+
 \subsection{Đánh giá tiêu chí hoàn thành}
 
 Dựa trên các yêu cầu cụ thể đối với phần phân rã ma trận và trực quan hóa, nhóm tự đánh giá kết quả thực hiện Phần 2 như sau:
@@ -628,40 +808,200 @@ Dựa trên các yêu cầu cụ thể đối với phần phân rã ma trận v
 \newpage
 \section{Phần 3: Giải Hệ Phương Trình và Phân Tích Hiệu Năng}
 
-\subsection{Các phương pháp cấu hình và giải hệ}
-Nhóm đã triển khai 3 phương pháp tiếp cận chính để giải hệ phương trình $Ax = b$ trong module \code{solvers.py}:
+\subsection{Mục tiêu thực nghiệm}
+Nội dung này tập trung vào việc đánh giá, so sánh và đối chiếu các thuật toán giải hệ phương trình tuyến tính $Ax = b$ đã được nhóm tự cài đặt bằng Python. Các khía cạnh được khảo sát bao gồm:
+\begin{itemize}
+    \item \textbf{Độ phức tạp tính toán:} Kiểm chứng sự tương quan giữa thời gian thực thi thực tế và độ phức tạp lý thuyết $O(n^3)$ của các phương pháp trực tiếp.
+    \item \textbf{Độ ổn định số học:} Quan sát hành vi của thuật toán khi đối mặt với các hệ phương trình có số điều kiện $\kappa(A)$ lớn (ill-conditioned).
+    \item \textbf{Khả năng hội tụ:} Đánh giá tốc độ và điều kiện hội tụ của phương pháp lặp trong môi trường thực nghiệm.
+\end{itemize}
+
+\subsection{Chi tiết thiết kế và Cài đặt thuật toán}
+
+\subsubsection{Chiến lược chọn phần tử chốt (Partial Pivoting)}
+Để đảm bảo tính ổn định số học và tránh hiện tượng chia cho số gần bằng $0$, nhóm đã áp dụng kỹ thuật \textit{Partial Pivoting} trong Khử Gauss. Tại mỗi bước khử $k$, thuật toán thực hiện tìm hàng $p$ sao cho $|a_{pk}| = \max_{k \le i \le n} |a_{ik}|$, sau đó hoán đổi hàng $k$ và $p$. Điều này giúp giảm thiểu tối đa sai số làm tròn tích lũy trong quá trình khử.
+
+
+\begin{lstlisting}[language=Python, style=pythonstyle, caption={Chọn pivot lớn nhất theo trị tuyệt đối}]
+for i in range(r + 1, n):
+    if abs(M[i][c_idx]) > abs(M[p][c_idx]):
+        p = i
+\end{lstlisting}
+
+
+
+\subsubsection{Tối ưu hóa Phân rã LU}
+Phương pháp LU được cài đặt theo dạng Doolittle (không pivot), tách rời chi phí phân rã $O(n^3)$ và chi phí giải hệ $O(n^2)$. Đây là kiến trúc tối ưu khi cần xử lý nhiều vector $b$ trên cùng một ma trận hệ số $A$.
+
+
+\begin{lstlisting}[language=Python, style=pythonstyle, caption={Cập nhật ma trận L và U}]
+U[i][k] = A[i][k] - sum_lu
+L[k][i] = (A[k][i] - sum_lu) / U[i][i]
+\end{lstlisting}
+
+Tuy nhiên, do không sử dụng pivoting, phương pháp có thể mất ổn định khi các phần tử trên đường chéo của $U$ tiến gần về $0$.
+
+\subsubsection{Cơ chế dừng của phương pháp lặp Gauss-Seidel}
+Thuật toán lặp được thiết kế với điều kiện dừng dựa trên chuẩn Euclid:
+\begin{equation}
+    \|x^{(k)} - x^{(k-1)}\|_2 < 10^{-6}
+\end{equation}
+
+
+
+\begin{lstlisting}[language=Python, style=pythonstyle, caption={Cập nhật nghiệm Gauss-Seidel}]
+x[i] = (b[i] - sigma) / A[i][i]
+\end{lstlisting}
+
+Ngoài ra, chương trình kiểm tra điều kiện chéo trội và đưa ra cảnh báo nếu không đảm bảo hội tụ.
+
+\subsection{Kiểm chứng nghiệm (Solution Verification)}
+
+Để đảm bảo tính đúng đắn của các thuật toán, nhóm tiến hành so sánh nghiệm thu được với thư viện chuẩn \texttt{NumPy}.
+
+
+\begin{lstlisting}[language=Python, style=pythonstyle]
+numpy.linalg.solve(A, b)
+\end{lstlisting}
+
+Kết quả cho thấy:
+\begin{itemize}
+    \item Với các ma trận điều kiện tốt (SPD, chéo trội), sai số tương đối đều nhỏ hơn $10^{-12}$.
+    \item Các phương pháp trực tiếp (Gauss, LU) đạt độ chính xác tương đương NumPy.
+    \item Gauss-Seidel có sai số lớn hơn ($10^{-6} \rightarrow 10^{-8}$) do bản chất lặp xấp xỉ.
+\end{itemize}
+
+\subsection{Cơ sở lý thuyết về tính ổn định và sai số}
+
+\subsubsection{Số điều kiện (Condition Number)}
+\begin{equation}
+    \kappa(A) = \|A\| \cdot \|A^{-1}\|
+\end{equation}
+
+Sai số nghiệm bị chặn bởi:
+\begin{equation}
+    \frac{\|x - \hat{x}\|}{\|x\|} \le \kappa(A)\frac{\|\delta b\|}{\|b\|}
+\end{equation}
+
+Khi $\kappa(A)$ lớn, sai số đầu vào nhỏ có thể bị khuếch đại mạnh.
+
+\subsubsection{Điều kiện hội tụ Gauss-Seidel}
+\begin{equation}
+    |a_{ii}| > \sum_{j \ne i} |a_{ij}|
+\end{equation}
+
+\subsection{Phân tích hiệu năng thời gian thực thi}
+
+\subsubsection{Kịch bản thực nghiệm}
+\begin{itemize}
+    \item Ma trận chéo trội kích thước $n = 50 \rightarrow 1000$
+    \item Nghiệm chuẩn $x = (1, \dots, 1)$
+    \item $b = Ax$
+    \item Thời gian trung bình sau 5 lần chạy
+\end{itemize}
+
+\subsubsection{Kết quả và Đánh giá độ phức tạp}
+
+\begin{table}[h!]
+\centering
+\caption{Thời gian thực thi trung bình (giây)}
+\begin{tabular}{lrrr}
+\toprule
+\textbf{$n$} & \textbf{Gauss} & \textbf{LU} & \textbf{Gauss-Seidel} \\
+\midrule
+50   & 0.0067 & 0.0048 & 0.0031 \\
+100  & 0.0490 & 0.0339 & 0.0126 \\
+200  & 0.3318 & 0.2782 & 0.0492 \\
+500  & 5.1628 & 4.1701 & 0.3647 \\
+1000 & 42.2038 & 47.1178 & 1.3831 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+
+\begin{figure}[h!]
+    \centering
+    % Đồ thị thời gian (Ảnh trên)
+    \begin{subfigure}[b]{0.8\textwidth}
+        \centering
+        \includegraphics[width=0.8\textwidth]{image/time_plot.png}
+        \caption{Đồ thị Log-Log so sánh thời gian thực thi (xác nhận độ phức tạp $O(n^3)$).}
+        \label{fig:time_complexity}
+    \end{subfigure}
+    
+    \vspace{0.8cm} % Khoảng cách giữa hai ảnh
+
+    % Đồ thị sai số (Ảnh dưới)
+    \begin{subfigure}[b]{0.8\textwidth}
+        \centering
+        \includegraphics[width=0.8\textwidth]{image/error_plot.png}
+        \caption{Đánh giá sai số phần dư tương đối trên hệ ma trận điều kiện tốt.}
+        \label{fig:relative_error}
+    \end{subfigure}
+
+    \caption{Phân tích hiệu năng và độ ổn định của các phương pháp giải hệ phương trình.}
+    \label{fig:benchmark_results}
+\end{figure}
+
+Như thể hiện trong Hình 3 (bên dưới), các phương pháp Gauss và LU có độ dốc xấp xỉ $3$, phù hợp với $O(n^3)$. Điều này phản ánh việc các phương pháp trực tiếp thực hiện khử toàn bộ ma trận ($\sim n^3/3$ phép toán). Ngược lại, Gauss-Seidel chỉ thực hiện phép toán $O(n^2)$ mỗi vòng lặp, dẫn đến hiệu năng vượt trội khi số vòng lặp nhỏ.
+
+\subsection{Đánh giá độ ổn định số học và sai số}
+
+\subsubsection{Kết quả thực nghiệm}
+
+\begin{table}[h!]
+\centering
+\caption{Sai số phần dư tương đối $\frac{\|Ax - b\|_2}{\|b\|_2}$}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Phương pháp} & \textbf{Ma trận SPD (Tốt)} & \textbf{Ma trận Hilbert (Xấu)} \\
+\midrule
+Khử Gauss (Pivoting) & $1.11 \times 10^{-16}$ & Không hội tụ/Tràn số \\
+Phân rã LU           & $7.85 \times 10^{-17}$ & $1.03 \times 10^{-16}$ \\
+Gauss-Seidel         & $4.85 \times 10^{-08}$ & $4.19 \times 10^{-06}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Phân tích ma trận Hilbert}
+
+Ma trận Hilbert là minh chứng điển hình cho sự giới hạn của tính toán số học đối với các hệ điều kiện kém:
+\begin{itemize}
+    \item \textbf{Mất ổn định (Numerical Instability):} Phương pháp LU cho sai số phần dư nhỏ, nhưng thực tế nghiệm $\hat{x}$ bị sai lệch rất lớn so với nghiệm gốc. Điều này do $\kappa(A)$ của ma trận Hilbert $10 \times 10$ lên tới xấp xỉ $1.6 \times 10^{13}$, khiến mọi sai số làm tròn $10^{-16}$ bị khuếch đại lên gần đơn vị.
+    \item \textbf{Hạng số học (Numerical Rank):} Khi khử Gauss, thuật toán gặp phải các phần tử chốt cực nhỏ ($< 10^{-15}$). Trong tính toán thực tế, các giá trị này thường bị làm tròn về $0$, dẫn đến việc ma trận dù về lý thuyết là không suy biến nhưng về mặt số học lại bị coi là suy biến (singular), gây ra lỗi tràn số hoặc thất bại thuật toán.
+    \item \textbf{Gauss-Seidel:} Hoàn toàn không hội tụ do vi phạm nghiêm trọng điều kiện chéo trội.
+\end{itemize}
+
+\subsection{Kết luận}
+
 \begin{enumerate}
-    \item \textbf{Phương pháp trực tiếp - Khử Gauss (Gauss Elimination):} Cài đặt dựa trên thuật toán cốt lõi ở Phần 1 nhưng sử dụng kiểu \code{float} để mô phỏng chính xác chi phí tính toán trong môi trường thực tế, kết hợp Partial Pivoting.
-    \item \textbf{Phương pháp trực tiếp - Phân rã LU:} Tách ma trận $A = LU$. Giải hệ thông qua hai bước thế tiến ($Ly=b$) và thế lùi ($Ux=y$).
-    \item \textbf{Phương pháp lặp - Gauss-Seidel:} 
-    Công thức lặp cho từng phần tử:
-    \begin{equation}
-        x_i^{(k+1)} = \frac{1}{a_{ii}} \left( b_i - \sum_{j=1}^{i-1} a_{ij} x_j^{(k+1)} - \sum_{j=i+1}^{n} a_{ij} x_j^{(k)} \right)
-    \end{equation}
-    Phương pháp lặp này yêu cầu điều kiện hội tụ là ma trận $A$ phải \textit{chéo trội hàng ngặt} (Strictly Diagonally Dominant): $|a_{ii}| > \sum_{j \neq i} |a_{ij}|$.
+    \item \textbf{Partial Pivoting} là yếu tố bắt buộc để đảm bảo ổn định số học.
+    \item \textbf{Phân rã LU} phù hợp khi giải nhiều hệ với cùng ma trận.
+    \item \textbf{Gauss-Seidel} hiệu quả với ma trận chéo trội và kích thước lớn.
+    \item Sai số phần dư nhỏ không đảm bảo nghiệm chính xác khi $\kappa(A)$ lớn.
 \end{enumerate}
 
-\subsection{Đo lường thời gian thực thi (Performance Benchmark)}
-Dựa trên script \code{benchmark.py}, hệ thống tự động sinh các ma trận ngẫu nhiên chéo trội (đảm bảo phương pháp lặp hội tụ) với kích thước $n \in \{50, 100, 200, 500, 1000\}$ để đo thời gian trung bình sau 5 lần chạy độc lập.
+\subsection{Đánh giá tiêu chí hoàn thành}
 
-Kết quả đo lường cho thấy:
-\begin{itemize}
-    \item \textbf{Khử Gauss và Phân rã LU:} Thời gian tăng đáng kể khi kích thước ma trận đạt mốc 500 và 1000. Độ phức tạp tính toán thực tế bám sát đường lý thuyết $\mathcal{O}(n^3)$. Trong khi LU nhanh hơn một chút ở pha giải hệ nhiều lần, bước phân rã ban đầu vẫn là cổ chai.
-    \item \textbf{Gauss-Seidel:} Thể hiện tốc độ vượt trội ở các ma trận kích thước lớn (nếu thỏa điều kiện hội tụ chéo trội), do chi phí tính toán mỗi vòng lặp chỉ xấp xỉ $\mathcal{O}(n^2)$.
-\end{itemize}
+Dựa trên thang điểm đánh giá của tài liệu hướng dẫn đồ án, nhóm đã rà soát và tự đánh giá mức độ hoàn thành các yêu cầu thực nghiệm và phân tích của Phần 3 như sau:
 
-\subsection{Đánh giá tính ổn định số học (Condition Number)}
-Để đánh giá tác động của sai số dấu phẩy động và số điều kiện $\kappa(A)$ lên chất lượng nghiệm, nhóm thực hiện đo đạc sai số tương đối $\frac{||A\hat{x} - b||_2}{||b||_2}$:
+\begin{table}[H]
+    \centering
+    \renewcommand{\arraystretch}{1.4}
+    \begin{tabular}{|p{4.5cm}|p{6cm}|c|}
+        \hline
+        \textbf{Tiêu chí} & \textbf{Mô tả yêu cầu} & \textbf{Mức độ hoàn thành} \\ \hline
+        \textbf{Cài đặt phương pháp lặp} & Đúng, có kiểm tra điều kiện hội tụ & 100\% \\ \hline
+        \textbf{Thực nghiệm thời gian} & Đủ kích thước, có đồ thị log-log & 100\% \\ \hline
+        \textbf{Phân tích ổn định số} & Ma trận Hilbert vs ma trận ngẫu nhiên & 100\% \\ \hline
+        \textbf{Nhận xét và kết luận} & Phân tích có chiều sâu, có số liệu & 100\% \\ \hline
+        \textbf{Trình bày Notebook} & Rõ ràng, có visualization đầy đủ & 100\% \\ \hline
+    \end{tabular}
+    \caption{Đánh giá tiêu chí hoàn thành - Phần 3}
+    \label{tab:criteria_part3}
+\end{table}
 
-\begin{itemize}
-    \item \textbf{Ma trận xác định dương (SPD):} Đây là ma trận "Well-conditioned" (số điều kiện nhỏ). Cả 3 phương pháp Gauss, LU và Gauss-Seidel đều cho sai số tương đối rất nhỏ (cỡ $10^{-14}$ đến $10^{-16}$).
-    \item \textbf{Ma trận Hilbert ($H_{ij} = \frac{1}{i+j+1}$):} Đây là ma trận nổi tiếng về sự "Ill-conditioned" (số điều kiện tăng theo hàm mũ). Dù chỉ với kích thước nhỏ $n=10$, số điều kiện đã lên tới $\approx 10^{13}$. Thực nghiệm cho thấy:
-    \begin{itemize}
-        \item Phương pháp Gauss và LU: Bị mất mát chữ số có nghĩa (Loss of significance), sai số tăng vọt lên mức không thể chấp nhận được do nhiễu số học.
-        \item Phương pháp Gauss-Seidel: Không hội tụ do ma trận Hilbert không thỏa mãn tính chất chéo trội hàng.
-    \end{itemize}
-\end{itemize}
-Kết luận rút ra: Khi giải các bài toán thực tế, không chỉ quan tâm đến tốc độ $\mathcal{O}(n^3)$ mà việc kiểm tra số điều kiện của hệ $\kappa(A)$ là bắt buộc để đảm bảo tính khả tín của nghiệm số.
 
 % ==================== KẾT LUẬN ====================
 \newpage
@@ -697,6 +1037,7 @@ Qua khoảng thời gian làm việc, những giá trị cốt lõi mà nhóm đ
 \end{itemize}
 
 % ==================== TÀI LIỆU THAM KHẢO ====================
+\section{Tài liệu tham khảo}
 \newpage
 \begin{thebibliography}{99}
 \bibitem{szeliski2022} 
@@ -713,7 +1054,21 @@ Manim Community Developers. \textit{Manim – Mathematical Animation Framework},
 
 \bibitem{3b1b} 
 3Blue1Brown. \textit{Essence of Linear Algebra}. YouTube, 2016. \url{https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab}
+
+\bibitem{Serrano.Academy}
+Serrano.Academy. \textit{Singular Value Decomposition (SVD) and Image Compression}. Youtube, 2020. \url{https://www.youtube.com/watch?v=DG7YTlGnCEo&t=1117s}
 \end{thebibliography}
+
+\newpage
+\section{Phụ lục}
+\subsection{Mã nguồn}
+Toàn bộ mã nguồn Python cài đặt các thuật toán (Khử Gauss, Phân rã SVD, Gauss-Seidel,...), kịch bản dựng hình Manim và các dữ liệu thực nghiệm benchmark của đồ án được quản lý phiên bản và lưu trữ công khai tại kho chứa GitHub. 
+
+Thầy/cô có thể truy cập mã nguồn, cấu trúc thư mục (kèm file \code{requirements.txt} và \code{README.md}) tại đường dẫn sau:
+
+\begin{itemize}
+    \item \textbf{Kho lưu trữ mã nguồn (GitHub):} \url{https://github.com/ChickenDev-cyber/Project1_TUDTK}
+\end{itemize}
 
 \label{page:lastpage}
 \end{document}
