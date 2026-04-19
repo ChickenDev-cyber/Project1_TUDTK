@@ -41,7 +41,6 @@ def run_experiment(solver_func, A, b, num_runs=5):
     total_time = 0.0
     x_hat = None
     
-    # Nếu ma trận sinh ra lỡ là numpy array (từ hàm sinh ngẫu nhiên), ép về list thuần
     if hasattr(A, 'tolist'): A = A.tolist()
     if hasattr(b, 'tolist'): b = b.tolist()
     
@@ -55,7 +54,6 @@ def run_experiment(solver_func, A, b, num_runs=5):
         
     avg_time = total_time / num_runs
     
-    # Nếu hàm giải bị lỗi trả về mảng rỗng (ví dụ Gauss-Seidel không hội tụ)
     if x_hat is None or len(x_hat) == 0:
         x_hat = [0.0] * len(b)
     # Bước 1: Tính vector Ax = A * x_hat
@@ -146,7 +144,7 @@ def benchmark_stability(solvers_dict, n=10):
 if __name__ == "__main__":
 
     my_solvers = {
-        'Gauss': lambda A, b: sv.gaussian_elimination(A, b)[1], 
+        'Gauss': lambda A, b: sv.gaussian_eliminate(A, b)[1], 
         'LU': sv.solve_lu,
         'Gauss-Seidel': sv.solve_gauss_seidel
     }

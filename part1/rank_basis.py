@@ -1,5 +1,5 @@
 from fractions import Fraction
-from gaussian import gaussian_elimination
+from gaussian import gaussian_eliminate
 import numpy as np
 import io
 from contextlib import redirect_stdout
@@ -10,7 +10,7 @@ def rank_and_basis(A):
     
     # Khử Gauss để tìm ma trận bậc thang M
     with redirect_stdout(io.StringIO()):
-        M_aug, _, _ = gaussian_elimination(A, [0] * n_rows)
+        M_aug, _, _ = gaussian_eliminate(A, [0] * n_rows)
     
     # Tách ma trận hệ số U từ ma trận bổ sung M_aug
     U = [row[:n_cols] for row in M_aug]

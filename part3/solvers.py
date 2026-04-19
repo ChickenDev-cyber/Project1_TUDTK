@@ -67,7 +67,7 @@ def back_substitution(U, c):
     else:
         return [x_expr[j]['const'] for j in range(n_cols)]
 
-def gaussian_elimination(A, b):
+def gaussian_eliminate(A, b):
     n = len(A)
     m = len(A[0])
     tol = 1e-8 # Ngưỡng sai số
@@ -240,7 +240,7 @@ def run_tests(test_cases):
        # --- KHỬ GAUSS ---
         print("1. Phương pháp Khử Gauss:")
         try:
-            _, x_gauss, _ = gaussian_elimination([row[:] for row in A], b[:])
+            _, x_gauss, _ = gaussian_eliminate([row[:] for row in A], b[:])
             if x_gauss:
                 print("   Nghiệm:", [round(float(val), 5) for val in x_gauss])
             verify_solution(A, b, x_gauss, "Gauss")
