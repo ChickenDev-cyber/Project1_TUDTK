@@ -1,13 +1,15 @@
-# Đồ án 1: Ma Trận và Cơ Sở của Tính Toán Khoa Học 
+# Đồ án 1: Ma Trận và Cơ Sở của Tính Toán Khoa Học 🧮
 
 **Môn học:** Toán Ứng Dụng và Thống Kê (MTH00051)  
 **Trường:** Đại học Khoa học Tự nhiên, ĐHQG-HCM (FIT-HCMUS)  
-**Sinh viên thực hiện:** 
-24120151 Phạm Minh Trọng
-24120033 Đào Tiến Đạt
-24120167 Bùi Nhật Bảo
-24120199 Trịnh Kim Mai
-24120221 Trần Công Quang
+
+**Nhóm sinh viên thực hiện:** | STT | MSSV | Họ và Tên |
+|:---:|:---:|:---|
+| 1 | 24120151 | Phạm Minh Trọng |
+| 2 | 24120033 | Đào Tiến Đạt |
+| 3 | 24120167 | Bùi Nhật Bảo |
+| 4 | 24120199 | Trịnh Kim Mai |
+| 5 | 24120221 | Trần Công Quang |
 
 ---
 
@@ -16,7 +18,7 @@ Dự án tập trung vào việc tự cài đặt và phân tích thực nghiệ
 
 Dự án gồm 3 phần trọng tâm:
 1. **Phần 1:** Các ứng dụng của phép khử Gauss (Giải hệ phương trình, tính định thức, nghịch đảo, tìm hạng và cơ sở).
-2. **Phần 2:** Phân rã ma trận và trực quan hóa thuật toán bằng thư viện **Manim**.
+2. **Phần 2:** Phân rã ma trận, chéo hóa và trực quan hóa thuật toán bằng thư viện **Manim**.
 3. **Phần 3:** Benchmark hiệu năng thời gian $O(n^3)$ và đánh giá sai số trên các ma trận đặc biệt (Hilbert, SPD).
 
 ---
@@ -34,6 +36,7 @@ Project1_TUDTK/
 │   └── demo_p1.ipynb       # Notebook chạy thử nghiệm kết quả Phần 1
 ├── part2/                  # Phân rã ma trận & Hoạt ảnh (Animation)
 │   ├── decomposition.py    # Thuật toán LU, QR, SVD
+│   ├── diagonalization.py  # Thuật toán chéo hóa ma trận
 │   └── manim_visual.py     # Script lập trình video bằng Manim
 ├── part3/                  # Phân tích hiệu năng & Benchmark
 │   ├── solvers.py          # Các phương pháp giải hệ (Gauss, LU, Gauss-Seidel)
@@ -60,20 +63,24 @@ Mở Terminal/Command Prompt tại thư mục dự án và chạy lệnh:
 ```bash
 pip install -r requirements.txt
 ```
+
 ---
 
-## Hướng dẫn Chạy Code & Chấm điểm
+## 🚀 Hướng dẫn Chạy Code & Chấm điểm
 
 ### 1. Xem kết quả thực nghiệm (Phần 1 & 3)
 Cách nhanh nhất để kiểm tra là sử dụng các file **Jupyter Notebook**. Giảng viên có thể mở các file này trực tiếp trong VS Code hoặc Google Colab:
 * **Kiểm tra tính đúng đắn:** Mở `part1/demo_p1.ipynb`.
 * **Kiểm tra phân tích hiệu năng:** Mở `part3/analysis.ipynb`. Nhấn **"Run All"** để xem đồ thị Log-Log về độ phức tạp $O(n^3)$ và bảng sai số trên ma trận Hilbert.
 
-### 2. Chạy các file Script Python
-Nếu muốn chạy trực tiếp qua terminal:
+### 2. Chạy các file Script Python (Phần 2)
+Nếu muốn kiểm tra trực tiếp qua terminal kết quả của các thuật toán phân rã và chéo hóa ma trận ở Phần 2, Thầy/Cô có thể chạy các lệnh sau:
 ```bash
-python part1/gaussian.py
-python part3/benchmark.py
+# Chạy thuật toán phân rã ma trận (LU, QR, SVD)
+python part2/decomposition.py
+
+# Chạy thuật toán chéo hóa ma trận
+python part2/diagonalization.py
 ```
 
 ### 3. Xem và Render video hoạt ảnh (Phần 2)
@@ -88,10 +95,3 @@ manim -pql part2/manim_visual.py MatrixScene
 * **Hiệu năng:** Thực nghiệm chứng minh thời gian chạy của Khử Gauss và LU bám sát đường lý thuyết $O(n^3)$. Khi $n$ tăng gấp đôi, thời gian tăng xấp xỉ 8 lần.
 * **Độ ổn định:** Ma trận Hilbert minh chứng cho hiện tượng bùng nổ sai số trên các hệ điều kiện kém (Ill-conditioned), ngay cả khi có Partial Pivoting.
 * **Tối ưu:** Gauss-Seidel là lựa chọn tối ưu cho ma trận chéo trội kích thước lớn nhờ độ phức tạp thấp hơn trong điều kiện hội tụ nhanh.
-
----
-
-## 👥 Thông tin Sinh viên
-* **Họ và tên:** Trần Công Quang
-* **Khoa:** Công nghệ Thông tin
-* **Trường:** ĐH Khoa học Tự nhiên - ĐHQG HCM
