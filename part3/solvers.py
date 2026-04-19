@@ -59,7 +59,6 @@ def back_substitution(U, c):
                 coeff = x_expr[j][k]
                 sign = "+" if coeff > 0 else "-"
                 abs_coeff = abs(coeff)
-                # Format làm tròn 4 chữ số thập phân cho đẹp
                 coeff_str = "" if abs(abs_coeff - 1.0) < tol else f"{abs_coeff:.4f}*"
                 terms.append(f"{sign} {coeff_str}t{k+1}") 
 
@@ -121,7 +120,6 @@ def solve_lu(A, b):
     # 2. Phân rã LU
     for i in range(n):
         for k in range(i, n):
-            # Tính sum(L[i][j] * U[j][k]) bằng vòng lặp thuần
             sum_lu = 0.0
             for j in range(i):
                 sum_lu += L[i][j] * U[j][k]
@@ -172,7 +170,6 @@ def IsStrictlyDiagonallyDominant(A):
 def manual_norm(vector):
     return mth.sqrt(sum(v**2 for v in vector))
 
-# PHƯƠNG PHÁP LẶP GAUSS-SEIDEL
 def solve_gauss_seidel(A, b, tol=1e-6, max_iter=1000):
     n = len(A)
     x = [0.0] * n 
@@ -240,13 +237,11 @@ def run_tests(test_cases):
         print(f"Vector hằng số (b): {b}")
         print("-" * 65)
 
-       # --- 1. KHỬ GAUSS ---
+       # --- KHỬ GAUSS ---
         print("1. Phương pháp Khử Gauss:")
         try:
-            # SỬA LỖI: Dùng dấu _ để bỏ qua giá trị M và s, chỉ lấy nghiệm x ở giữa
             _, x_gauss, _ = gaussian_elimination([row[:] for row in A], b[:])
             if x_gauss:
-                # Ép kiểu float(val) để tránh lỗi round() đối với kiểu dữ liệu Fraction
                 print("   Nghiệm:", [round(float(val), 5) for val in x_gauss])
             verify_solution(A, b, x_gauss, "Gauss")
         except Exception as e:
@@ -254,7 +249,7 @@ def run_tests(test_cases):
 
         print()
 
-        # --- 2. PHƯƠNG PHÁP LU ---
+        # --- PHƯƠNG PHÁP LU ---
         print("2. Phương pháp Phân rã LU:")
         try:
             x_lu = solve_lu([row[:] for row in A], b[:])
@@ -266,7 +261,7 @@ def run_tests(test_cases):
 
         print()
 
-        # --- 3. PHƯƠNG PHÁP GAUSS-SEIDEL ---
+        # --- PHƯƠNG PHÁP GAUSS-SEIDEL ---
         print("3. Phương pháp Gauss-Seidel:")
         try:
             if not IsStrictlyDiagonallyDominant(A):

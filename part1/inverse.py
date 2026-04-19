@@ -12,7 +12,7 @@ def inverse(A):
         print("Ma trận suy biến (det = 0) --> không tồn tại ma trận nghịch đảo!")
         return None
 
-    # Mỗi hàng: n phần tử từ A + n phần tử từ I (hàng i của I có 1 ở cột i)
+    # Mỗi hàng: n phần tử từ A + n phần tử từ I 
     I = [[Fraction(1) if i == j else Fraction(0) for j in range(n)]
         for i in range(n)]
     M = [
@@ -42,8 +42,7 @@ def inverse(A):
         for j in range(2 * n):
             M[k][j] /= pivot
 
-        # 4. Khử tất cả hàng khác (cả hàng TRÊN lẫn hàng DƯỚI)
-        #    để đưa phần trái về ma trận đơn vị I
+        # 4. Khử tất cả hàng khác để đưa phần trái về ma trận đơn vị I
         for i in range(n):
             if i == k:
                 continue   
@@ -52,7 +51,7 @@ def inverse(A):
                 continue
             for j in range(2 * n):
                 M[i][j] -= factor * M[k][j]
-            M[i][k] = Fraction(0)   # gán thẳng để tránh sai số nhỏ lẻ
+            M[i][k] = Fraction(0)   
 
     #  M = [I | A⁻¹]
     # cắt lấy n cột cuối của mỗi hàng
@@ -60,7 +59,6 @@ def inverse(A):
     return A_inv
 
 
-#Kiểm thử
 if __name__ == "__main__":
     def run_test(name, A):
         print(f"\n=== {name} ===")
