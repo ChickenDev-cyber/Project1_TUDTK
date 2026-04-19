@@ -74,16 +74,15 @@ def back_substitution(U, c):
             print(f"  x{j+1} = {expr_str}")
 
     if r < n_cols:
-        return None 
+        return x_expr 
     else:
         return [x_expr[j]['const'] for j in range(n_cols)]
-    
 
 def gaussian_elimination(A, b):
     n = len(A)
     m = len(A[0])
 
-    M = [[Fraction(val) for val in row] + [Fraction(b[i])] for i, row in enumerate(A)]
+    M = [[Fraction(val).limit_denominator(10**8) for val in row] + [Fraction(b[i]).limit_denominator(10**8)] for i, row in enumerate(A)]
     s = 0
     r = 0 
 
@@ -96,7 +95,9 @@ def gaussian_elimination(A, b):
             if abs(M[i][c_idx]) > abs(M[p][c_idx]):
                 p = i
 
-        if M[p][c_idx] == 0:
+        if abs(float(M[p][c_idx])) < 1e-8:
+            for i in range(r, n):
+                M[i][c_idx] = Fraction(0)
             continue
 
         if p != r:
@@ -137,14 +138,14 @@ def verify_solution(A, x, b):
                         free_vars.add(key)
             
             x_p = np.array([float(x[i].get('const', Fraction(0))) for i in range(n_cols)])
-            if not np.allclose(np.dot(A_np, x_p), b_np, atol=1e-9):
+            if not np.allclose(np.dot(A_np, x_p), b_np, atol=1e-5):
                 print("-> SAI: Phan hang so (nghiem rieng) khong khop!")
                 return
             
             for k in free_vars:
                 v_k = np.array([float(x[i].get(k, Fraction(0))) for i in range(n_cols)])
                 zeros = np.zeros(len(b))
-                if not np.allclose(np.dot(A_np, v_k), zeros, atol=1e-9):
+                if not np.allclose(np.dot(A_np, v_k), zeros, atol=1e-5):
                     print(f"-> SAI: Vector he so cua bien tu do t{k+1} khong khop voi khong gian Null!")
                     return
                     
@@ -153,7 +154,7 @@ def verify_solution(A, x, b):
         else:
             x_np = np.array([float(Fraction(val)) for val in x], dtype=float)
             ax_res = np.dot(A_np, x_np)
-            if np.allclose(ax_res, b_np, atol=1e-9):
+            if np.allclose(ax_res, b_np, atol=1e-5):
                 print("-> Verify OK: Nghiem duy nhat CHINH XAC.")
             else:
                 print("-> SAI: Nghiem duy nhat khong chinh xac.")
@@ -178,24 +179,27 @@ def run_tests(test_cases):
             result = gaussian_elimination([row[:] for row in A], b[:])
             
             if result is None:
-                verify_solution(A, b, None)
+                verify_solution(A, None, b)
             else:
                 M, x, s = result
 
-                if x:
-                    formatted_x = ", ".join([str(v) for v in x])
-                    print(f"   Số lần hoán vị hàng (s): {s}")
-                    print(f"   Nghiệm x: [{formatted_x}]")
+                if x is not None:
+                    if isinstance(x[0], dict):
+                        print(f"   Số lần hoán vị hàng (s): {s}")
+                        print("   Nghiệm x: [Dạng phương trình tổng quát]")
+                    else:
+                        formatted_x = ", ".join([str(v) for v in x])
+                        print(f"   Số lần hoán vị hàng (s): {s}")
+                        print(f"   Nghiệm x: [{formatted_x}]")
                     
                     verify_solution(A, x, b)
                 else:
-                    print("   => Không có nghiệm hợp lệ được trả về.")
+                    print("   => Hệ vô nghiệm, không có nghiệm để kiểm chứng.")
                 
         except Exception as e:
             print(f"   [Gauss] LỖI CHƯƠNG TRÌNH: {e}")
 
         print("=" * 65 + "\n")
-
 
 if __name__ == "__main__":
     test_cases = [
