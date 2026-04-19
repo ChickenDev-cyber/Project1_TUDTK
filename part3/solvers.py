@@ -9,7 +9,7 @@ def back_substitution(U, c, r):
     
     # Kiểm tra Vô nghiệm trước
     for i in range(r, n_rows):
-        if abs(c[i]) > epsilon:  # Thay vì c[i] != 0
+        if abs(c[i]) > epsilon: 
             print("Lỗi: Hệ phương trình Vô nghiệm.")
             return None
             
@@ -18,7 +18,7 @@ def back_substitution(U, c, r):
         print("Lỗi: Hệ phương trình có Vô số nghiệm.")
         return None
     
-    x_val = [0.0] * n_cols  # Dùng float thay vì Fraction
+    x_val = [0.0] * n_cols  
     
     for i in range(r - 1, -1, -1):
         pivot_col = -1
@@ -29,7 +29,6 @@ def back_substitution(U, c, r):
                 break
         
         if pivot_col != -1:
-            # Tối ưu: Tự viết vòng for tính tổng sẽ chạy nhanh hơn sum() trong Python thuần
             sum_ax = 0.0
             for j in range(pivot_col + 1, n_cols):
                 sum_ax += row_U[j] * x_val[j]
@@ -38,14 +37,10 @@ def back_substitution(U, c, r):
     
     return x_val
 
-# THÀNH VIÊN 1: PHƯƠNG PHÁP KHỬ GAUSS
 def solve_gauss(A, b):
-
-    # 2. Thuật toán Khử Gauss chính
     n = len(A)
     m = len(A[0]) if n > 0 else 0
 
-    # Chuyển đổi dữ liệu đầu vào (kể cả numpy array) thành list chứa float (Thay vì Fraction)
     M = [[float(val) for val in row] + [float(b[i])] for i, row in enumerate(A)]
     s = 0
     r = 0 
@@ -73,7 +68,6 @@ def solve_gauss(A, b):
             f = row_i[c_idx] / row_r[c_idx]
             row_i[c_idx] = 0.0 
             
-            # --- TỐI ƯU: TRỪ MẢNG NHANH KHÔNG DÙNG FOR THỨ 3 ---
             slice_i = row_i[c_idx + 1 : m + 1]
             slice_r = row_r[c_idx + 1 : m + 1]
             row_i[c_idx + 1 : m + 1] = [vi - f * vr for vi, vr in zip(slice_i, slice_r)]
@@ -90,7 +84,6 @@ def solve_gauss(A, b):
     if x_val is None:
         return [] # Trả về mảng rỗng nếu vô nghiệm/vô số nghiệm
         
-    # Không cần bước ép Fraction về lại float nữa vì x_val đã là mảng float sẵn rồi
     return x_val
 
 #PHƯƠNG PHÁP PHÂN RÃ LU
@@ -185,16 +178,13 @@ def solve_gauss_seidel(A, b, tol=1e-6, max_iter=1000):
         error = manual_norm(diff)
         
         if error < tol:
-            # print(f"Gauss-Seidel: Hội tụ sau {k+1} vòng lặp.")
             return x
             
     print("Gauss-Seidel: Không hội tụ sau số lần lặp tối đa.")
     return x
 
 def verify_solution(A, b, x, method_name):
-    """
-    Kiểm chứng nghiệm x bằng cách tính Ax và so sánh với b.
-    """
+    # Kiểm chứng nghiệm x bằng cách tính Ax và so sánh với b.
     if not x:
         print(f"   [{method_name}] KIỂM CHỨNG: BỎ QUA (Không có nghiệm hợp lệ)")
         return
@@ -219,9 +209,6 @@ def verify_solution(A, b, x, method_name):
 
 
 def run_tests(test_cases):
-    """
-    Hàm chạy kiểm thử hàng loạt các hệ phương trình
-    """
     for idx, test in enumerate(test_cases, 1):
         A = test['A']
         b = test['b']
@@ -234,10 +221,9 @@ def run_tests(test_cases):
         print(f"Vector hằng số (b): {b}")
         print("-" * 65)
 
-        # --- 1. PHƯƠNG PHÁP KHỬ GAUSS ---
+        # --- 1. KHỬ GAUSS ---
         print("1. Phương pháp Khử Gauss:")
         try:
-            # Truyền bản sao của A và b để tránh làm thay đổi ma trận gốc
             x_gauss = solve_gauss([row[:] for row in A], b[:])
             if x_gauss:
                 print("   Nghiệm:", [round(val, 5) for val in x_gauss])

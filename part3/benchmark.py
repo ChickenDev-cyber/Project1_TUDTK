@@ -4,11 +4,11 @@ import solvers as sv
 import math
 
 def manual_norm(v):
-    """Tính chuẩn L2 (Euclid) của vector v"""
+    #Tính chuẩn L2 (Euclid) của vector v
     return math.sqrt(sum(x**2 for x in v))
 
 def mat_vec_mult(A, x):
-    """Nhân ma trận A với vector x"""
+    #Nhân ma trận A với vector x
     n = len(A)
     result = [0.0] * n
     for i in range(n):
@@ -17,7 +17,7 @@ def mat_vec_mult(A, x):
     return result
 
 def vec_sub(v1, v2):
-    """Trừ hai vector v1 - v2"""
+    #Trừ hai vector v1 - v2
     return [x - y for x, y in zip(v1, v2)]
 
 def generate_hilbert_matrix(n):
@@ -44,13 +44,9 @@ def generate_diagonally_dominant_matrix(n):
     np.fill_diagonal(A, row_sums + 1.0)
     return A
 
-"""
-Hàm tính toán thời gian trung bình và sai số tương đối.
-"""
+
+# Hàm tính toán thời gian trung bình và sai số tương đối.
 def run_experiment(solver_func, A, b, num_runs=5):
-    """
-    Hàm tính toán thời gian trung bình và sai số tương đối (Không dùng Numpy).
-    """
     total_time = 0.0
     x_hat = None
     
@@ -87,9 +83,6 @@ def run_experiment(solver_func, A, b, num_runs=5):
     return avg_time, relative_error
 
 def benchmark_performance(solvers_dict, n_values=[50, 100, 200, 500, 1000]):
-    """
-    Thực thi YÊU CẦU 2: Đo thời gian chạy của các thuật toán.
-    """
     results = {name: {'time': [], 'error': []} for name in solvers_dict.keys()}
     results['n'] = n_values
 
@@ -123,9 +116,7 @@ def benchmark_performance(solvers_dict, n_values=[50, 100, 200, 500, 1000]):
     return results
 
 def benchmark_stability(solvers_dict, n=10):    
-    """
-    Hàm này CHỈ dùng để lấy số liệu sai số cho báo cáo Yêu cầu 3.
-    """
+    # Hàm này CHỈ dùng để lấy số liệu sai số cho báo cáo Yêu cầu 3.
     print("\n--- BẮT ĐẦU PHÂN TÍCH ỔN ĐỊNH SỐ ---")
     
     A_hilbert = generate_hilbert_matrix(n)
@@ -162,7 +153,7 @@ def benchmark_stability(solvers_dict, n=10):
             'hilbert_error': error_hilbert
         }
         
-    return stability_results # Trả về cho Jupyter Notebook
+    return stability_results 
 
 if __name__ == "__main__":
 

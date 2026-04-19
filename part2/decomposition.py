@@ -135,7 +135,6 @@ def decomposite_SVD(A):
         sigma_val = mth.sqrt(eigenvalues[j])
         Sigma[j][j] = sigma_val
 
-        # Nếu sigma > 0, tính cột j của U = (A * v_j) / sigma
         if sigma_val > 1e-9:
             # Lấy cột j của V
             v_j = [V[row][j] for row in range(m)]
@@ -155,7 +154,6 @@ def decomposite_SVD(A):
     return U, Sigma, V_T
 
 def run_test(name, A):
-    import numpy as np
     
     print(f"\n=== {name} ===")
     print("Ma tran A:")
