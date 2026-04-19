@@ -5,27 +5,21 @@ import math
 from PIL import Image
 import os
 
-# BẢNG MÀU TỔNG HỢP (Đã được hợp nhất 100% xuyên suốt)
+# Định nghĩa bảng màu tổng hợp
 VN_FONT = "Arial"
 C_MAIN = BLUE_C      
 C_LAMBDA = YELLOW  
-
-# BỘ MÀU MA TRẬN SVD CHUẨN (Áp dụng cho mọi Video)
-C_U = "#58C4DD"      # Xanh lơ sáng (Ma trận U)
-C_SIGMA = "#83C167"  # Xanh lục (Ma trận Sigma)
-C_V = "#FC6255"      # Đỏ nhạt (Ma trận V)
-
+C_U = "#58C4DD"      
+C_SIGMA = "#83C167"  
+C_V = "#FC6255"     
 C_VECTOR = C_V       
 C_SVD = C_SIGMA      
-
-
 C_TITLE = WHITE
 C_MATH = WHITE
 C_VEC_1 = TEAL_C
 C_VEC_2 = RED_C
 C_GRID = BLUE_E
-
-# KÍCH THƯỚC CHỮ
+# Định nghĩa cỡ chữ
 TITLE_SIZE = 32           
 SUBTITLE_SIZE = 26        
 FORMULA_MAIN_SIZE = 56    
@@ -152,7 +146,6 @@ class MatrixDiagonalization(Scene):
         lam_text = MathTex("\\lambda = " + lam_val, font_size=BODY_MATH_SIZE).set_color(C_LAMBDA).next_to(step_title, RIGHT)
         self.play(FadeIn(step_title), Write(lam_text))
 
-        # 1. DÒNG "ẨN TỰ DO"
         t_p1 = Text("Đặt", font=VN_FONT, font_size=BODY_TEXT_SIZE)
         t_p2 = MathTex("x_2 = t", font_size=BODY_MATH_SIZE)
         t_p3 = Text("là ẩn tự do", font=VN_FONT, font_size=BODY_TEXT_SIZE)
@@ -160,7 +153,6 @@ class MatrixDiagonalization(Scene):
         
         t_step = VGroup(t_p1, t_p2, t_p3, t_p4).arrange(RIGHT, buff=0.15)
 
-        # 2. DÒNG "VECTOR RIÊNG TƯƠNG ỨNG LÀ"
         u_arrow = MathTex("\\Rightarrow", font_size=BODY_MATH_SIZE)
         u_text = Text("Vector riêng tương ứng là:", font=VN_FONT, font_size=BODY_TEXT_SIZE)
         u_math = MathTex("u_" + u_subscript + " = \\begin{pmatrix} " + vec_res + " \\end{pmatrix}", font_size=BODY_MATH_SIZE).set_color(C_VECTOR)
@@ -260,7 +252,7 @@ class MatrixDiagonalization(Scene):
         self.wait(4)
 
 
-# Bảng map màu tự động cho phương trình chứng minh
+# Sử dụng bảng màu đã được định nghĩa
 MAP = {
     "U": C_U, "V": C_V, "P": C_V,
     "U^T": C_U, "V^T": C_V, "P^T": C_V, "P^{-1}": C_V,
@@ -273,9 +265,6 @@ class SVDAndDiagonalization(Scene):
         main_title = Text("4. Mối liên hệ bản chất giữa SVD và Chéo hóa", font=VN_FONT, font_size=TITLE_SIZE, color=C_SVD).to_corner(UL)
         self.play(FadeIn(main_title))
 
-        # ==========================================
-        # BƯỚC 1: KHAI TRIỂN SVD CỦA A^T A
-        # ==========================================
         step1_title = Text("1. Khai triển SVD của ma trận đối xứng", font=VN_FONT, font_size=BODY_TEXT_SIZE, color=BLUE_B)
         step1_title.next_to(main_title, DOWN, buff=0.3).to_edge(LEFT, buff=1.5)
         self.play(FadeIn(step1_title))
@@ -301,9 +290,6 @@ class SVDAndDiagonalization(Scene):
         self.play(FadeIn(eq3[0:2]), TransformFromCopy(eq2[4], eq3[2]), TransformFromCopy(eq1[2], eq3[3]), run_time=1)
         self.play(FadeIn(eq4[0]), TransformFromCopy(eq3[2:], eq4[1:]), run_time=1)
         
-        # brace_U = Brace(eq4[2], DOWN, color=C_VECTOR)
-        # text_brace_vn = Text("Ma trận trực giao", font=VN_FONT, font_size=NOTE_TEXT_SIZE-2, color=C_VECTOR)
-        # math_brace_i = MathTex("(= I)", font_size=NOTE_MATH_SIZE-2, color=C_VECTOR)
         brace_U = Brace(eq4[2], DOWN, color=C_U)
         text_brace_vn = Text("Ma trận trực giao", font=VN_FONT, font_size=NOTE_TEXT_SIZE-2, color=C_U)
         math_brace_i = MathTex("(= I)", font_size=NOTE_MATH_SIZE-2, color=C_U)
@@ -330,9 +316,6 @@ class SVDAndDiagonalization(Scene):
             eq6.animate.next_to(step1_title, DOWN, buff=0.3).align_to(eq6, LEFT)
         )
 
-        # ==========================================
-        # BƯỚC 2: SO SÁNH VỚI CHÉO HÓA (Đã sửa lỗi text dài)
-        # ==========================================
         step2_title = Text("2. So sánh với Chéo hóa ma trận đối xứng", font=VN_FONT, font_size=BODY_TEXT_SIZE, color=BLUE_B)
         step2_title.next_to(eq6, DOWN, buff=0.4).to_edge(LEFT, buff=1.5)
         self.play(FadeIn(step2_title))
@@ -341,7 +324,6 @@ class SVDAndDiagonalization(Scene):
         eq_d1.next_to(step2_title, DOWN, buff=0.25)
         eq_d1.shift(RIGHT * (target_x - eq_d1[1].get_center()[0]))
         
-        # Tạo dòng chú thích ngắn gọn, chia thành các cụm VGroup để giữ màu sắc
         note_1 = Text("Vì ", font=VN_FONT, font_size=NOTE_TEXT_SIZE, color=GRAY)
         note_m1 = MathTex("A^T A", font_size=NOTE_MATH_SIZE, color=C_MAIN)
         note_2 = Text(" đối xứng, nó chéo hóa trực giao được (", font=VN_FONT, font_size=NOTE_TEXT_SIZE, color=GRAY)
@@ -358,10 +340,6 @@ class SVDAndDiagonalization(Scene):
         self.play(FadeIn(note_group, shift=LEFT))
         self.play(FadeIn(eq_d2[0:2]), TransformFromCopy(eq_d1[2:], eq_d2[2:]), run_time=1.2)
         self.wait(1.5)
-
-        # ==========================================
-        # BƯỚC 3: ĐỒNG NHẤT HÓA (THE AHA! MOMENT)
-        # ==========================================
         comp_eq = MathTex("V", "(\\Sigma^T \\Sigma)", "V^T", "=", "P", "\\Lambda", "P^T", tex_to_color_map=MAP, font_size=BODY_MATH_SIZE + 5)
         comp_eq.move_to(UP * 0.5)
 
@@ -390,7 +368,6 @@ class SVDAndDiagonalization(Scene):
         core_eq = MathTex("\\Sigma^T \\Sigma", "=", "\\Lambda", tex_to_color_map=MAP, font_size=BODY_MATH_SIZE + 10)
         core_eq.next_to(exp_group, DOWN, buff=0.5)
 
-        # SỬA LỖI: Dùng TransformFromCopy để không làm mất V và P ở phương trình comp_eq
         self.play(
             TransformFromCopy(comp_eq[1], core_eq[0]),
             TransformFromCopy(comp_eq[3], core_eq[1]),
@@ -400,10 +377,6 @@ class SVDAndDiagonalization(Scene):
         self.play(core_eq[2].animate.set_color(C_SVD)) # Aha moment
         self.wait(1)
 
-        # ==========================================
-        # BƯỚC 4: KẾT LUẬN TOÁN HỌC MƯỢT MÀ 
-        # ==========================================
-        # Đẩy phương trình lõi lên trên một cách mềm mại (Lúc này mới xóa comp_eq và chữ giải thích đi)
         self.play(
             FadeOut(comp_eq), FadeOut(exp_group),
             core_eq.animate.move_to(UP * 1.5).scale(1.2),
@@ -454,16 +427,14 @@ class SVDAndDiagonalization(Scene):
 # Đoạn video số 2
 class Section23_Theory_And_GeometricSVD(Scene):
     def construct(self):
-        # Thiết lập màu nền tối cao cấp cho toàn bộ cảnh (Đồng bộ với manim_scene.py)
         self.camera.background_color = BLACK
 
-        # Chạy trình tự các cảnh liền mạch
+        # Chạy theo trình tự
         self.show_theory()
         self.show_geometry_with_specific_matrices()
         self.show_geometry()
 
     def show_theory(self):
-        # Đã lược bỏ "self." và dùng trực tiếp các biến Global khai báo ở đầu file manim_scene.py
         title = Text("2. Cơ sở lý thuyết phân rã SVD", font=VN_FONT, font_size=TITLE_SIZE, color=C_SVD).to_corner(UL)
         self.play(FadeIn(title))
 
@@ -521,7 +492,7 @@ class Section23_Theory_And_GeometricSVD(Scene):
         title = Text("3. Ý nghĩa hình học SVD", font=VN_FONT, font_size=TITLE_SIZE, color=C_SVD).to_corner(UL)
         self.play(FadeIn(title))
 
-        # Hiển thị Ma trận A ban đầu
+        # Hiển thị ma trận A ban đầu
         A_array = [[1, 2], [-1, 4]]
         A_mat_mobj = Matrix(A_array).set_color(C_MAIN)
         A_eq = VGroup(MathTex("A =", font_size=FORMULA_MAIN_SIZE), A_mat_mobj).arrange(RIGHT)
@@ -531,7 +502,7 @@ class Section23_Theory_And_GeometricSVD(Scene):
         self.play(A_eq.animate.scale(0.6).to_corner(UR, buff=0.5).shift(DOWN * 1.0))
 
         geo_center = LEFT * 3.5 + DOWN * 0.5
-        # Mở rộng grid để khi giãn x4.5 không bị tràn khung
+        # Mở rộng để không bị tràn khung hình
         plane = NumberPlane(
             x_range=[-6, 6], y_range=[-6, 6], 
             x_length=6.5, y_length=6.5, 
@@ -540,12 +511,10 @@ class Section23_Theory_And_GeometricSVD(Scene):
 
         origin_pt = plane.get_origin()
         
-        # Trả lại kích thước 1.5 to rõ ràng
         radius_val = 1.5
         p_i = plane.c2p(radius_val, 0)
         p_j = plane.c2p(0, radius_val)
 
-        # Khởi đầu chỉ có 2 vector (chưa có đường tròn)
         vec_i = Arrow(start=origin_pt, end=p_i, buff=0, color=GREEN_C, stroke_width=6, max_tip_length_to_length_ratio=0.15)
         vec_j = Arrow(start=origin_pt, end=p_j, buff=0, color=RED_C, stroke_width=6, max_tip_length_to_length_ratio=0.15)
         
@@ -568,11 +537,10 @@ class Section23_Theory_And_GeometricSVD(Scene):
         # Lưu vị trí 2 vector ban đầu
         geometry_group.save_state()
         
-        # Áp dụng A trực tiếp (chỉ lên 2 vector)
+        # Áp dụng A trực tiếp 
         self.play(geometry_group.animate.apply_matrix(A_array, about_point=origin_pt), run_time=2.5)
         self.wait(1)
 
-        # Bóng mờ (ghost) lưu vết 2 vector
         ghost_vec_i = vec_i.copy().set_color(GRAY).set_opacity(0.4)
         ghost_vec_j = vec_j.copy().set_color(GRAY).set_opacity(0.4)
         ghost_group = VGroup(ghost_vec_i, ghost_vec_j)
@@ -607,7 +575,6 @@ class Section23_Theory_And_GeometricSVD(Scene):
 
         self.play(ReplacementTransform(lbl_revert, status_label), Create(circle))
         
-        # Add circle vào group để thực hiện 3 bước
         geometry_group.add(circle) 
         self.wait(1.5)
 
@@ -659,30 +626,23 @@ class Section23_Theory_And_GeometricSVD(Scene):
             ReplacementTransform(lbl_sigma, lbl_u),
             Indicate(svd_eq[1], color=C_U, scale_factor=1.2)
         )
-        # Vector kết quả ở đây sẽ khớp hoàn toàn đè lên ghost của vector lúc nãy
         self.play(geometry_group.animate.apply_matrix(matrix_u, about_point=origin_pt), run_time=2)
         self.wait(2)
 
         self.play(FadeOut(VGroup(title, svd_eq, plane, geometry_group, ghost_group, center_dot, lbl_u)))
 
     def show_geometry(self):
-        # =========================================================
-        # [LAYOUT ENGINE] - ĐỊNH NGHĨA CÁC TỌA ĐỘ NEO (ANCHORS)
-        # =========================================================
-        # 1. Tọa độ Y (Các tầng dọc)
+        # 1. Tọa độ Y 
         Y_HEADER = 3.2      # Tầng 1: Tiêu đề 
         Y_LABEL  = 1.8      # Tầng 2a: Tên ma trận
         Y_MATRIX = 0.4      # Tầng 2b: Ma trận số 
         Y_GRID   = -2.2     # Tầng 3: Lưới tọa độ & Trực quan hóa
 
-        # 2. Tọa độ X (Các cột ngang / Panels)
+        # 2. Tọa độ X
         X_LEFT   = -4.6     # Panel 1 (Đầu vào V)
         X_MID    = 0.0      # Panel 2 (Biến đổi Sigma)
         X_RIGHT  = 4.6      # Panel 3 (Đầu ra U)
 
-        # =========================================================
-        # TẦNG 1: HEADER (TIÊU ĐỀ & CÔNG THỨC SVD)
-        # =========================================================
         title = Text("3. Ý nghĩa hình học của SVD", font=VN_FONT, font_size=TITLE_SIZE, color=C_SVD).to_corner(UL)
         
         svd_eq = MathTex("A", "=", "U", "\\Sigma", "V^T", font_size=56)
@@ -690,14 +650,10 @@ class Section23_Theory_And_GeometricSVD(Scene):
         svd_eq.set_color_by_tex("\\Sigma", C_SIGMA)
         svd_eq.set_color_by_tex("V^T", C_V)
         
-        # Chỉ dịch công thức xuống Y = 2.6 (nằm an toàn giữa tiêu đề và các ma trận)
         svd_eq.move_to([X_MID, 2.6, 0]) 
         
         self.play(FadeIn(title, shift=DOWN*0.3), Write(svd_eq))
 
-        # =========================================================
-        # TRACKERS (THAM SỐ CHUYỂN ĐỘNG HÌNH HỌC)
-        # =========================================================
         vt_theta_v = ValueTracker(0)       
         vt_sigma_x = ValueTracker(1.0)     
         vt_sigma_y = ValueTracker(1.0)
@@ -714,9 +670,6 @@ class Section23_Theory_And_GeometricSVD(Scene):
             t = vt_theta_u.get_value()
             return np.array([[np.cos(t), -np.sin(t)], [np.sin(t), np.cos(t)]])
 
-        # =========================================================
-        # TẦNG 3: VISUALIZATION ROW (LƯỚI TỌA ĐỘ VÀ MŨI TÊN CHỈ DÒNG)
-        # =========================================================
         plane_kwargs = {
             "x_range": [-4, 4], "y_range": [-4, 4],
             "x_length": 3.2, "y_length": 3.2, 
@@ -737,9 +690,6 @@ class Section23_Theory_And_GeometricSVD(Scene):
         arrow_2 = MathTex("\\Rightarrow", font_size=40).move_to([(X_MID + X_RIGHT)/2, Y_GRID, 0])
         self.play(FadeIn(arrow_1), FadeIn(arrow_2))
 
-        # =========================================================
-        # TẦNG 2: MATRIX ROW (NHÃN & MA TRẬN)
-        # =========================================================
         lbl_v   = MathTex("V^T", font_size=40, color=C_V).move_to([X_LEFT, Y_LABEL, 0])
         lbl_sig = MathTex("\\Sigma", font_size=40, color=C_SIGMA).move_to([X_MID, Y_LABEL, 0])
         lbl_u   = MathTex("U", font_size=40, color=C_U).move_to([X_RIGHT, Y_LABEL, 0])
@@ -758,9 +708,6 @@ class Section23_Theory_And_GeometricSVD(Scene):
             Write(mat_v_dec), Write(mat_sig_dec), Write(mat_u_dec)
         )
 
-        # =========================================================
-        # TẠO HÌNH HỌC (SHAPES VÀ VECTORS) TRONG TẦNG 3
-        # =========================================================
         def get_dynamic_shape(mat_func, plane, color_fill):
             def creator():
                 mat = mat_func()
@@ -785,9 +732,6 @@ class Section23_Theory_And_GeometricSVD(Scene):
         self.play(FadeIn(shape_in), FadeIn(shape_mid), FadeIn(shape_out))
         self.wait(1)
 
-        # =========================================================
-        # PIPELINE ANIMATION (BIẾN ĐỔI SVD)
-        # =========================================================
         def highlight_matrix(matrix_mob, color):
             return SurroundingRectangle(matrix_mob, color=color, corner_radius=0.1, buff=0.1)
 
@@ -826,29 +770,15 @@ class Section23_Theory_And_GeometricSVD(Scene):
         )
         self.wait(2)
         
-        # Mở rộng dọn dẹp để kết nối trơn tru với phần sau (SVDDecompositionVisual)
+        # Mở rộng dọn dẹp để kết nối với phần sau (SVDDecompositionVisual)
         all_mobs = [m for m in self.mobjects]
         self.play(*[FadeOut(m) for m in all_mobs])
         self.wait(1)
 
-
-
-
-
-
-
-
-
-
 #Đoạn video số 5
-# Định nghĩa bảng màu chuẩn
-# COLOR_U = "#58C4DD"  # Xanh lơ sáng
-# COLOR_S = "#83C167"  # Xanh lục
-# COLOR_V = "#FC6255"  # Đỏ nhạt
-
 class SVDDecompositionVisual(Scene):
     def construct(self):
-        # --- 1. TIÊU ĐỀ VÀ ĐƯỜNG KẺ ---
+        # 1. TIÊU ĐỀ VÀ ĐƯỜNG KẺ
         title = MathTex("A", "=", "U", "\\Sigma", "V^\\top", font_size=55)
         title[2].set_color(C_U)
         title[3].set_color(C_SIGMA)
@@ -860,7 +790,7 @@ class SVDDecompositionVisual(Scene):
         self.play(Write(title), Create(line))
         self.wait(0.5)
 
-        # --- 2. MA TRẬN ĐẦY ĐỦ (Thu nhỏ scale để không bị tràn viền) ---
+        # 2. MA TRẬN ĐẦY ĐỦ
         mat_U_exp = Matrix([
             ["u_{11}", "u_{12}", "\\dots", "u_{1n}"],
             ["u_{21}", "u_{22}", "\\dots", "u_{2n}"],
@@ -882,12 +812,11 @@ class SVDDecompositionVisual(Scene):
             ["v_{1n}", "v_{2n}", "\\dots", "v_{nn}"]
         ]).set_color(C_V)
 
-        # Scale 0.75 để đảm bảo an toàn không bao giờ chạm viền hai bên
         matrices = VGroup(mat_U_exp, mat_S, mat_V_exp).arrange(RIGHT, buff=0.4).scale(0.75).shift(UP * 0.5)
         self.play(FadeIn(matrices))
         self.wait(1)
 
-        # --- 3. ÉP THÀNH VECTOR (NGOẶC ĐỨNG YÊN) ---
+        # 3. ÉP THÀNH VECTOR
         vec_u_list = VGroup()
         u_texs = ["\\vec{u}_1", "\\vec{u}_2", "\\dots", "\\vec{u}_n"]
         for i in range(4):
@@ -913,7 +842,7 @@ class SVDDecompositionVisual(Scene):
         self.play(*transform_anims, run_time=1.5)
         self.wait(1)
 
-        # --- 4. TẠO PHƯƠNG TRÌNH ĐÁY ---
+        # 4. TẠO PHƯƠNG TRÌNH ĐÁY
         eq_bottom = MathTex(
             "U", "\\Sigma", "V^\\top", "=",                   # 0, 1, 2, 3
             "\\sigma_1", "\\vec{u}_1", "\\vec{v}_1^\\top",    # 4, 5, 6
@@ -923,7 +852,7 @@ class SVDDecompositionVisual(Scene):
             "\\dots",                                         # 12
             "+",                                              # 13
             "\\sigma_n", "\\vec{u}_n", "\\vec{v}_n^\\top",    # 14, 15, 16
-            font_size=56  # Kích thước an toàn để nằm trọn vẹn 1 dòng
+            font_size=56  
         ).to_edge(DOWN, buff=0.8)
 
         # Tô màu vế trái
@@ -943,7 +872,7 @@ class SVDDecompositionVisual(Scene):
         self.play(Write(eq_bottom[0:4]))
         self.wait(0.5)
 
-        # --- 5. ĐỊNH NGHĨA KHUNG VÀNG ---
+        # 5. ĐỊNH NGHĨA KHUNG VÀNG 
         u_height = mat_U_exp.get_brackets().height - 0.2
         v_width = mat_V_exp.get_brackets()[1].get_x() - mat_V_exp.get_brackets()[0].get_x() - 0.2
 
@@ -962,7 +891,7 @@ class SVDDecompositionVisual(Scene):
         
         self.play(Create(rect_u), Create(rect_s), Create(rect_v))
 
-        # --- 6. HÀM THỰC THI GỘP & ĐEM XUỐNG (FIX LỖI MẤT TÍCH) ---
+        # 6. HÀM THỰC THI GỘP & ĐEM XUỐNG
         def execute_step(idx_vector, idx_sigma, target_indices, is_dots=False):
             u_mob = vec_u_list[idx_vector]
             s_mob = mat_S.get_entries()[idx_sigma]
@@ -991,7 +920,6 @@ class SVDDecompositionVisual(Scene):
                 )
                 self.remove(target_copy)
                 
-                # CHÌA KHÓA CHỐNG MẤT TÍCH: Bật sáng và THÊM VÀO SCENE
                 target_group.set_opacity(1)
                 self.add(target_group)
             else:
@@ -1017,18 +945,17 @@ class SVDDecompositionVisual(Scene):
                 )
                 self.remove(ghost_group, target_copy)
                 
-                # CHÌA KHÓA CHỐNG MẤT TÍCH
                 for i in target_indices:
                     eq_bottom[i].set_opacity(1)
                     self.add(eq_bottom[i]) 
                     
             self.wait(0.5)
 
-        # --- 7. CHẠY CÁC BƯỚC ---
+        # 7. CHẠY CÁC BƯỚC 
         # BƯỚC 1
         execute_step(0, 0, [4, 5, 6])
         
-        # BƯỚC 2: Di chuyển khung (Không hiện dấu cộng)
+        # BƯỚC 2: Di chuyển khung 
         self.play(
             rect_u.animate.become(get_u_box(1)),
             rect_s.animate.become(get_s_box(5)),
@@ -1052,8 +979,7 @@ class SVDDecompositionVisual(Scene):
         )
         execute_step(3, 15, [14, 15, 16])
         
-        # --- 8. OUTRO: UNCREATE KHUNG & LẦN LƯỢT HIỆN DẤU CỘNG ---
-        # Phải set opacity về 1 trước khi dùng FadeIn/Write
+        # 8. OUTRO: UNCREATE KHUNG & LẦN LƯỢT HIỆN DẤU CỘNG 
         eq_bottom[7].set_opacity(1)
         eq_bottom[11].set_opacity(1)
         eq_bottom[13].set_opacity(1)
@@ -1069,16 +995,13 @@ class SVDDecompositionVisual(Scene):
             run_time=2
         )
         
-        # Chắc chắn add toàn bộ dấu cộng vào Scene để kết thúc đẹp
         self.add(eq_bottom[7], eq_bottom[11], eq_bottom[13])
         self.wait(2)
 
         
 
 
-        # =====================================================================
-        # 9. CHUYỂN CẢNH: RÚT MA TRẬN, ĐẨY BIỂU THỨC LÊN TRÊN (Ảnh 4)
-        # =====================================================================
+        # 9. CHUYỂN CẢNH: RÚT MA TRẬN, ĐẨY BIỂU THỨC LÊN TRÊN 
         # Ẩn các phần tử ma trận phía trên (Bao gồm các vector, ma trận Sigma và các dấu ngoặc)
         self.play(
             FadeOut(mat_S), FadeOut(vec_u_list), FadeOut(vec_v_list),
@@ -1093,8 +1016,7 @@ class SVDDecompositionVisual(Scene):
         )
         self.wait(1)
 
-        # --- 2. HIỆN TỪ TỪ VECTOR U VÀ V BẰNG HIỆU ỨNG WRITE (VẼ CHỮ) ---
-        
+        # 2. HIỆN TỪ TỪ VECTOR U VÀ V BẰNG HIỆU ỨNG WRITE (VẼ CHỮ)
         # Setup Vector U
         u_matrix = Matrix([["u_{1i}"], ["u_{2i}"], ["\\vdots"], ["u_{ni}"]], v_buff=0.9).set_color(C_U)
         u_matrix.get_entries()[2].set_color(WHITE)
@@ -1108,7 +1030,6 @@ class SVDDecompositionVisual(Scene):
         self.play(Write(u_lbl), run_time=0.8)
         self.play(Write(u_brackets[0]), run_time=0.4)
         
-        # Đã đổi FadeIn thành Write để các phần tử hiện ra như đang được viết
         self.play(
             AnimationGroup(*[Write(entry) for entry in u_entries], lag_ratio=0.4), 
             run_time=1.5
@@ -1130,7 +1051,6 @@ class SVDDecompositionVisual(Scene):
         self.play(Write(v_lbl), run_time=0.8)
         self.play(Write(v_brackets[0]), run_time=0.4)
         
-        # Đã đổi FadeIn thành Write
         self.play(
             AnimationGroup(*[Write(entry) for entry in v_entries], lag_ratio=0.4), 
             run_time=1.5
@@ -1139,7 +1059,7 @@ class SVDDecompositionVisual(Scene):
         self.play(Write(v_brackets[1]), run_time=0.4)
         self.wait(1)
 
-        # --- 3. HIỆU ỨNG ĐẨY NỐI TIẾP NHAU (CASCADING) ---
+        # 3. HIỆU ỨNG ĐẨY NỐI TIẾP NHAU (CASCADING)
         u_texts = ["u_{1i}", "u_{2i}", "", "u_{ni}"]
         v_texts = ["v_{1i}", "v_{2i}", "", "v_{ni}"]
         
@@ -1190,7 +1110,7 @@ class SVDDecompositionVisual(Scene):
         for j in valid_idx: anim_step3.append(TransformFromCopy(v_mobs[1][j], v_mobs[3][j]))
         self.play(*anim_step3, run_time=0.8)
 
-        # --- 4. HOÀN THIỆN KẾT QUẢ VỚI NGOẶC MATRIX CHUẨN ---
+        # 4. HOÀN THIỆN KẾT QUẢ VỚI NGOẶC MATRIX CHUẨN
         left_bracket = u_matrix.get_brackets()[0].copy().set_color(WHITE)
         right_bracket = u_matrix.get_brackets()[1].copy().set_color(WHITE)
         
@@ -1209,11 +1129,6 @@ class SVDDecompositionVisual(Scene):
         )
         self.wait(2)
 
-
-
-        # =====================================================================
-        # --- CHUYỂN CẢNH MƯỢT ĐỂ GHÉP NỐI 2 PHẦN ---
-        # =====================================================================
         # Gom tất cả các object đang hiển thị trên màn hình lại
         current_mobjects = Group(*self.mobjects)
         
@@ -1224,7 +1139,7 @@ class SVDDecompositionVisual(Scene):
         )
         self.wait(0.5)
 
-        # --- 1. ĐỌC ẢNH VÀ TÍNH TOÁN SVD THỰC TẾ ---
+        # 1. ĐỌC ẢNH VÀ TÍNH TOÁN SVD THỰC TẾ
         img_path = "image2.jpg"
         try:
             img_pil = Image.open(img_path).convert('L')
@@ -1241,11 +1156,11 @@ class SVDDecompositionVisual(Scene):
         # Tạo ImageMobject cho ảnh gốc (Mảng 3 kênh RGB cho Manim)
         orig_rgb = np.stack((img_array.astype(np.uint8),)*3, axis=-1)
         
-        # --- ĐIỀU CHỈNH 1: Ảnh bên trái nhỏ lại và dịch qua trái ---
+        # ĐIỀU CHỈNH 1: Ảnh bên trái nhỏ lại và dịch qua trái
         original_image = ImageMobject(orig_rgb)
-        # 1.1 Tỉ lệ ảnh gốc nhỏ lại (từ 4.5 xuống 3.0)
+        # 1.1 Tỉ lệ ảnh gốc nhỏ lại
         original_image.scale_to_fit_height(3.5)
-        # 1.2 Dịch qua trái nhiều hơn (buff nhỏ hơn từ 0.8 xuống 0.5)
+        # 1.2 Dịch qua trái nhiều hơn
         original_image.to_edge(LEFT, buff=0.65)
         
         # Viền trắng bao quanh ảnh gốc
@@ -1253,11 +1168,10 @@ class SVDDecompositionVisual(Scene):
         original_border.move_to(original_image)
         original_group = Group(original_image, original_border)
 
-        # --- ĐIỀU CHỈNH 2: Làm dấu toán học nhỏ lại một chút ---
         equals_sign = MathTex("=", font_size=60).next_to(original_group, RIGHT, buff=0.3)
         sum_sign = MathTex("\\sum", font_size=90).next_to(equals_sign, RIGHT, buff=0.3)
 
-        # --- 3. CHUẨN BỊ LƯỚI THÀNH PHẦN TỪ SVD ---
+        # 3. CHUẨN BỊ LƯỚI THÀNH PHẦN TỪ SVD 
         # Tách riêng các nhóm để làm hiệu ứng nối tiếp nhau
         images_grid = Group()    # Chỉ chứa ảnh và viền
         overlays_group = Group() # Chỉ chứa kính mờ
@@ -1265,10 +1179,9 @@ class SVDDecompositionVisual(Scene):
 
         num_rows, num_cols = 4, 4
         
-        # --- ĐIỀU CHỈNH 3: Lưới ảnh to hơn và khít hơn ---
-        # 3.1 Tăng tỉ lệ ảnh thành phần (từ 1.0 lên 1.5)
+        # 3.1 Tăng tỉ lệ ảnh thành phần
         cell_height = 1.63
-        # 3.2 Giảm buff giữa các ô để lưới khít hơn (từ 0.15 xuống 0.1)
+        # 3.2 Giảm buff giữa các ô 
         cell_buff = 0.1 
 
         for i in range(num_rows):
@@ -1293,15 +1206,13 @@ class SVDDecompositionVisual(Scene):
                 comp_border = Rectangle(width=comp_img.width, height=comp_img.height, color=WHITE, stroke_width=1.5)
                 comp_border.move_to(comp_img)
                 
-                # Thêm vào nhóm Ảnh
+                # Thêm vào nhóm ảnh
                 cell_img_group = Group(comp_img, comp_border)
                 images_grid.add(cell_img_group)
                 
-                # Kính mờ (chưa định vị) để chữ đè lên dễ đọc
                 overlay = Rectangle(width=comp_img.width, height=comp_img.height, color=BLACK, fill_opacity=0.2, stroke_width=0)
                 overlays_group.add(overlay)
                 
-                # Chữ toán học 2 dòng (chưa định vị), font size to hơn chút để cân đối
                 tex1 = MathTex(f"\\vec{{u}}_{{{index}}}", f"\\vec{{v}}_{{{index}}}^\\top", font_size=45)
                 tex1[0].set_color(C_U)
                 tex1[1].set_color(C_V)
@@ -1316,15 +1227,13 @@ class SVDDecompositionVisual(Scene):
 
         # Xếp nhóm ảnh thành lưới 4x4 và đặt vị trí bên phải dấu Tổng
         images_grid.arrange_in_grid(rows=num_rows, cols=num_cols, buff=cell_buff)
-        # Giảm buff để dịch qua trái nhiều hơn (từ 0.5 xuống 0.3)
         images_grid.next_to(sum_sign, RIGHT, buff=0.3)
 
-        # Khớp tọa độ của kính mờ và chữ theo tọa độ của ảnh vừa được xếp lưới
         for cell, overlay, text in zip(images_grid, overlays_group, texts_group):
             overlay.move_to(cell)
             text.move_to(cell)
 
-        # --- 4. HOẠT ẢNH THEO KỊCH BẢN (TIMELINE MỚI) ---
+        # 4. HOẠT ẢNH THEO KỊCH BẢN
         
         # BƯỚC 1: Chỉ hiện ảnh gốc
         self.add(original_group)
@@ -1349,11 +1258,11 @@ class SVDDecompositionVisual(Scene):
         )
         self.wait(1)
 
-        # BƯỚC 3: CHỜ lưới tách hết, then dấu = Σ xuất hiện
+        # BƯỚC 3: Chờ lưới tách hết, then dấu = Σ xuất hiện
         self.play(FadeIn(equals_sign), FadeIn(sum_sign))
         self.wait(1)
 
-        # BƯỚC 4: Cuối cùng là phủ kính mờ và viết công thức lên từng ảnh thành phần
+        # BƯỚC 4: Phủ kính mờ và viết công thức lên từng ảnh thành phần
         self.play(FadeIn(overlays_group, run_time=1))
         
         # Viết công thức nối đuôi nhau
@@ -1377,33 +1286,19 @@ class SVDDecompositionVisual(Scene):
         )
         self.wait(1)
 
-
-        # all_current_mobs = Group(*self.mobjects)
-        
-        # # Scale về 0.1 (thu nhỏ cực độ) và làm mờ cùng lúc
-        # self.play(
-        #     all_current_mobs.animate.scale(0.1).set_opacity(0),
-        #     run_time=1.5,
-        #     rate_func=rate_functions.ease_in_out_expo  # ĐÃ SỬA LỖI Ở ĐÂY
-        # )
-        # self.wait(1)
-
-
-
 # Đoạn video số 6
 class LowRankTheory(Scene):
     def construct(self):
-        # 1. TIÊU ĐỀ CHÍNH
+        # 1. Tiêu đề chính
         title_vn = Text("Xấp xỉ hạng thấp & Tỉ lệ lưu trữ", font=VN_FONT, weight=BOLD, font_size=40)
         title_vn.to_edge(UP, buff=0.5)
         self.play(Write(title_vn))
         self.wait(0.5)
 
-        # 2. CÔNG THỨC XẤP XỈ HẠNG k
+        # 2. Công thức xấp xỉ hạng k
         subtitle_approx = Text("Công thức xấp xỉ tốt nhất hạng k:", font=VN_FONT, font_size=28, color=BLUE_A)
         subtitle_approx.next_to(title_vn, DOWN, buff=0.6)
         
-        # TỰ ĐỘNG MAP THEO MÀU GLOBAL CỦA BẠN
         formula_approx = MathTex(
             r"A_k = \sum_{i=1}^k \sigma_i \mathbf{u}_i \mathbf{v}_i^T",
             tex_to_color_map={
@@ -1419,7 +1314,7 @@ class LowRankTheory(Scene):
         self.play(Write(formula_approx))
         self.wait(1)
 
-        # 3. PHÂN TÍCH KHÔNG GIAN LƯU TRỮ
+        # 3. Phân tích không gian lưu trữ
         subtitle_storage = Text("Phân tích không gian lưu trữ:", font=VN_FONT, font_size=28, color=BLUE_A)
         subtitle_storage.next_to(formula_approx, DOWN, buff=0.8)
 
@@ -1486,7 +1381,7 @@ class LowRankTheory(Scene):
         self.play(Write(formula_storage))
         self.wait(1)
 
-        # 4. CHUYỂN CẢNH: ĐÓNG KHUNG ĐỒNG THỜI VÀ BIẾN ĐỔI THÀNH PHÂN SỐ
+        # 4. Chuyển cảnh: đóng khung đồng thời biến thành phân số
         box_num = SurroundingRectangle(math_storage_3, color=YELLOW, buff=0.2)
         box_den = SurroundingRectangle(item_1[1], color=YELLOW, buff=0.2)
         
@@ -1552,10 +1447,7 @@ class SVDImageCompression(Scene):
     def construct(self):
         # Thiết lập font chữ
         VN_FONT = "Arial"
-        
-        # =====================================================================
-        # 1. ĐỌC ẢNH VÀ PHÂN RÃ SVD
-        # =====================================================================
+        # 1. Đọc ảnh và phân rã SVD
         img_filename = "image.jpg"
         
         if os.path.exists(img_filename):
@@ -1571,9 +1463,7 @@ class SVDImageCompression(Scene):
         
         U, S, Vt = np.linalg.svd(img_array, full_matrices=False)
 
-        # =====================================================================
-        # 2. KHỞI TẠO BỐ CỤC UI TRÊN MÀN HÌNH
-        # =====================================================================
+        # 2. Khởi tạo bố cục UI trên màn hình
         title = Text("Tổng các ma trận hạng 1 (Rank-1 Matrices)", font=VN_FONT, font_size=36, color=BLUE_B).to_edge(UP)
         self.play(Write(title))
         
@@ -1598,21 +1488,13 @@ class SVDImageCompression(Scene):
         current_ratio_text = Text("Tỉ lệ lưu trữ: 0%", font=VN_FONT, font_size=20, color=LIGHT_GRAY).next_to(current_k_text, DOWN)
         self.add(current_k_text, current_ratio_text)
 
-
-
-
-
-
-
-        # =====================================================================
-        # 3. THỰC THI HOẠT ẢNH CỘNG DỒN TỪNG LAYER
-        # =====================================================================
+        # 3. Thực thi hoạt ảnh cộng dồn từng layer
         accumulated_matrix = np.zeros((h, w))
         prev_k = 0
         
-        # --- GIAI ĐOẠN 1 & 2: RỜI RẠC (Từ k=1 đến k=20) ---
+        # Giai đoạn k từ 1 đến 20
         for k in range(1, 21):
-            # Điều chỉnh tốc độ: Chậm rãi ở 1-10, nhanh hơn một chút ở 11-20
+            # Điều chỉnh tốc độ: Chậm rãi ở 1-10, nhanh hơn ở 11-20
             speed_factor = 1.0 if k <= 10 else 0.5
 
             layer_matrix = np.zeros((h, w))
@@ -1623,7 +1505,6 @@ class SVDImageCompression(Scene):
             if max_abs == 0: max_abs = 1
             layer_vis = np.clip((layer_matrix / max_abs) * 127 + 127, 0, 255).astype(np.uint8)
             
-            # Chập 3 kênh để sửa lỗi nhòe của Manim
             layer_vis_rgb = np.stack((layer_vis, layer_vis, layer_vis), axis=-1)
             right_img = ImageMobject(layer_vis_rgb).set_height(4.5).move_to(RIGHT * 3.5)
             
@@ -1669,7 +1550,7 @@ class SVDImageCompression(Scene):
 
         self.wait(1)
 
-        # --- GIAI ĐOẠN 3: LIÊN TỤC (Từ k=20 đến k=150) ---
+        # Giai đoạn k từ 20 đến 150
         txt_fast = Text("Tăng tốc độ khôi phục ảnh", font=VN_FONT, font_size=24, color=GREEN).next_to(frame_right, DOWN)
         self.play(Write(txt_fast))
         self.wait(1.5)
@@ -1677,7 +1558,7 @@ class SVDImageCompression(Scene):
 
         k_tracker = ValueTracker(20)
 
-        # Cập nhật ảnh cộng dồn (Bên trái)
+        # Cập nhật ảnh cộng dồn
         def get_continuous_compressed():
             k_val = int(k_tracker.get_value())
             k_val = min(max(k_val, 1), k_max)
@@ -1686,7 +1567,6 @@ class SVDImageCompression(Scene):
             res_rgb = np.stack((res,)*3, axis=-1)
             return ImageMobject(res_rgb).set_height(4.5).move_to(LEFT * 3.5)
 
-        # Cập nhật thành phần Layer hiện tại (Bên phải - không bay sang trái nữa)
         def get_continuous_layer():
             k_val = int(k_tracker.get_value())
             k_val = min(max(k_val, 1), k_max)
@@ -1699,7 +1579,6 @@ class SVDImageCompression(Scene):
             l_vis_rgb = np.stack((l_vis,)*3, axis=-1)
             return ImageMobject(l_vis_rgb).set_height(4.5).move_to(RIGHT * 3.5)
 
-        # Đăng ký always_redraw
         continuous_left_img = always_redraw(get_continuous_compressed)
         continuous_right_img = always_redraw(get_continuous_layer)
         
@@ -1720,33 +1599,21 @@ class SVDImageCompression(Scene):
         self.add(continuous_left_img, continuous_right_img, continuous_rank_txt, continuous_ratio_txt, continuous_layer_txt)
         self.remove(current_left_img, current_k_text, current_ratio_text)
 
-        # Chạy mượt từ 20 đến 150 với tốc độ vừa phải (10 giây)
+        # Chạy mượt từ 20 đến 150
         self.play(k_tracker.animate.set_value(150), run_time=10, rate_func=linear)
         self.wait(2)
 
         k_target = 150
         target_matrix = U[:, :k_target] @ np.diag(S[:k_target]) @ Vt[:k_target, :]
         
-        # Dọn dẹp Text chuẩn bị vào Đồ thị
-        # self.play(FadeOut(
-        #     continuous_left_img, continuous_right_img, 
-        #     continuous_rank_txt, continuous_ratio_txt, continuous_layer_txt, 
-        #     txt_left, txt_right, title
-        # ))
-
-
-
-
-
-        # --- GIAI ĐOẠN 4: BƯỚC NHẢY LỚN 
-        # Sử dụng target_matrix từ Đoạn 1 thay cho acc_matrix_150 chưa được định nghĩa ở Đoạn 2
+        # Bước nhảy lớn
         acc_vis_150 = np.clip(target_matrix, 0, 255).astype(np.uint8)
         current_left_img = ImageMobject(np.stack((acc_vis_150,)*3, axis=-1)).set_height(4.5).move_to(LEFT * 3.5)
         
         current_k_text = Text("Rank k = 150", font=VN_FONT, font_size=24, color=YELLOW).next_to(frame_left, DOWN)
         current_ratio_text = Text(f"Tỉ lệ lưu trữ: {(150*(h+w+1))/(h*w)*100:.1f}%", font=VN_FONT, font_size=20, color=LIGHT_GRAY).next_to(current_k_text, DOWN)
         
-        # Thêm Mobject tĩnh vào và gỡ bỏ Mobject động (always_redraw) để kết thúc Giai đoạn 3
+        # Thêm Mobject tĩnh vào và gỡ bỏ Mobject động
         self.add(current_left_img, current_k_text, current_ratio_text)
         self.remove(continuous_left_img, continuous_right_img, continuous_rank_txt, continuous_ratio_txt, continuous_layer_txt)
         
@@ -1803,19 +1670,12 @@ class SVDImageCompression(Scene):
             prev_k_jump = jump_k
             self.wait(0.5)
 
-        # Dọn dẹp Text chuẩn bị vào Đồ thị (Được dời xuống cuối cùng sau khi đã chạy xong toàn bộ animation)
         self.play(FadeOut(
             current_left_img, current_k_text, current_ratio_text, 
             txt_left, txt_right, title
         ))
 
-            
-
-
-
-        # =====================================================================
-        # 4. PHÂN TÍCH ĐỒ THỊ SINGULAR VALUES
-        # =====================================================================
+        # 4. Phân tích đồ thị Singular Values
         self.play(
             FadeOut(title), FadeOut(txt_left), FadeOut(txt_right), 
             FadeOut(frame_right)
@@ -1873,7 +1733,7 @@ class SVDImageCompression(Scene):
         for x in range(0, k_max + 1, k_max // 5):
             x_labels.add(Text(str(x), font=VN_FONT, font_size=16, color=WHITE).next_to(chart.c2p(x, min_log), DOWN, buff=0.15))
 
-        # Thêm nhãn rõ ràng cho các trục đồ thị
+        # Thêm nhãn cho các trục đồ thị
         x_axis_label = Text("Chỉ số k", font=VN_FONT, font_size=20, color=YELLOW).next_to(chart_frame, DOWN, buff=0.6)
         y_axis_label = VGroup(
             Text("Giá trị suy biến ", font=VN_FONT, font_size=20, color=BLUE_B),
@@ -1922,12 +1782,8 @@ class SVDImageCompression(Scene):
         )
         self.wait(2)
 
-
-        # =====================================================================
-        # 5. SO SÁNH TRỰC DIỆN, ZOOM, VÀ KẾT LUẬN TRÊN ĐỒ THỊ
-        # =====================================================================
+        # 5. So sánh và kết luận cho đồ thị
         
-        # --- 5.1. Phủ màn đen lên đồ thị và hiện Ảnh Gốc bên phải ---
         dim_overlay = Rectangle(
             width=7, height=6, color=BLACK, fill_opacity=0.85
         ).move_to(chart.get_center())
@@ -1948,7 +1804,7 @@ class SVDImageCompression(Scene):
         )
         self.wait(2)
 
-        # --- 5.2. Chuẩn bị bản Zoom (Cắt mảng numpy) ---
+        # 5.2. Chuẩn bị bản Zoom
         zoom_size = 60 # Cắt vùng 60x60 pixel
         y_start = h // 2 - zoom_size // 2
         x_start = w // 2 - zoom_size // 2
@@ -1965,7 +1821,7 @@ class SVDImageCompression(Scene):
 
         txt_zoom = Text("Zoom x5", font=VN_FONT, font_size=32, color=RED).to_edge(UP)
         
-        # --- 5.3. Thực thi hiệu ứng Zoom ---
+        # 5.3. Thực thi hiệu ứng Zoom
         self.play(
             FadeOut(k_text_target, ratio_target, k_text_orig, ratio_orig, title_graph),
             Write(txt_zoom)
@@ -1978,7 +1834,7 @@ class SVDImageCompression(Scene):
         )
         self.wait(4)
 
-        # --- 5.4. Trả 2 hình về kích thước bình thường (Un-zoom) ---
+        # 5.4. Trả 2 hình về kích thước bình thường
         self.play(
             FadeOut(zoomed_left), FadeOut(zoomed_right), FadeOut(txt_zoom),
             FadeIn(img_target), FadeIn(img_original),
@@ -1986,7 +1842,7 @@ class SVDImageCompression(Scene):
         )
         self.wait(2)
 
-        # --- 5.5. Trả lại đồ thị bên phải (Giữ nguyên ảnh trái) ---
+        # 5.5. Trả lại đồ thị bên phải
         # Chỉ FadeOut các đối tượng bên phải và tấm màn đen
         self.play(
             FadeOut(img_original), FadeOut(k_text_orig), FadeOut(ratio_orig), 
@@ -1995,7 +1851,7 @@ class SVDImageCompression(Scene):
         )
         self.wait(1)
 
-        # --- 5.6. Hiện Text "Xấp xỉ hạng thấp" đè lên đồ thị ---
+        # 5.6. Hiện Text "Xấp xỉ hạng thấp" đè lên đồ thị 
         txt_low_rank_1 = Text("Xấp xỉ hạng thấp", font=VN_FONT, font_size=36, color=WHITE)
         txt_low_rank_2 = Text("Low Rank Approx.", font=VN_FONT, font_size=30, color=WHITE).next_to(txt_low_rank_1, DOWN)
         group_txt = VGroup(txt_low_rank_1, txt_low_rank_2).move_to(chart.c2p( (k_max + k_target)/2 , (max_log+min_log)/2 ))
@@ -2014,7 +1870,6 @@ class SVDImageCompression(Scene):
 # Đoạn video số 8
 class VideoOutro(Scene):
     def construct(self):
-        # Background: Công thức SVD mờ, liên tục phóng to chầm chậm
         svd_eq = MathTex("A = U \\Sigma V^T", font_size=160, color=BLUE).set_opacity(0.1)
         self.add(svd_eq)
         
@@ -2045,18 +1900,11 @@ class VideoOutro(Scene):
             run_time=0.5
         )
 
-
-
-
-
-
-
-
-
+# Hàm main để gộp các video rời rạc thành 1 vidao hoàn chỉnh
 if __name__ == "__main__":
     import os
 
-    # 1. DANH SÁCH CÁC ĐOẠN THEO ĐÚNG THỨ TỰ
+    # 1. Danh sách theo thứ tự
     SCENES = [
         "Section1_IntroProblem",
         "MatrixDiagonalization",
@@ -2070,18 +1918,15 @@ if __name__ == "__main__":
 
     print("BẮT ĐẦU QUÁ TRÌNH TỰ ĐỘNG HÓA MANIM...")
 
-    # Lấy tên file hiện tại một cách tự động (manim_scene.py)
     current_file = os.path.basename(__file__)
 
-    # BƯỚC 1: Render tự động từng đoạn với chất lượng cao (-qh)
+    # B1: Render tự động từng đoạn với chất lượng cao (-qh)
     for scene in SCENES:
         print(f"\n========== ĐANG RENDER: {scene} ==========\n")
         # Lệnh gọi Manim từ hệ thống
         os.system(f"manim -qh {current_file} {scene}")
 
-    # BƯỚC 2: Tạo file danh sách text để FFmpeg đọc
-    # Lưu ý: Nếu tên file của bạn không phải manim_scene.py thì thư mục lưu của Manim sẽ thay đổi
-    # Đoạn code này lấy chính xác tên file của bạn (bỏ đuôi .py) để tìm đúng thư mục
+    # B2: Tạo file danh sách text để FFmpeg đọc
     file_name_without_ext = os.path.splitext(current_file)[0]
     video_dir = f"media/videos/{file_name_without_ext}/1080p60/"
     list_file = "video_list.txt"
@@ -2092,12 +1937,12 @@ if __name__ == "__main__":
             path = os.path.join(video_dir, f"{scene}.mp4").replace("\\", "/")
             f.write(f"file '{path}'\n")
 
-    # BƯỚC 3: Gọi FFmpeg để nối video
+    # B3: Gọi FFmpeg để nối video
     output_file = "DO_AN_HOAN_CHINH.mp4"
     print("\n========== ĐANG GHÉP CÁC VIDEO THÀNH 1 FILE DUY NHẤT ==========\n")
     os.system(f"ffmpeg -f concat -safe 0 -i {list_file} -c copy {output_file} -y")
     
-    # BƯỚC 4: Dọn dẹp file rác
+    # B4: Dọn dẹp file rác
     if os.path.exists(list_file):
         os.remove(list_file)
 
