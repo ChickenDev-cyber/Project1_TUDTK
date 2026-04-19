@@ -58,31 +58,3 @@ def rank_and_basis(A):
         "col_basis": col_basis,
         "null_basis": null_basis
     }
-
-if __name__ == "__main__":
-    test_cases_rank = [
-    ("CASE 1: Ma trận vuông đủ hạng", [[1, 2, 3], [4, 5, 6], [7, 8, 10]]),
-    ("CASE 2: Ma trận phụ thuộc tuyến tính", [[1, 2, 3], [4, 5, 6], [7, 8, 9]]),
-    ("CASE 3: Ma trận chữ nhật (2x4)", [[1, 2, 0, 3], [0, 0, 1, 4]]),
-    ("CASE 4: Ma trận Zero (rank = 0)", [[0, 0], [0, 0]]),
-    ("CASE 5: Ma trận đơn vị", [[1, 0, 0], [0, 1, 0], [0, 0, 1]]),
-    ("CASE 6: Ma trận một dòng", [[1, 2, 3, 4]]),
-    ("CASE 7: Ma trận một cột", [[1], [2], [3]])
-]
-
-    for name, A in test_cases_rank:
-        print(f"-------------- {name} --------------")
-        print("Ma trận A:")
-        for row in A:
-            print(f"  {row}")
-
-        res = rank_and_basis(A)
-        rank_np = np.linalg.matrix_rank(A)
-
-        print(f"Hạng (của hàm tự định nghĩa): {res['rank']} | Hạng (NumPy): {rank_np}")
-        print(f"-> Hạng tính đúng? {res['rank'] == rank_np}")
-
-        print(f"Cơ sở dòng: {res['row_basis']}")
-        print(f"Cơ sở cột : {res['col_basis']}")
-        print(f"Cơ sở Null: {res['null_basis']}")
-        print("\n")
