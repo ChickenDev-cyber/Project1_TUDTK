@@ -3,7 +3,9 @@
 **Môn học:** Toán Ứng Dụng và Thống Kê (MTH00051)  
 **Trường:** Đại học Khoa học Tự nhiên, ĐHQG-HCM (FIT-HCMUS)  
 
-**Nhóm sinh viên thực hiện:** | STT | MSSV | Họ và Tên |
+**Nhóm sinh viên thực hiện:**
+
+| STT | MSSV | Họ và Tên |
 |:---:|:---:|:---|
 | 1 | 24120151 | Phạm Minh Trọng |
 | 2 | 24120033 | Đào Tiến Đạt |
@@ -76,7 +78,7 @@ Cách nhanh nhất để kiểm tra là sử dụng các file **Jupyter Notebook
 ### 2. Chạy các file Script Python (Phần 2)
 Nếu muốn kiểm tra trực tiếp qua terminal kết quả của các thuật toán phân rã và chéo hóa ma trận ở Phần 2, Thầy/Cô có thể chạy các lệnh sau:
 ```bash
-# Chạy thuật toán phân rã ma trận (LU, QR, SVD)
+# Chạy thuật toán phân rã ma trận (SVD)
 python part2/decomposition.py
 
 # Chạy thuật toán chéo hóa ma trận
