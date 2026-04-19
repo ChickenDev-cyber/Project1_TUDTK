@@ -267,11 +267,11 @@ Mọi kết quả kiểm thử, số liệu thực nghiệm, video trực quan h
     \begin{tabular}{|c|p{4cm}|p{6.5cm}|c|}
         \hline
         \textbf{STT} & \textbf{Họ và Tên} & \textbf{Nhiệm vụ phân công} & \textbf{Hoàn thành} \\ \hline
-        1 & Phạm Minh Trọng \newline \textbf{(24120151 - Leader)} & Quản lý tiến độ, dựng kịch bản, trực quan hóa bằng Manim (part2), viết báo cáo & 100\% \\ \hline
-        2 & Đào Tiến Đạt \newline \textbf{(24120033)} & Cài đặt Phân rã Ma trận (Decomposition - Thuật toán Jacobi), Viết báo cáo nội dung. & 100\% \\ \hline
-        3 & Bùi Nhật Bảo \newline \textbf{(24120167)} & Lập trình hoạt ảnh Manim (Trực quan hóa Chéo hóa ma trận), Xử lý Video/Slide. & 100\% \\ \hline
-        4 & Trịnh Kim Mai \newline \textbf{(24120199)} & Cài đặt hệ giải phương trình Solvers (Gauss, LU, Gauss-Seidel), Phân tích hiệu năng thời gian. & 100\% \\ \hline
-        5 & Trần Công Quang \newline \textbf{(24120221)} & Cài đặt Chéo hóa (Diagonalization), Phân tích độ ổn định số (Hilbert vs SPD matrix). & 100\% \\ \hline
+        1 & Phạm Minh Trọng \newline \textbf{(24120151 - Leader)} & Quản lý tiến độ, dựng kịch bản, trực quan hóa bằng Manim (part2), hoàn thiện báo cáo & 100\% \\ \hline
+        2 & Đào Tiến Đạt \newline \textbf{(24120033)} &  & 100\% \\ \hline
+        3 & Bùi Nhật Bảo \newline \textbf{(24120167)} & Dựng kịch bản, trực quan hóa bằng Manim (part2), hoàn thiện báo cáo & 100\% \\ \hline
+        4 & Trịnh Kim Mai \newline \textbf{(24120199)} &  & 100\% \\ \hline
+        5 & Trần Công Quang \newline \textbf{(24120221)} & Cài đặt chéo hóa và SVD bằng Python,  & 100\% \\ \hline
     \end{tabular}
     \caption{Chi tiết phân công nhiệm vụ của các thành viên trong nhóm}
 \end{table}
@@ -505,7 +505,7 @@ Trong đó:
 \textbf{Điều kiện cần và đủ:} Ma trận $A$ cấp $n$ chéo hóa được khi và chỉ khi nó có $n$ vector riêng độc lập tuyến tính. Điều này tương đương với việc tổng số chiều của các không gian riêng (Geometric Multiplicity) phải bằng $n$. Nếu ma trận có $n$ giá trị riêng phân biệt thì chắc chắn chéo hóa được.
 
 \subsubsection{Thuật toán cài đặt}
-Nhóm triển khai quy trình chéo hóa hoàn toàn thủ công (trong \code{diagonalization.py}), không dùng lệnh tính sẵn mà sử dụng \textbf{Lặp QR} để rút trị riêng và \textbf{Khử Gauss} (kế thừa từ Phần 1) để xây vector riêng.
+Nhóm triển khai quy trình chéo hóa (trong \code{diagonalization.py}), ma trận \(n \times n\) với \(n \le 5\) thì tự cài đặt thủ công bằng cách \textbf{Lặp QR} để rút trị riêng. Nhưng với ma trận \(n > 5\) thì nhóm sử dụng hàm \code{eigvals} của thư viện \code{numpy.linalg} để rút trị riêng. Cuối cùng sẽ khử Gauss (kế thừa từ phần 1) để xây vector riêng.
 
 \textbf{A. Xử lý triệt để Ma trận khuyết (Defective Matrix)}\\
 Điểm sáng thuật toán của nhóm là hàm \code{CheckDefective\_Eigvals}. Trước khi dựng phương trình vector riêng, thuật toán sẽ đối chiếu Bội hình học (Geometric Multiplicity - GM) và Bội đại số (Algebraic Multiplicity - AM). Nếu $GM < AM$, ma trận lập tức bị từ chối chéo hóa nhằm tránh ma trận $P$ bị suy biến.
@@ -663,26 +663,47 @@ Kết quả đo lường cho thấy:
 \end{itemize}
 Kết luận rút ra: Khi giải các bài toán thực tế, không chỉ quan tâm đến tốc độ $\mathcal{O}(n^3)$ mà việc kiểm tra số điều kiện của hệ $\kappa(A)$ là bắt buộc để đảm bảo tính khả tín của nghiệm số.
 
-
 % ==================== KẾT LUẬN ====================
 \newpage
 \section{Kết Luận}
-Thông qua Đồ án 1, nhóm đã hoàn thiện toàn diện các kỹ thuật tính toán khoa học cơ bản từ lý thuyết đến thực hành:
+
+\begin{softbox}
+Sau một thời gian nghiên cứu và tiến hành cài đặt, Đồ án 1 với chủ đề \textbf{"Ma Trận và Cơ Sở của Tính Toán Khoa Học"} đã được nhóm hoàn thiện thành công. Quá trình thực hiện đồ án không chỉ giúp củng cố nền tảng lý thuyết mà còn mang lại những kinh nghiệm thực tiễn quý giá về khoa học thông qua việc lập trình trực tiếp các thuật toán mà không sử dụng các thư viện có sẵn.
+\end{softbox}
+
+\subsection{Tóm tắt kết quả đạt được}
+Nhóm đã bám sát đề bài và hoàn thành xuất sắc các yêu cầu đề ra, cụ thể:
 \begin{itemize}
-    \item \textbf{Về thuật toán:} Triển khai thành công các giải thuật lõi (Khử Gauss, Phân rã SVD/LU/QR, Chéo hóa ma trận) hoàn toàn bằng ngôn ngữ Python cơ bản mà không phụ thuộc vào thư viện số học. Khắc phục triệt để sai số với \code{Fraction}.
-    \item \textbf{Về hình học \& Ứng dụng:} Sử dụng Manim để xây dựng mô hình trực quan hóa giải thích bản chất thực sự của không gian vector thông qua phân rã SVD, đồng thời hiện thực hóa thành công thuật toán nén ảnh bằng xấp xỉ hạng thấp.
-    \item \textbf{Về phân tích thực nghiệm:} Thấu hiểu được chi phí tính toán $\mathcal{O}(n^3)$, điều kiện hội tụ của phương pháp lặp, và đặc biệt là sức mạnh tàn phá của ma trận bị điều kiện kém (Ill-conditioned) đối với sai số làm tròn.
+    \item \textbf{Cài đặt thuật toán cốt lõi:} Triển khai hoàn toàn thủ công các thuật toán: Khử Gauss có chọn phần tử chốt (Partial Pivoting), các thuật toán phân rã như SVD bằng ngôn ngữ Python. Thuật toán đảm bảo độ chính xác nhờ cấu trúc dữ liệu \code{Fraction}, loại bỏ sai số làm tròn.
+    \item \textbf{Giải quyết bài toán thực tế:} Áp dụng thành công phân rã SVD vào kỹ thuật xấp xỉ ma trận hạng thấp (Low-Rank Approximation) để tiến hành nén ảnh kỹ thuật số, hiểu hơn về tầm quan trọng của nén ảnh trong thực tế.
+    \item \textbf{Trực quan hóa sinh động:} Xây dựng thành công chuỗi video học thuật bằng công cụ đồ họa \textbf{Manim}, biến các công thức đại số trừu tượng thành những đoạn phim trực tiếp giải thích cặn kẽ bản chất hình học của từng bước phân rã SVD và quá trình chéo hóa.
+    \item \textbf{Phân tích độ ổn định số:} Đánh giá thực nghiệm sâu sắc về hiện tượng mất ổn định (Ill-conditioned) trên ma trận Hilbert và sự khác biệt về tốc độ hội tụ (Speed Benchmark) giữa các giải thuật.
 \end{itemize}
-Trong quá trình thực hiện, nhóm gặp một số khó khăn ở việc tối ưu thời gian chạy của Python thuần cho các kích thước ma trận $n \ge 1000$ và đồng bộ hóa frame rate cho video Manim ở các ma trận lớn. Tuy nhiên, các vấn đề đều đã được giải quyết bằng việc tối ưu hóa vòng lặp mảng một chiều và giảm thiểu số phép nhân dư thừa.
+
+\subsection{Khó khăn gặp phải}
+Trong hành trình thực hiện đồ án, nhóm đã đối mặt và từng bước giải quyết một số rào cản nhất định:
+\begin{itemize}
+    \item \textbf{Tính toán khối lượng lớn:} Việc kiên quyết cài đặt bằng Python thuần (không dùng thư viện cấp C như NumPy) đã khiến thời gian thực thi thuật toán $O(n^3)$ trên các ma trận có kích thước khổng lồ ($n \ge 1000$) tăng cao, đòi hỏi phải tái cấu trúc vòng lặp nhiều lần để giảm chi phí hằng số.
+    \item \textbf{Làm chủ công cụ đồ họa Manim:} Việc phải lập trình bằng code kịch bản đòi hỏi nhiều tính toán canh chỉnh tọa độ cho các đối tượng toán học để không bị vỡ bố cục, cùng với đó là việc đồng bộ nội dung, lên kịch bản và tốn tương đối nhiều thời gian để render video thành phẩm.
+    \item \textbf{Xử lý ngoại lệ trong tính toán số:} Khó khăn trong việc bắt các lỗi suy biến hệ thống khi xử lý ma trận khuyết (Defective Matrix), cũng như mất mát chữ số phần thực (Loss of Significance) khi thử nghiệm giải hệ với ma trận cực kỳ xấu như ma trận Hilbert.
+\end{itemize}
+
+\subsection{Bài học rút ra}
+Qua khoảng thời gian làm việc, những giá trị cốt lõi mà nhóm đã tích lũy được có thể rút kết thành:
+\begin{itemize}
+    \item \textbf{Giá trị của sự tối ưu phần cứng:} Hiểu rõ sự chênh lệnh to lớn về mặt hiệu năng khi chuyển đổi các vòng lặp cơ bản.
+    \item \textbf{Tư duy toán học và lập trình hướng số liệu:} Nắm vững định nghĩa "Không gian vector" và các phép biến đổi điểm/trục cơ bản, từ đó mới có thể chuyển đổi thành công tư duy phân rã phương trình thành dạng hàm thuật toán có thể giải quyết bài toán lớn hơn của thực tiễn.
+    \item \textbf{Kỹ năng làm việc nhóm:} Quá trình làm việc theo các thành phần chức năng (Solver, Demcomposition, Visualization) đã giúp các thành viên củng cố kỷ luật thiết kế phần mềm và rèn luyện kỹ năng giải quyết vấn đề rủi ro chung dưới áp lực của thời hạn yêu cầu.
+\end{itemize}
 
 % ==================== TÀI LIỆU THAM KHẢO ====================
 \newpage
 \begin{thebibliography}{99}
+\bibitem{szeliski2022} 
+Richard Szeliski. \textit{Computer Vision: Algorithms and Applications}, 2nd ed. Springer, 2022.
+
 \bibitem{strang2023} 
 Gilbert Strang. \textit{Introduction to Linear Algebra}, 6th ed. Wellesley-Cambridge Press, 2023.
-
-\bibitem{trefethen1997} 
-Lloyd N. Trefethen \& David Bau III. \textit{Numerical Linear Algebra}. SIAM, 1997.
 
 \bibitem{golub2013} 
 Gene H. Golub \& Charles F. Van Loan. \textit{Matrix Computations}, 4th ed. Johns Hopkins University Press, 2013.
