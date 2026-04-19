@@ -78,7 +78,7 @@ def back_substitution(U, c):
     else:
         return [x_expr[j]['const'] for j in range(n_cols)]
 
-def gaussian_elimination(A, b):
+def gaussian_eliminate(A, b):
     n = len(A)
     m = len(A[0])
 
@@ -176,7 +176,7 @@ def run_tests(test_cases):
         print("-" * 65)
 
         try:
-            result = gaussian_elimination([row[:] for row in A], b[:])
+            result = gaussian_eliminate([row[:] for row in A], b[:])
             
             if result is None:
                 verify_solution(A, None, b)

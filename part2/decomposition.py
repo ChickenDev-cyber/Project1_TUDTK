@@ -48,7 +48,6 @@ def MultiplyMatrix(A, B):
 def JacobiEigen(M, num0=1e-9, max_iter=100):
     n = len(M)
     V = InitMatrix(n, n)
-    # Khởi tạo V là ma trận đơn vị
     for i in range(n):
         V[i][i] = 1.0
 
@@ -76,7 +75,7 @@ def JacobiEigen(M, num0=1e-9, max_iter=100):
         cos_t = mth.cos(theta)
         sin_t = mth.sin(theta)
 
-        # Cập nhật ma trận M (chỉ tính lại các hàng/cột bị ảnh hưởng)
+        # Cập nhật ma trận M 
         M_pp = cos_t**2 * M[p][p] - 2*sin_t*cos_t*M[p][q] + sin_t**2 * M[q][q]
         M_qq = sin_t**2 * M[p][p] + 2*sin_t*cos_t*M[p][q] + cos_t**2 * M[q][q]
         M[p][q] = M[q][p] = 0.0
@@ -136,15 +135,12 @@ def decomposite_SVD(A):
         Sigma[j][j] = sigma_val
 
         if sigma_val > 1e-9:
-            # Lấy cột j của V
             v_j = [V[row][j] for row in range(m)]
             
-            # Nhân ma trận A với vector v_j
             Av = []
             for row in range(n):
                 Av.append(DotProduct(A[row], v_j))
                 
-            # Chia cho sigma_val và nhét vào cột j của U
             for row in range(n):
                 U[row][j] = Av[row] / sigma_val
 
@@ -175,7 +171,6 @@ def run_test(name, A):
     for row in V_T: 
         print([round(val, 4) for val in row])
 
-    # Kiem chung voi Numpy
     print("--- Kiem chung Numpy ---")
     try:
         A_np = np.array(A, dtype=float)

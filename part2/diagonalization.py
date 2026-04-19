@@ -2,29 +2,29 @@ import math as mth
 import numpy as np
 from fractions import Fraction
 
+
 def back_substitution(U, c):
     n_rows = len(U)
     n_cols = len(U[0])
     
-    r = sum(1 for i in range(n_rows) if any(val != 0 for val in U[i]))
-    
+    r = 0
+    for i in range(n_rows):
+        if any(abs(float(val)) > 1e-5 for val in U[i]):
+            r += 1
+            
     for i in range(r, n_rows):
-        if c[i] != 0:
-            print("-> Vô nghiệm.")
+        if abs(float(c[i])) > 1e-5:
             return None
             
     pivot_cols = []
     for i in range(r):
         for j in range(n_cols):
-            if U[i][j] != 0:
+            if abs(float(U[i][j])) > 1e-5:
                 pivot_cols.append(j)
                 break
                 
     free_cols = [j for j in range(n_cols) if j not in pivot_cols]
 
-    if r < n_cols:
-        print("-> Vô số nghiệm. Nghiệm tổng quát:")
-    
     x_expr = [{} for _ in range(n_cols)]
     
     for j in free_cols:
@@ -35,50 +35,25 @@ def back_substitution(U, c):
         expr = {'const': c[i]}
         
         for j in range(p + 1, n_cols):
-            if U[i][j] != 0:
+            if abs(float(U[i][j])) > 1e-5:
                 for key, val in x_expr[j].items():
                     expr[key] = expr.get(key, Fraction(0)) - U[i][j] * val
                     
         for key in expr:
-            expr[key] /= U[i][p]
+            expr[key] = (expr[key] / U[i][p]).limit_denominator(10**8)
             
         x_expr[p] = expr
 
-    # In kết quả nghiệm
-    for j in range(n_cols):
-        terms = []
-        const_val = x_expr[j].get('const', Fraction(0))
-        has_free_var = False
-        
-        for k in free_cols:
-            if k in x_expr[j] and x_expr[j][k] != 0:
-                has_free_var = True
-                coeff = x_expr[j][k]
-                sign = "+" if coeff > 0 else "-"
-                abs_coeff = abs(coeff)
-                coeff_str = "" if abs_coeff == 1 else f"{abs_coeff}*"
-                terms.append(f"{sign} {coeff_str}t{k+1}") 
-        
-        if not has_free_var:
-            print(f"  x{j+1} = {const_val}")
-        else:
-            expr_str = " ".join(terms)
-            if const_val != 0:
-                expr_str = f"{const_val} " + expr_str
-            else:
-                if expr_str.startswith("+ "):
-                    expr_str = expr_str[2:]
-                elif expr_str.startswith("- "):
-                    expr_str = "-" + expr_str[2:]
-            print(f"  x{j+1} = {expr_str}")
+    if r < n_cols:
+        return x_expr 
+    else:
+        return [x_expr[j]['const'] for j in range(n_cols)]
 
-    return None if r < n_cols else [x_expr[j]['const'] for j in range(n_cols)]
-
-def gaussian_elimination(A, b, tol=1e-4):
+def gaussian_eliminate(A, b):
     n = len(A)
     m = len(A[0])
-    M = [[Fraction(val) for val in row] + [Fraction(b[i])] for i, row in enumerate(A)]
-    
+
+    M = [[Fraction(val).limit_denominator(10**8) for val in row] + [Fraction(b[i]).limit_denominator(10**8)] for i, row in enumerate(A)]
     s = 0
     r = 0 
 
@@ -88,11 +63,10 @@ def gaussian_elimination(A, b, tol=1e-4):
 
         p = r
         for i in range(r + 1, n):
-            if abs(float(M[i][c_idx])) > abs(float(M[p][c_idx])):
+            if abs(M[i][c_idx]) > abs(M[p][c_idx]):
                 p = i
 
-        # Xử lý sai số float
-        if abs(float(M[p][c_idx])) < tol:
+        if abs(float(M[p][c_idx])) < 1e-5:
             for i in range(r, n):
                 M[i][c_idx] = Fraction(0)
             continue
@@ -111,26 +85,34 @@ def gaussian_elimination(A, b, tol=1e-4):
 
     U = [row[:m] for row in M]
     c_result = [row[m] for row in M]
+
     x = back_substitution(U, c_result)
     
     return M, x, s
 
 def rank_and_basis(A):
-    n_rows, n_cols = len(A), len(A[0])
-    M_aug, _, _ = gaussian_elimination(A, [0] * n_rows)
+    n_rows = len(A)
+    n_cols = len(A[0])
+    
+    M_aug, _, _ = gaussian_eliminate(A, [0] * n_rows)
+    
     U = [row[:n_cols] for row in M_aug]
     
     pivot_indices = []
     for i in range(n_rows):
         for j in range(n_cols):
-            if U[i][j] != 0: 
+            if abs(float(U[i][j])) > 1e-5: 
                 pivot_indices.append((i, j))
                 break
                 
     rank = len(pivot_indices)
     
     row_basis = [[str(val) for val in U[i]] for i, _ in pivot_indices]
-    col_basis = [[str(A[i][j]) for i in range(n_rows)] for _, j in pivot_indices]
+    
+    col_basis = []
+    for _, j in pivot_indices:
+        column_from_A = [str(A[i][j]) for i in range(n_rows)]
+        col_basis.append(column_from_A)
     
     null_basis = []
     if rank < n_cols:
@@ -143,9 +125,10 @@ def rank_and_basis(A):
 
             for i, k in reversed(pivot_indices):
                 sum_ax = sum(U[i][j] * special_solution[j] for j in range(k + 1, n_cols))
-                special_solution[k] = -sum_ax / U[i][k]
+                val = -sum_ax / U[i][k]
+                special_solution[k] = val.limit_denominator(10**8)
             
-            null_basis.append([str(val) for val in special_solution])
+            null_basis.append([str(val.limit_denominator(10**8)) for val in special_solution])
     
     return {
         "rank": rank,
@@ -155,46 +138,63 @@ def rank_and_basis(A):
     }
 
 def InitMatrix(n, m):
-    return [[0.0] * m for _ in range(n)]
+    Res = []
+    for i in range(n):
+        row_zeros = [0.0] * m
+        Res.append(row_zeros)
+    return Res
 
 def DotProduct(v, u):
-    return sum(v[i] * u[i] for i in range(len(v)))
+    res = 0.0
+    for i in range(len(v)):
+        res += float(v[i]) * float(u[i])
+    return res
 
 def LengthOfVector(v):
     return mth.sqrt(DotProduct(v, v))
 
 def isVec0(v):
-    return all(val == 0 for val in v)
+    for i in range(len(v)):
+        if abs(float(v[i])) > 1e-5:
+            return False
+    return True
 
-# Phân rã QR (Gram-Schmidt)
 def decomposite(A):
-    n, m = len(A), len(A[0])
+    n = len(A)
+    m = len(A[0])
     Q1 = InitMatrix(n, m)    
     R1 = InitMatrix(m, m)
 
-    Q, V = [], []
-    
+    Q = [] 
+    V = [] 
     for j in range(m):
-        u_j = [A[i][j] for i in range(n)]
-        v_j = [A[i][j] for i in range(n)]
+        u_j = [] 
+        v_j = [] 
+        for i in range(n):
+            u_j.append(float(A[i][j]))
+            v_j.append(float(A[i][j]))
 
-        if isVec0(v_j):
-            print("Lỗi: Xuất hiện vector 0 trong quá trình trực giao.")
+        if isVec0(v_j) == True:
             return [], []
         
         for i in range(j):
             v_i = V[i]
-            he_so = DotProduct(u_j, v_i) / DotProduct(v_i, v_i)
+            HeSo = DotProduct(u_j, v_i) / DotProduct(v_i, v_i)
             for row in range(len(v_j)):
-                v_j[row] -= he_so * v_i[row]
+                v_j[row] -= HeSo * v_i[row]
             R1[i][j] = DotProduct(u_j, v_i) / mth.sqrt(DotProduct(v_i, v_i))
         
         V.append(v_j)
-        do_dai = LengthOfVector(v_j)
+        q_temp = []
+        DoDai = LengthOfVector(v_j)
+        
+        if DoDai < 1e-5:
+            return [], []
 
         R1[j][j] = DotProduct(u_j, V[j]) / mth.sqrt(DotProduct(V[j], V[j]))
 
-        q_temp = [v_j[row] / do_dai for row in range(len(v_j))]
+        for row in range(len(v_j)):
+            q_temp.append(v_j[row] / DoDai)
         Q.append(q_temp)
     
     for j in range(m):
@@ -209,34 +209,47 @@ def get_identity(n):
 def subtract_lambda_I(A, lam):
     n = len(A)
     lam_clean = round(float(lam), 10) 
-    return [[round(float(A[i][j]) - (lam_clean if i == j else 0.0), 10) for j in range(n)] for i in range(n)]
+    
+    Res = []
+    for i in range(n):
+        row = []
+        for j in range(n):
+            val = float(A[i][j]) - (lam_clean if i == j else 0.0)
+            row.append(round(val, 10)) 
+        Res.append(row)
+    return Res
 
 def transpose_list(M):
     return [[M[j][i] for j in range(len(M))] for i in range(len(M[0]))]
 
 def MultiplyMatrix(A, B):
-    n, m, p = len(A), len(B[0]), len(B)
+    n = len(A)
+    m = len(B[0])
+    p = len(B)
     Res = InitMatrix(n, m)
     for i in range(n):
         for j in range(m):
-            Res[i][j] = sum(A[i][k] * B[k][j] for k in range(p))
+            for k in range(p):
+                Res[i][j] += float(A[i][k]) * float(B[k][j])
     return Res
 
-def CheckConvergence(A, tol=1e-4):
-    for i in range(len(A)):
+def CheckConvergence(A, tol=1e-5):
+    n = len(A)
+    for i in range(n):
         for j in range(i):
-            if abs(A[i][j]) > tol:
+            if abs(float(A[i][j])) > tol:
                 return False
     return True
 
 def CheckDefective_QR(A, tol=1e-6):
     n = len(A)
-    eigvals = [A[i][i] for i in range(n)]
+    gia_tri_rieng = [float(A[i][i]) for i in range(n)]
     
     for i in range(n):
         for j in range(i + 1, n):
-            if abs(eigvals[i] - eigvals[j]) < tol and abs(A[i][j]) > tol: 
-                return True
+            if abs(gia_tri_rieng[i] - gia_tri_rieng[j]) < tol: 
+                if abs(float(A[i][j])) > tol: 
+                    return True
     return False
 
 def CheckDefective_Eigvals(A, eigenvalues, tol=1e-6):
@@ -245,11 +258,14 @@ def CheckDefective_Eigvals(A, eigenvalues, tol=1e-6):
     unique_vals = sorted(list(set(rounded_eigs)))
     
     for lamda in unique_vals:
-        AM = rounded_eigs.count(lamda) 
+        AM = rounded_eigs.count(lamda)
+        
         if AM > 1:
             A_minus_lamdaI = subtract_lambda_I(A, lamda)
             res_temp = rank_and_basis(A_minus_lamdaI)
-            GM = n - res_temp['rank']
+            rank = res_temp['rank']
+            GM = n - rank 
+            
             if GM < AM:
                 return True
     return False
@@ -263,11 +279,9 @@ def QR_Loop(A, iterations=100):
         A_k = MultiplyMatrix(R, Q)
         
     if not CheckConvergence(A_k):
-        print("-> Trị riêng phức (Chưa hội tụ).")
         return [] 
         
     if CheckDefective_QR(A_k):
-        print("-> Ma trận khuyết (Không đủ vector riêng độc lập tuyến tính).")
         return []
         
     return A_k
@@ -277,31 +291,31 @@ def SolveEigenFullFast(A):
     A_final = InitMatrix(n, n)
     P_cols = []
 
-    # Giới hạn dùng QR thuần tuý cho ma trận nhỏ
-    if n <= 5: 
+    if (n <= 5):
         matrix_result = QR_Loop(A, 500)
         if not matrix_result:
             return [], []
         
         eigen_list = [matrix_result[i][i] for i in range(n)]
+        
         for i in range(n):
             A_final[i][i] = eigen_list[i]
+        
         eigenvalues = eigen_list
     else: 
         eigenvalues = np.linalg.eigvals(A)
 
-        # Check trị riêng phức
-        if any(abs(val.imag) > 1e-9 for val in eigenvalues):
-            print("-> Tồn tại giá trị riêng phức.")
-            return [], []
+        for i in range(n):
+            if abs(eigenvalues[i].imag) > 1e-9: 
+                return [], []
 
-        # Check ma trận khuyết
         if CheckDefective_Eigvals(A, eigenvalues):
-            print("-> Ma trận khuyết, không chéo hóa được.")
             return [], []
         
     A_final = InitMatrix(n, n)
+    P_cols = []
     col_idx = 0 
+    
     unique_vals = sorted(list(set(round(val.real, 6) for val in eigenvalues)), reverse=True)
     
     for lam in unique_vals:
@@ -314,69 +328,78 @@ def SolveEigenFullFast(A):
             col_idx += 1
 
     if len(P_cols) < n:
-        print("-> Lỗi: Không đủ vector riêng.")
         return [], []
 
-    print("-> Có thể chéo hóa.")
-    return A_final, transpose_list(P_cols)
+    P_matrix = transpose_list(P_cols)
+
+    return A_final, P_matrix
 
 def verify_solution(A, D, P):
     try:
-        A_np, D_np, P_np = np.array(A, dtype=float), np.array(D, dtype=float), np.array(P, dtype=float)
-        P_inv = np.linalg.inv(P_np)
+        A_np = np.array(A, dtype=float)
+        D_np = np.array(D, dtype=float)
+        P_np = np.array(P, dtype=float)
         
+        P_inv = np.linalg.inv(P_np)
         A_reconstructed = np.dot(np.dot(P_np, D_np), P_inv)
         
         if np.allclose(A_np, A_reconstructed, atol=1e-5):
-            print("[OK] Ma trận tái tạo khớp với A gốc.")
+            print("KẾT QUẢ: THÀNH CÔNG")
+            print("Nhận xét: Kết quả thuật toán tự cài đặt chính xác. Ma trận tái tạo khớp với ma trận gốc.")
         else:
+            print("KẾT QUẢ: CẢNH BÁO SAI SỐ")
             sai_so = np.max(np.abs(A_np - A_reconstructed))
-            print(f"[CẢNH BÁO] Lệch dữ liệu khi tái tạo. Độ lệch max: {sai_so}")
+            print(f"Nhận xét: Kết quả tái tạo bị lệch so với ma trận gốc. Độ lệch tối đa: {sai_so}")
             
     except np.linalg.LinAlgError:
-        print("[LỖI] Ma trận P không khả nghịch.")
+        print("KẾT QUẢ: LỖI TOÁN HỌC")
+        print("Chi tiết: Ma trận P không khả nghịch, không thể thực hiện kiểm chứng.")
     except Exception as e:
-        print(f"[LỖI] {e}")
+        print(f"KẾT QUẢ: LỖI HỆ THỐNG ({e})")
 
 def run_tests(test_cases):
     for idx, A in enumerate(test_cases, 1):
-        print("-" * 50)
-        print(f"TEST CASE {idx}")
-        print("Ma trận A:")
+        print("=" * 60)
+        print(f"TEST CASE {idx}:")
+        print("Ma trận ban đầu (A):")
         for row in A: 
             print([round(val, 4) for val in row])
         
-        print("\n[Đang xử lý...]")
+        print("\n")
         D, P = SolveEigenFullFast(A)
         
         if D and P:
-            print("\nMa trận D (Chéo):")
+            print("Ma Trận chéo hóa (D):")
             for row in D:
                 print([round(val, 4) for val in row])
                 
-            print("\nMa trận P (Vector riêng):")
+            print("\nMa Trận vector riêng (P):")
             for row in P:
                 print([round(v, 4) for v in row])
                 
-            print("\n[Kiểm chứng P * D * P^-1 = A]")
+            print("\n[Đang kiểm chứng...]")
             verify_solution(A, D, P)
         else:
-            print("-> Dừng kiểm chứng.")
+            print("=> Không thể kiểm chứng vì quá trình chéo hóa thất bại (Không đủ điều kiện).")
             
-        print("-" * 50 + "\n")
+        print("=" * 60 + "\n")
 
 if __name__ == "__main__":
     test_cases = [
-        # Ma trận 3x3 bình thường
-        [[1, 3, 3], [-3, -5, -3], [3, 3, 1]],
-        
-        # Ma trận khuyết 3x3
-        [[3, 1, 0], [0, 3, 0], [0, 0, 5]],
-        
-        # Ma trận 2x2 chứa trị riêng phức
-        [[3, -2], [4, -1]],
-        
-        # Ma trận 6x6 tridiagonal 1
+        [
+            [1, 3, 3],
+            [-3, -5, -3],
+            [3, 3, 1]
+        ],
+        [
+            [3, 1, 0], 
+            [0, 3, 0], 
+            [0, 0, 5]
+        ],
+        [
+            [3, -2],
+            [4, -1]
+        ],
         [
             [4, 1, 0, 0, 0, 0],
             [1, 4, 1, 0, 0, 0],
@@ -385,8 +408,6 @@ if __name__ == "__main__":
             [0, 0, 0, 1, 4, 1],
             [0, 0, 0, 0, 1, 4]
         ],
-        
-        # Ma trận 6x6 tridiagonal 2
         [
             [2, 1, 0, 0, 0, 0],
             [1, 2, 1, 0, 0, 0],

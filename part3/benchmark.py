@@ -4,24 +4,19 @@ import solvers as sv
 import math
 
 def manual_norm(v):
-    #Tính chuẩn L2 (Euclid) của vector v
     return math.sqrt(sum(x**2 for x in v))
 
 def mat_vec_mult(A, x):
-    #Nhân ma trận A với vector x
     n = len(A)
     result = [0.0] * n
     for i in range(n):
-        # Tính tích vô hướng của hàng i với vector x
         result[i] = sum(A[i][j] * x[j] for j in range(len(x)))
     return result
 
 def vec_sub(v1, v2):
-    #Trừ hai vector v1 - v2
     return [x - y for x, y in zip(v1, v2)]
 
 def generate_hilbert_matrix(n):
-    # Tạo ma trận Hilbert H_ij = 1 / (i + j + 1) do index Python bắt đầu từ 0
     H = np.zeros((n, n))
     for i in range(n):
         for j in range(n):
@@ -29,16 +24,12 @@ def generate_hilbert_matrix(n):
     return H
 
 def generate_spd_matrix(n):
-    # Tạo ma trận đối xứng xác định dương (Symmetric Positive Definite)
+    # Tạo ma trận đối xứng xác định dương 
     A = np.random.rand(n, n)
     return np.dot(A, A.T) + n * np.eye(n)
 
 #    Đo thời gian chạy trung bình (5 lần) và tính sai số tương đối của thuật toán.  
 def generate_diagonally_dominant_matrix(n):
-    """
-    Tạo ma trận chéo trội hàng nghiêm ngặt (SDD).
-    Dùng chuyên biệt cho test hiệu năng (Performance) để Gauss-Seidel hội tụ nhanh.
-    """
     A = np.random.rand(n, n)
     row_sums = np.sum(np.abs(A), axis=1)
     np.fill_diagonal(A, row_sums + 1.0)
@@ -50,7 +41,6 @@ def run_experiment(solver_func, A, b, num_runs=5):
     total_time = 0.0
     x_hat = None
     
-    # Nếu ma trận sinh ra lỡ là numpy array (từ hàm sinh ngẫu nhiên), ép về list thuần
     if hasattr(A, 'tolist'): A = A.tolist()
     if hasattr(b, 'tolist'): b = b.tolist()
     
@@ -64,7 +54,6 @@ def run_experiment(solver_func, A, b, num_runs=5):
         
     avg_time = total_time / num_runs
     
-    # Nếu hàm giải bị lỗi trả về mảng rỗng (ví dụ Gauss-Seidel không hội tụ)
     if x_hat is None or len(x_hat) == 0:
         x_hat = [0.0] * len(b)
     # Bước 1: Tính vector Ax = A * x_hat
@@ -77,7 +66,7 @@ def run_experiment(solver_func, A, b, num_runs=5):
     norm_diff = manual_norm(diff)
     norm_b = manual_norm(b)
     
-    # Tránh lỗi chia cho 0 trong trường hợp vector b toàn số 0
+    # Tránh lỗi chia cho 0 
     relative_error = (norm_diff / norm_b) if norm_b != 0 else norm_diff
     
     return avg_time, relative_error
@@ -93,10 +82,8 @@ def benchmark_performance(solvers_dict, n_values=[50, 100, 200, 500, 1000]):
     for n in n_values:
         print(f"\nĐang xử lý ma trận kích thước n = {n}...")
         
-        # SỬ DỤNG MA TRẬN CHÉO TRỘI ĐỂ GAUSS-SEIDEL CHẠY ĐƯỢC
         A = generate_diagonally_dominant_matrix(n)
         
-        # Sinh vector nghiệm đúng (toàn số 1) để dễ kiểm soát
         x_true = np.ones(n)
         b = np.dot(A, x_true)
 
@@ -116,7 +103,6 @@ def benchmark_performance(solvers_dict, n_values=[50, 100, 200, 500, 1000]):
     return results
 
 def benchmark_stability(solvers_dict, n=10):    
-    # Hàm này CHỈ dùng để lấy số liệu sai số cho báo cáo Yêu cầu 3.
     print("\n--- BẮT ĐẦU PHÂN TÍCH ỔN ĐỊNH SỐ ---")
     
     A_hilbert = generate_hilbert_matrix(n)
@@ -158,7 +144,7 @@ def benchmark_stability(solvers_dict, n=10):
 if __name__ == "__main__":
 
     my_solvers = {
-        'Gauss': lambda A, b: sv.gaussian_elimination(A, b)[1], 
+        'Gauss': lambda A, b: sv.gaussian_eliminate(A, b)[1], 
         'LU': sv.solve_lu,
         'Gauss-Seidel': sv.solve_gauss_seidel
     }

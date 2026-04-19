@@ -1,5 +1,5 @@
 from fractions import Fraction
-from gaussian import gaussian_elimination
+from gaussian import gaussian_eliminate
 import numpy as np
 import io
 from contextlib import redirect_stdout
@@ -10,7 +10,7 @@ def rank_and_basis(A):
     
     # Khử Gauss để tìm ma trận bậc thang M
     with redirect_stdout(io.StringIO()):
-        M_aug, _, _ = gaussian_elimination(A, [0] * n_rows)
+        M_aug, _, _ = gaussian_eliminate(A, [0] * n_rows)
     
     # Tách ma trận hệ số U từ ma trận bổ sung M_aug
     U = [row[:n_cols] for row in M_aug]
@@ -59,41 +59,30 @@ def rank_and_basis(A):
         "null_basis": null_basis
     }
 
-# KIỂM THỬ
 if __name__ == "__main__":
-    def run_test(name, A):
-        print(f"\n=== {name} ===")
+    test_cases_rank = [
+    ("CASE 1: Ma trận vuông đủ hạng", [[1, 2, 3], [4, 5, 6], [7, 8, 10]]),
+    ("CASE 2: Ma trận phụ thuộc tuyến tính", [[1, 2, 3], [4, 5, 6], [7, 8, 9]]),
+    ("CASE 3: Ma trận chữ nhật (2x4)", [[1, 2, 0, 3], [0, 0, 1, 4]]),
+    ("CASE 4: Ma trận Zero (rank = 0)", [[0, 0], [0, 0]]),
+    ("CASE 5: Ma trận đơn vị", [[1, 0, 0], [0, 1, 0], [0, 0, 1]]),
+    ("CASE 6: Ma trận một dòng", [[1, 2, 3, 4]]),
+    ("CASE 7: Ma trận một cột", [[1], [2], [3]])
+]
+
+    for name, A in test_cases_rank:
+        print(f"-------------- {name} --------------")
+        print("Ma trận A:")
+        for row in A:
+            print(f"  {row}")
+
         res = rank_and_basis(A)
-        print(f"Ma tran: {A}")
-        print(f"Hang (Rank): {res['rank']}")
-        print(f"Co so dong (Row Basis): {res['row_basis']}")
-        print(f"Co so cot (Col Basis): {res['col_basis']}")
-        print(f"Co so nghiem (Null Basis): {res['null_basis']}")
+        rank_np = np.linalg.matrix_rank(A)
 
-    # CASE 1: Ma tran vuong du hang
-    A1 = [[1, 2, 3], [4, 5, 6], [7, 8, 10]]
-    run_test("CASE 1: MA TRAN VUONG DU HANG", A1)
+        print(f"Hạng (của hàm tự định nghĩa): {res['rank']} | Hạng (NumPy): {rank_np}")
+        print(f"-> Hạng tính đúng? {res['rank'] == rank_np}")
 
-    # CASE 2: Ma tran co dong phu thuoc tuyen tinh
-    A2 = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-    run_test("CASE 2: MA TRAN PHU THUOC TUYEN TINH", A2)
-
-    # CASE 3: Ma tran chu nhat (Nhieu an hon phuong trinh)
-    A3 = [[1, 2, 0, 3], [0, 0, 1, 4]]
-    run_test("CASE 3: MA TRAN CHU NHAT (2x4)", A3)
-
-    # CASE 4: Ma tran Zero (Edge Case: Rank = 0)
-    A4 = [[0, 0], [0, 0]]
-    run_test("CASE 4: MA TRAN ZERO (RANK 0)", A4)
-
-    # CASE 5: Ma tran don vi (Co so la cac vector don vi)
-    A5 = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
-    run_test("CASE 5: MA TRAN DON VI", A5)
-
-    # CASE 6: Ma tran chi co 1 dong (Row matrix)
-    A6 = [[1, 2, 3, 4]]
-    run_test("CASE 6: MA TRAN MOT DONG", A6)
-
-    # CASE 7: Ma tran chi co 1 cot (Column matrix)
-    A7 = [[1], [2], [3]]
-    run_test("CASE 7: MA TRAN MOT COT", A7)
+        print(f"Cơ sở dòng: {res['row_basis']}")
+        print(f"Cơ sở cột : {res['col_basis']}")
+        print(f"Cơ sở Null: {res['null_basis']}")
+        print("\n")
