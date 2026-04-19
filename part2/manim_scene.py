@@ -1938,7 +1938,7 @@ if __name__ == "__main__":
             f.write(f"file '{path}'\n")
 
     # B3: Gọi FFmpeg để nối video
-    output_file = "DO_AN_HOAN_CHINH.mp4"
+    output_file = "demo_video.mp4"
     print("\n========== ĐANG GHÉP CÁC VIDEO THÀNH 1 FILE DUY NHẤT ==========\n")
     os.system(f"ffmpeg -f concat -safe 0 -i {list_file} -c copy {output_file} -y")
     
@@ -1946,7 +1946,7 @@ if __name__ == "__main__":
     if os.path.exists(list_file):
         os.remove(list_file)
 
-    print(f"\n[THÀNH CÔNG] Video của bạn đã sẵn sàng tại thư mục hiện tại: {output_file}")
+    print(f"\n[THÀNH CÔNG] Video đã sẵn sàng tại thư mục hiện tại: {output_file}")
 
 
 
