@@ -158,7 +158,7 @@ def benchmark_stability(solvers_dict, n=10):
 if __name__ == "__main__":
 
     my_solvers = {
-        'Gauss': sv.solve_gauss,
+        'Gauss': lambda A, b: sv.gaussian_elimination(A, b)[1], 
         'LU': sv.solve_lu,
         'Gauss-Seidel': sv.solve_gauss_seidel
     }

@@ -2,44 +2,76 @@ import numpy as np
 import math as mth
 from fractions import Fraction
 
-def back_substitution(U, c, r):
+def back_substitution(U, c):
     n_rows = len(U)
     n_cols = len(U[0])
-    epsilon = 1e-12  # Sai số cho phép để so sánh số thực (float)
+    tol = 1e-8 # Ngưỡng sai số cho số thực
     
-    # Kiểm tra Vô nghiệm trước
+    r = 0
+    for i in range(n_rows):
+        if any(abs(val) > tol for val in U[i]):
+            r += 1
+    
     for i in range(r, n_rows):
-        if abs(c[i]) > epsilon: 
-            print("Lỗi: Hệ phương trình Vô nghiệm.")
+        if abs(c[i]) > tol:
+            print("Hệ phương trình Vô nghiệm.")
             return None
             
-    # Sau khi chắc chắn có nghiệm, mới kiểm tra Vô số nghiệm
-    if r < n_cols:
-        print("Lỗi: Hệ phương trình có Vô số nghiệm.")
-        return None
-    
-    x_val = [0.0] * n_cols  
-    
-    for i in range(r - 1, -1, -1):
-        pivot_col = -1
-        row_U = U[i]  # Tối ưu: Lấy sẵn dòng U[i] để truy xuất nhanh hơn
+    pivot_cols = []
+    for i in range(r):
         for j in range(n_cols):
-            if abs(row_U[j]) > epsilon:  # Thay vì U[i][j] != 0
-                pivot_col = j
+            if abs(U[i][j]) > tol:
+                pivot_cols.append(j)
                 break
-        
-        if pivot_col != -1:
-            sum_ax = 0.0
-            for j in range(pivot_col + 1, n_cols):
-                sum_ax += row_U[j] * x_val[j]
                 
-            x_val[pivot_col] = (c[i] - sum_ax) / row_U[pivot_col]
-    
-    return x_val
+    free_cols = [j for j in range(n_cols) if j not in pivot_cols]
 
-def solve_gauss(A, b):
+    if r < n_cols:
+        print("Hệ phương trình có Vô số nghiệm. Nghiệm tổng quát:")
+    
+    x_expr = [{} for _ in range(n_cols)]
+    
+    for j in free_cols:
+        x_expr[j] = {'const': 0.0, j: 1.0}
+        
+    for i in range(r - 1, -1, -1):
+        p = pivot_cols[i]
+        expr = {'const': c[i]}
+        
+        for j in range(p + 1, n_cols):
+            if abs(U[i][j]) > tol:
+                for key, val in x_expr[j].items():
+                    expr[key] = expr.get(key, 0.0) - U[i][j] * val
+                    
+        for key in expr:
+            expr[key] /= U[i][p]
+            
+        x_expr[p] = expr
+
+    for j in range(n_cols):
+        terms = []
+        const_val = x_expr[j].get('const', 0.0)
+        has_free_var = False
+        
+        for k in free_cols:
+            if k in x_expr[j] and abs(x_expr[j][k]) > tol:
+                has_free_var = True
+                coeff = x_expr[j][k]
+                sign = "+" if coeff > 0 else "-"
+                abs_coeff = abs(coeff)
+                # Format làm tròn 4 chữ số thập phân cho đẹp
+                coeff_str = "" if abs(abs_coeff - 1.0) < tol else f"{abs_coeff:.4f}*"
+                terms.append(f"{sign} {coeff_str}t{k+1}") 
+
+    if r < n_cols:
+        return x_expr 
+    else:
+        return [x_expr[j]['const'] for j in range(n_cols)]
+
+def gaussian_elimination(A, b):
     n = len(A)
-    m = len(A[0]) if n > 0 else 0
+    m = len(A[0])
+    tol = 1e-8 # Ngưỡng sai số
 
     M = [[float(val) for val in row] + [float(b[i])] for i, row in enumerate(A)]
     s = 0
@@ -51,40 +83,32 @@ def solve_gauss(A, b):
 
         p = r
         for i in range(r + 1, n):
-            # So sánh trị tuyệt đối của float
             if abs(M[i][c_idx]) > abs(M[p][c_idx]):
                 p = i
 
-        if abs(M[p][c_idx]) < 1e-12:  # Thay vì kiểm tra == 0
+        if abs(M[p][c_idx]) < tol:
+            for i in range(r, n):
+                M[i][c_idx] = 0.0
             continue
 
         if p != r:
             M[r], M[p] = M[p], M[r]
             s += 1
 
-        row_r = M[r]  # Lấy sẵn dòng r làm chuẩn
         for i in range(r + 1, n):
-            row_i = M[i]  # Lấy sẵn dòng i cần biến đổi
-            f = row_i[c_idx] / row_r[c_idx]
-            row_i[c_idx] = 0.0 
-            
-            slice_i = row_i[c_idx + 1 : m + 1]
-            slice_r = row_r[c_idx + 1 : m + 1]
-            row_i[c_idx + 1 : m + 1] = [vi - f * vr for vi, vr in zip(slice_i, slice_r)]
+            f = M[i][c_idx] / M[r][c_idx]
+            M[i][c_idx] = 0.0 
+            for j in range(c_idx + 1, m + 1):
+                M[i][j] -= M[r][j] * f
         
         r += 1 
 
     U = [row[:m] for row in M]
     c_result = [row[m] for row in M]
 
-    # Gọi hàm thế ngược
-    x_val = back_substitution(U, c_result, r)
+    x = back_substitution(U, c_result)
     
-    # 3. Trả về kết quả
-    if x_val is None:
-        return [] # Trả về mảng rỗng nếu vô nghiệm/vô số nghiệm
-        
-    return x_val
+    return M, x, s
 
 #PHƯƠNG PHÁP PHÂN RÃ LU
 def solve_lu(A, b):
@@ -96,7 +120,6 @@ def solve_lu(A, b):
     U = [[0.0] * n for _ in range(n)]
     # 2. Phân rã LU
     for i in range(n):
-        # Tính U[i][k]
         for k in range(i, n):
             # Tính sum(L[i][j] * U[j][k]) bằng vòng lặp thuần
             sum_lu = 0.0
@@ -141,7 +164,6 @@ def IsStrictlyDiagonallyDominant(A):
             if i != j:
                 off_diag_sum += abs(A[i][j])
         
-        # Nếu có bất kỳ hàng nào mà phần tử chéo không đủ lớn -> Không chéo trội
         if diag_val <= off_diag_sum:
             return False
     return True
@@ -153,7 +175,7 @@ def manual_norm(vector):
 # PHƯƠNG PHÁP LẶP GAUSS-SEIDEL
 def solve_gauss_seidel(A, b, tol=1e-6, max_iter=1000):
     n = len(A)
-    x = [0.0] * n  # Khởi tạo vector nghiệm toàn số 0
+    x = [0.0] * n 
     
     # Kiểm tra xem có phần tử 0 trên đường chéo chính không
     for i in range(n):
@@ -161,7 +183,6 @@ def solve_gauss_seidel(A, b, tol=1e-6, max_iter=1000):
             raise ValueError(f"Lỗi: Phần tử A[{i}][{i}] trên đường chéo bằng 0, không thể chia.")
 
     for k in range(max_iter):
-        # Lưu lại nghiệm cũ để tính sai số
         x_old = list(x)
         
         for i in range(n):
@@ -184,7 +205,6 @@ def solve_gauss_seidel(A, b, tol=1e-6, max_iter=1000):
     return x
 
 def verify_solution(A, b, x, method_name):
-    # Kiểm chứng nghiệm x bằng cách tính Ax và so sánh với b.
     if not x:
         print(f"   [{method_name}] KIỂM CHỨNG: BỎ QUA (Không có nghiệm hợp lệ)")
         return
@@ -194,7 +214,6 @@ def verify_solution(A, b, x, method_name):
         b_np = np.array(b, dtype=float)
         x_np = np.array(x, dtype=float)
         
-        # Tái tạo b: Ax = b_reconstructed
         b_reconstructed = np.dot(A_np, x_np)
         
         # Kiểm tra sai số
@@ -221,12 +240,14 @@ def run_tests(test_cases):
         print(f"Vector hằng số (b): {b}")
         print("-" * 65)
 
-        # --- 1. KHỬ GAUSS ---
+       # --- 1. KHỬ GAUSS ---
         print("1. Phương pháp Khử Gauss:")
         try:
-            x_gauss = solve_gauss([row[:] for row in A], b[:])
+            # SỬA LỖI: Dùng dấu _ để bỏ qua giá trị M và s, chỉ lấy nghiệm x ở giữa
+            _, x_gauss, _ = gaussian_elimination([row[:] for row in A], b[:])
             if x_gauss:
-                print("   Nghiệm:", [round(val, 5) for val in x_gauss])
+                # Ép kiểu float(val) để tránh lỗi round() đối với kiểu dữ liệu Fraction
+                print("   Nghiệm:", [round(float(val), 5) for val in x_gauss])
             verify_solution(A, b, x_gauss, "Gauss")
         except Exception as e:
             print(f"   [Gauss] LỖI: {e}")
